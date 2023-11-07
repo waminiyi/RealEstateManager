@@ -1,23 +1,23 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
-import com.waminiyi.realestatemanager.core.data.source.local.LocalDataSource
-import com.waminiyi.realestatemanager.core.domain.model.WorkResult
-import com.waminiyi.realestatemanager.core.domain.model.estate.Estate
-import com.waminiyi.realestatemanager.core.domain.repository.EstateRepository
+import com.waminiyi.realestatemanager.core.model.data.WorkResult
+import com.waminiyi.realestatemanager.core.model.data.Estate
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DefaultEstateRepository @Inject constructor(private val localDataSource: LocalDataSource) : EstateRepository {
+class DefaultEstateRepository @Inject constructor(
+    private val ioCoroutineDispatcher: CoroutineDispatcher
+) : EstateRepository {
     override suspend fun addEstate(estate: Estate): WorkResult<String> {
-        return localDataSource.addEstate(estate)
+        TODO("Not yet implemented")
     }
 
     override fun getAllEstatesStream(): Flow<WorkResult<List<Estate>>> {
-        return localDataSource.getAllEstatesStream()
+        TODO("Not yet implemented")
     }
 
     override fun getEstateStream(estateId: String): Flow<WorkResult<Estate?>> {
-        return localDataSource.getEstateStream(estateId)
+        TODO("Not yet implemented")
     }
-
 }
