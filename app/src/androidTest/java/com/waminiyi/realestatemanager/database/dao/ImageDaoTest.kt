@@ -1,26 +1,27 @@
 package com.waminiyi.realestatemanager.database.dao
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import com.waminiyi.realestatemanager.core.database.RemDatabase
 import com.waminiyi.realestatemanager.core.database.dao.ImageDao
 import com.waminiyi.realestatemanager.core.database.model.ImageEntity
 import com.waminiyi.realestatemanager.core.model.data.ImageType
+import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import java.util.*
+import javax.inject.Inject
 
 @HiltAndroidTest
 class ImageDaoTest {
 
-    private lateinit var database: RemDatabase
-    private lateinit var imageDao: ImageDao
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var imageDao: ImageDao
 
     companion object {
         val ownerUuid1: UUID = UUID.randomUUID()
@@ -40,18 +41,7 @@ class ImageDaoTest {
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, RemDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-
-        imageDao = database.imageDao()
-    }
-
-    @After
-    fun tearDown() {
-        database.clearAllTables()
-        database.close()
+        hiltRule.inject()
     }
 
     /**

@@ -7,32 +7,28 @@ import com.waminiyi.realestatemanager.core.database.RemDatabase
 import com.waminiyi.realestatemanager.core.database.dao.FacilityDao
 import com.waminiyi.realestatemanager.core.database.model.FacilityEntity
 import com.waminiyi.realestatemanager.core.model.data.FacilityType
+import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
 @HiltAndroidTest
 class FacilityDaoTest {
-    private lateinit var database: RemDatabase
-    private lateinit var facilityDao: FacilityDao
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var facilityDao: FacilityDao
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, RemDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-        facilityDao = database.facilityDao()
-    }
-
-    @After
-    fun tearDown() {
-        database.clearAllTables()
-        database.close()
+        hiltRule.inject()
     }
 
     /**

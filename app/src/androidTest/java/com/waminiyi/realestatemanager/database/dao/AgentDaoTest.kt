@@ -9,22 +9,25 @@ import com.waminiyi.realestatemanager.core.database.dao.ImageDao
 import com.waminiyi.realestatemanager.core.database.model.AgentEntity
 import com.waminiyi.realestatemanager.core.database.model.ImageEntity
 import com.waminiyi.realestatemanager.core.model.data.ImageType
+import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.Assert
+import org.junit.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Before
-import org.junit.Test
 import java.util.*
+import javax.inject.Inject
 
 @HiltAndroidTest
 class AgentDaoTest {
-    private lateinit var database: RemDatabase
-    private lateinit var agentDao: AgentDao
-    private lateinit var imageDao: ImageDao
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var agentDao: AgentDao
+    @Inject
+    lateinit var imageDao: ImageDao
 
     companion object {
         val agentUuid1: UUID = UUID.randomUUID()
@@ -43,20 +46,9 @@ class AgentDaoTest {
 
     @Before
     fun setUp() = runBlocking {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, RemDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-        agentDao = database.agentDao()
-        imageDao = database.imageDao()
+        hiltRule.inject()
         imageDao.upsertImage(image1)
         imageDao.upsertImage(image2)
-    }
-
-    @After
-    fun tearDown() {
-        database.clearAllTables()
-        database.close()
     }
 
     @Test

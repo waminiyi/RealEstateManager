@@ -1,9 +1,6 @@
 package com.waminiyi.realestatemanager.database.dao
 
-import android.content.Context
 import androidx.room.*
-import androidx.test.core.app.ApplicationProvider
-import com.waminiyi.realestatemanager.core.database.RemDatabase
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.ImageDao
@@ -11,6 +8,7 @@ import com.waminiyi.realestatemanager.core.database.model.*
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.ImageType
 import com.waminiyi.realestatemanager.core.model.data.Status
+import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -18,15 +16,24 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import java.util.*
+import javax.inject.Inject
 
 @HiltAndroidTest
 class EstateDaoTest {
-    private lateinit var database: RemDatabase
-    private lateinit var estateDao: EstateDao
-    private lateinit var imageDao: ImageDao
-    private lateinit var agentDao: AgentDao
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var estateDao: EstateDao
+
+    @Inject
+    lateinit var imageDao: ImageDao
+
+    @Inject
+    lateinit var agentDao: AgentDao
 
     companion object {
         val estateUuid1: UUID = UUID.randomUUID()
@@ -94,23 +101,11 @@ class EstateDaoTest {
 
     @Before
     fun setUp() = runBlocking {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, RemDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-        estateDao = database.estateDao()
-        imageDao = database.imageDao()
-        agentDao=database.agentDao()
+        hiltRule.inject()
         agentDao.upsertAgent(agent1)
         imageDao.upsertImage(image1)
         imageDao.upsertImage(image2)
         imageDao.upsertImage(image3)
-    }
-
-    @After
-    fun tearDown() {
-        database.clearAllTables()
-        database.close()
     }
 
     @Test
@@ -140,7 +135,7 @@ class EstateDaoTest {
         assertEquals(estate2, estatesWithImages[1].estateEntity)
 
         // When: Updating existing estate
-        val updatedEstate= estate1.copy(status = Status.SOLD)
+        val updatedEstate = estate1.copy(status = Status.SOLD)
         estateDao.upsertEstate(updatedEstate)
 
         // Then: The database should contain two estates and the target estate should be up to date
