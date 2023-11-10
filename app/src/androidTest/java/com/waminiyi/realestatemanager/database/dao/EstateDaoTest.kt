@@ -1,18 +1,15 @@
 package com.waminiyi.realestatemanager.database.dao
 
-import androidx.room.*
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.ImageDao
-import com.waminiyi.realestatemanager.core.database.model.*
-import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.ImageType
 import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -39,64 +36,12 @@ class EstateDaoTest {
         val estateUuid1: UUID = UUID.randomUUID()
         val estateUuid2: UUID = UUID.randomUUID()
         val mainImageUuid1: UUID = UUID.randomUUID()
-        val image1 = ImageEntity(
-            mainImageUuid1, estateUuid1,
-            "image_name1", "description1", ImageType.MAIN
-        )
-        val image2 = ImageEntity(
-            UUID.randomUUID(), estateUuid2,
-            "image_name2", "description2", ImageType.MAIN
-        )
-        val image3 = ImageEntity(
-            UUID.randomUUID(), estateUuid1,
-            "image_name3", "description3", ImageType.ADDITIONAL
-        )
-        val agent1 = AgentEntity(UUID.randomUUID(), "John", "Doe", "agent@mail.com", "123-456")
-        val estate1 = EstateEntity(
-            estateUuid = estateUuid1,
-            type = EstateType.APARTMENT,
-            price = 1500000,
-            area = 150.0f,
-            description = "Top Apartment",
-            address = AddressEntity(
-                123,
-                "Main St",
-                "Gre",
-                "Isère",
-                38600,
-                LocationEntity(
-                    3205211.0,
-                    325000.0
-                )
-            ),
-            status = Status.AVAILABLE,
-            entryDate = Date(),
-            mainImageId = mainImageUuid1,
-            agentId = agent1.agentUuid
-        )
-
-        val estate2 = EstateEntity(
-            estateUuid = estateUuid2,
-            type = EstateType.HOUSE,
-            price = 8000000,
-            area = 300.0f,
-            description = "Beautiful house",
-            address = AddressEntity(
-                123,
-                "Rose St",
-                "Esch",
-                "Isère",
-                38100,
-                LocationEntity(
-                    3515211.0,
-                    225000.0
-                )
-            ),
-            status = Status.AVAILABLE,
-            entryDate = Date(),
-            mainImageId = image2.imageUuid,
-            agentId = agent1.agentUuid
-        )
+        val image1 = TestDataGenerator.getRandomImage(estateUuid1, ImageType.MAIN)
+        val image2 = TestDataGenerator.getRandomImage(estateUuid2, ImageType.MAIN)
+        val image3 = TestDataGenerator.getRandomImage(estateUuid1, ImageType.ADDITIONAL)
+        val agent1 = TestDataGenerator.getRandomAgent()
+        val estate1 = TestDataGenerator.getRandomEstate(estateUuid1, image1.imageUuid, agent1.agentUuid)
+        val estate2 = TestDataGenerator.getRandomEstate(estateUuid2, image2.imageUuid, agent1.agentUuid)
     }
 
     @Before
@@ -153,7 +98,7 @@ class EstateDaoTest {
         estateDao.upsertEstate(estate2)
 
         // When: retrieving an estate with details by ID from the database
-        val retrievedEstate = estateDao.getEstateWithDetailsById(estateUuid1).first()
+        val retrievedEstate = estateDao.getEstateWithDetailsById(estateUuid1)
 
         // Then: the retrieved estate should match the estate with the passed id
         assertNotNull(retrievedEstate)

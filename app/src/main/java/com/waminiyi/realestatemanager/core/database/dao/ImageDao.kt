@@ -3,7 +3,6 @@ package com.waminiyi.realestatemanager.core.database.dao
 import androidx.annotation.VisibleForTesting
 import androidx.room.*
 import com.waminiyi.realestatemanager.core.database.model.ImageEntity
-import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 @Dao
@@ -15,12 +14,12 @@ interface ImageDao {
     suspend fun deleteImage(imageEntity: ImageEntity)
 
     @Query("SELECT * FROM images WHERE image_uuid = :imageUuid")
-    fun getImageById(imageUuid: UUID): Flow<ImageEntity?>
+    fun getImageById(imageUuid: UUID): ImageEntity?
 
     @Query("SELECT * FROM images WHERE owner_uuid = :ownerUuid")
-    fun getImagesByOwner(ownerUuid: UUID): Flow<List<ImageEntity>>
+    fun getImagesByOwner(ownerUuid: UUID): List<ImageEntity>
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     @Query("SELECT * FROM images")
-    fun getAllImages(): Flow<List<ImageEntity>>
+    fun getAllImages(): List<ImageEntity>
 }

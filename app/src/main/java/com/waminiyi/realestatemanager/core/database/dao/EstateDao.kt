@@ -18,6 +18,6 @@ interface EstateDao {
 
     @Transaction
     @Query("SELECT * FROM estates WHERE estate_uuid = :estateUuid")
-    fun getEstateWithDetailsById(estateUuid: UUID): Flow<EstateWithDetailsEntity?>
+    fun getEstateWithDetailsById(estateUuid: UUID): EstateWithDetailsEntity?
 
 }

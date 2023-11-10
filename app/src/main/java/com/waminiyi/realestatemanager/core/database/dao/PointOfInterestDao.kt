@@ -16,8 +16,8 @@ interface PointOfInterestDao {
     suspend fun deletePointOfInterest(pointOfInterestEntity: PointOfInterestEntity)
 
     @Query("SELECT * FROM points_of_interest WHERE poi_id = :poiId")
-    fun getPointOfInterestById(poiId: Int): Flow<PointOfInterestEntity?>
+    fun getPointOfInterestById(poiId: Int): PointOfInterestEntity?
 
     @Query("SELECT * FROM points_of_interest")
-    fun getAllPointOfInterests(): Flow<List<PointOfInterestEntity>>
+    fun getAllPointOfInterests(): List<PointOfInterestEntity>
 }

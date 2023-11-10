@@ -1,11 +1,10 @@
 package com.waminiyi.realestatemanager.database.dao
 
 import com.waminiyi.realestatemanager.core.database.dao.ImageDao
-import com.waminiyi.realestatemanager.core.database.model.ImageEntity
 import com.waminiyi.realestatemanager.core.model.data.ImageType
+import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
@@ -25,18 +24,9 @@ class ImageDaoTest {
 
     companion object {
         val ownerUuid1: UUID = UUID.randomUUID()
-        val imageEntity1 = ImageEntity(
-            UUID.randomUUID(), ownerUuid1,
-            "image_name1", "description1", ImageType.MAIN
-        )
-        val imageEntity2 = ImageEntity(
-            UUID.randomUUID(), ownerUuid1,
-            "image_name2", "description2", ImageType.ADDITIONAL
-        )
-        val imageEntity3 = ImageEntity(
-            UUID.randomUUID(), UUID.randomUUID(),
-            "image_name3", "description3", ImageType.MAIN
-        )
+        val imageEntity1 = TestDataGenerator.getRandomImage(ownerUuid1, ImageType.MAIN)
+        val imageEntity2 = TestDataGenerator.getRandomImage(ownerUuid1, ImageType.ADDITIONAL)
+        val imageEntity3 = TestDataGenerator.getRandomImage(UUID.randomUUID(), ImageType.MAIN)
     }
 
     @Before
@@ -44,13 +34,10 @@ class ImageDaoTest {
         hiltRule.inject()
     }
 
-    /**
-     * Test the upsertImage function of ImageDao.
-     */
     @Test
     fun upsertImageTest() = runBlocking {
         // Given: No images added to the the database
-        var allImages = imageDao.getAllImages().first()
+        var allImages = imageDao.getAllImages()
 
         // Then: The database should contain no image
         assertEquals(0, allImages.size)
@@ -59,7 +46,7 @@ class ImageDaoTest {
         imageDao.upsertImage(imageEntity1)
 
         // Then: The database should contain one image
-        allImages = imageDao.getAllImages().first()
+        allImages = imageDao.getAllImages()
         assertEquals(1, allImages.size)
         assertEquals(imageEntity1, allImages[0])
 
@@ -68,7 +55,7 @@ class ImageDaoTest {
         imageDao.upsertImage(updatedImage)
 
         // Then: The database should still contain only one image with the updated description
-        allImages = imageDao.getAllImages().first()
+        allImages = imageDao.getAllImages()
         assertEquals(1, allImages.size)
         assertEquals(imageEntity1.imageUuid, allImages[0].imageUuid)
         assertNotEquals(imageEntity1.description, allImages[0].description)
@@ -85,7 +72,7 @@ class ImageDaoTest {
         imageDao.deleteImage(imageEntity1)
 
         // Then: The database should contain only the remaining image
-        val allImages = imageDao.getAllImages().first()
+        val allImages = imageDao.getAllImages()
         assertEquals(1, allImages.size)
         assertTrue("The list doesn't contain this image", allImages.contains(imageEntity2))
         assertFalse("The list contains this image", allImages.contains(imageEntity1))
@@ -99,7 +86,7 @@ class ImageDaoTest {
         imageDao.upsertImage(imageEntity2)
         imageDao.upsertImage(imageEntity3)
 
-        val imagesByOwner = imageDao.getImagesByOwner(ownerUuid1).first()
+        val imagesByOwner = imageDao.getImagesByOwner(ownerUuid1)
         assertEquals(2, imagesByOwner.size)
         assertTrue(imagesByOwner.contains(imageEntity1))
         assertTrue(imagesByOwner.contains(imageEntity2))

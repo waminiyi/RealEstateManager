@@ -1,22 +1,17 @@
 package com.waminiyi.realestatemanager.database.dao
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import com.waminiyi.realestatemanager.core.database.RemDatabase
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.ImageDao
-import com.waminiyi.realestatemanager.core.database.model.AgentEntity
-import com.waminiyi.realestatemanager.core.database.model.ImageEntity
 import com.waminiyi.realestatemanager.core.model.data.ImageType
+import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import org.junit.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import java.util.*
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -26,22 +21,15 @@ class AgentDaoTest {
 
     @Inject
     lateinit var agentDao: AgentDao
+
     @Inject
     lateinit var imageDao: ImageDao
 
     companion object {
-        val agentUuid1: UUID = UUID.randomUUID()
-        val agentUuid2: UUID = UUID.randomUUID()
-        val agent1 = AgentEntity(agentUuid1, "John", "Doe", "agent@mail.com", "123-456")
-        val agent2 = AgentEntity(agentUuid2, "James", "Bond", "agent@mail.com", "123-456")
-        val image1 = ImageEntity(
-            UUID.randomUUID(), agentUuid1,
-            "image_name1", "description1", ImageType.MAIN
-        )
-        val image2 = ImageEntity(
-            UUID.randomUUID(), agentUuid2,
-            "image_name2", "description2", ImageType.MAIN
-        )
+        val agent1 = TestDataGenerator.getRandomAgent()
+        val agent2 = TestDataGenerator.getRandomAgent()
+        val image1 = TestDataGenerator.getRandomImage(agent1.agentUuid, ImageType.MAIN)
+        val image2 = TestDataGenerator.getRandomImage(agent2.agentUuid, ImageType.MAIN)
     }
 
     @Before
@@ -54,7 +42,7 @@ class AgentDaoTest {
     @Test
     fun upsertAndGetAllAgentsTest() = runBlocking {
         // Given: No agent added to the database
-        var agents = agentDao.getAllAgents().first()
+        var agents = agentDao.getAllAgents()
 
         // Then: The database should contain no agents
         assertEquals(0, agents.size)
@@ -63,7 +51,7 @@ class AgentDaoTest {
         agentDao.upsertAgent(agent1)
 
         // Then: The database should contain one agent
-        agents = agentDao.getAllAgents().first()
+        agents = agentDao.getAllAgents()
         assertEquals(1, agents.size)
         assertEquals(agent1, agents[0].agentEntity)
         assertEquals(image1, agents[0].imageEntity)
@@ -73,7 +61,7 @@ class AgentDaoTest {
         agentDao.upsertAgent(updatedAgent)
 
         // Then: The database should still contain only one agent with the updated phone number
-        agents = agentDao.getAllAgents().first()
+        agents = agentDao.getAllAgents()
         assertEquals(1, agents.size)
         assertEquals(agent1.agentUuid, agents[0].agentEntity.agentUuid)
         assertEquals(agent1.firstName, agents[0].agentEntity.firstName)
@@ -92,7 +80,7 @@ class AgentDaoTest {
         agentDao.upsertAgent(agent2)
 
         // When: retrieving an agent by ID from the database
-        val retrievedAgent = agentDao.getAgent(agentUuid1).first()
+        val retrievedAgent = agentDao.getAgent(agent1.agentUuid)
 
         // Then: the retrieved agent should match the agent with the passed id
         assertNotNull(retrievedAgent)

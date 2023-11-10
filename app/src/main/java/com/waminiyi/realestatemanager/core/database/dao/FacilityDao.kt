@@ -17,8 +17,8 @@ interface FacilityDao {
     suspend fun deleteFacility(facilityEntity: FacilityEntity)
 
     @Query("SELECT * FROM facilities WHERE facility_id = :facilityId")
-    fun getFacilityById(facilityId: Int): Flow<FacilityEntity?>
+    fun getFacilityById(facilityId: Int): FacilityEntity?
 
     @Query("SELECT * FROM facilities")
-    fun getAllFacilities(): Flow<List<FacilityEntity>>
+    fun getAllFacilities(): List<FacilityEntity>
 }
