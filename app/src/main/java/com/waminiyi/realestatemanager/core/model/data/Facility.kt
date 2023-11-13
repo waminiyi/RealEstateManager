@@ -1,7 +1,14 @@
 package com.waminiyi.realestatemanager.core.model.data
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Facility(
-    val id :Int,
+    @SerialName("facility_id")
+    val id: Int,
+    @SerialName("facility_type")
     val type: FacilityType,
+    @SerialName("facility_count")
     val count: Int
 )

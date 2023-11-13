@@ -12,11 +12,11 @@ import androidx.room.Embedded
  * @property postalCode The postal code of the property's location.
  * @property location The geographic coordinates (latitude and longitude) of the property.
  */
-data class AddressEntity(
+data class Address(
     val streetNumber: Int,
     val streetName: String,
     val city: String,
     val state: String,
     val postalCode: Int,
-    @Embedded val location: LocationEntity
+    @Embedded val location: Location
 )

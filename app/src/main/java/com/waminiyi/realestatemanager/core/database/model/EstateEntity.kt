@@ -2,6 +2,8 @@ package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.*
 import com.waminiyi.realestatemanager.core.model.data.EstateType
+import com.waminiyi.realestatemanager.core.model.data.Facility
+import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Status
 import java.util.*
 
@@ -56,7 +58,7 @@ data class EstateEntity(
     val description: String,
 
     @Embedded
-    val address: AddressEntity,
+    val address: Address,
 
     @ColumnInfo(name = "status")
     val status: Status,
@@ -71,5 +73,11 @@ data class EstateEntity(
     val mainImageId: UUID,
 
     @ColumnInfo(name = "agent_id")
-    val agentId: UUID
+    val agentId: UUID,
+
+    @ColumnInfo(name = "poi_list")
+    val poiList: List<PointOfInterest> = emptyList(),
+
+    @ColumnInfo(name = "facilities_list")
+    val facilitiesList: List<Facility> = emptyList()
 )

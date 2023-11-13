@@ -1,6 +1,6 @@
 package com.waminiyi.realestatemanager.core.database.model
 
-data class LocationEntity(
+data class Location(
     val latitude: Double,
     val longitude: Double
 )

@@ -29,18 +29,18 @@ data class EstateWithDetailsEntity(
     )
     val images: List<ImageEntity>,
 
-    @Relation(
-        parentColumn = "estate_uuid",
-        entityColumn = "facility_id",
-        associateBy = Junction(EstateAndFacilityLink::class)
-    )
-    val facilities: List<FacilityEntity>,
-
-    @Relation(
-        parentColumn = "estate_uuid",
-        entityColumn = "poi_id",
-        associateBy = Junction(EstateAndPoiLink::class)
-    )
-    val pointsOfInterest: List<PointOfInterestEntity>
+//    @Relation(
+//        parentColumn = "estate_uuid",
+//        entityColumn = "facility_id",
+//        associateBy = Junction(EstateAndFacilityLink::class)
+//    )
+//    val facilities: List<FacilityEntity>,
+//
+//    @Relation(
+//        parentColumn = "estate_uuid",
+//        entityColumn = "poi_id",
+//        associateBy = Junction(EstateAndPoiLink::class)
+//    )
+//    val pointsOfInterest: List<PointOfInterestEntity>
 )
 
