@@ -3,6 +3,7 @@ package com.waminiyi.realestatemanager.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.waminiyi.realestatemanager.core.model.data.Agent
 import java.util.*
 
 /**
@@ -31,4 +32,12 @@ data class AgentEntity(
 
     @ColumnInfo(name = "phone_number")
     val phoneNumber: String
+)
+
+fun Agent.asAgentEntity() = AgentEntity(
+    agentUuid = UUID.fromString(this.uuid),
+    firstName = this.firstName,
+    lastName = this.lastName,
+    email = this.email,
+    phoneNumber = this.phoneNumber
 )

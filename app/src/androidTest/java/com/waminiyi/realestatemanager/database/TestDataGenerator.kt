@@ -1,8 +1,7 @@
 package com.waminiyi.realestatemanager.database
 
 import com.waminiyi.realestatemanager.core.database.model.*
-import com.waminiyi.realestatemanager.core.database.model.Address
-import com.waminiyi.realestatemanager.core.database.model.Location
+import com.waminiyi.realestatemanager.core.database.model.AddressEntity
 import com.waminiyi.realestatemanager.core.model.data.*
 import java.util.*
 
@@ -56,7 +55,7 @@ object TestDataGenerator {
             price = (500000..5000000).random(),
             area = getRandomFloat(50f, 500f),
             description = getRandomString(adjectives),
-            address = getRandomAddress(),
+            addressEntity = getRandomAddress(),
             status = status,
             entryDate = getRandomDate(),
             saleDate = if (status == Status.SOLD) getRandomDate() else null,
@@ -71,7 +70,7 @@ object TestDataGenerator {
         return list.random()
     }
 
-    private fun getRandomAddress(): Address {
+    private fun getRandomAddress(): AddressEntity {
         val streetNumber = (1..100).random()
         val streetName = getRandomString(streetNames)
         val city = getRandomString(cities)
@@ -79,7 +78,7 @@ object TestDataGenerator {
         val postalCode = (10000..99999).random()
         val location = Location(Math.random() * 180 - 90, Math.random() * 360 - 180)
 
-        return Address(streetNumber, streetName, city, state, postalCode, location)
+        return AddressEntity(streetNumber, streetName, city, state, postalCode, location)
     }
 
     private fun getRandomPhoneNumber(): String {

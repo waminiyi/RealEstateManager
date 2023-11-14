@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class AddEstateUseCase @Inject constructor(private val estateRepository: EstateRepository) {
     suspend operator fun invoke(estateWithDetails: EstateWithDetails){
-        estateRepository.addEstate(estateWithDetails)
+        estateRepository.saveEstate(estateWithDetails)
     }
 }

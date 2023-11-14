@@ -1,10 +1,7 @@
 package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.*
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.Facility
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.*
 import java.util.*
 
 /**
@@ -15,7 +12,7 @@ import java.util.*
  * @property price The price of the estate in dollars.
  * @property area The area of the estate in square meters.
  * @property description The description of the estate.
- * @property address The address details of the estate.
+ * @property addressEntity The address details of the estate.
  * @property status The status of the estate (AVAILABLE, SOLD, etc.).
  * @property entryDate The date when the estate was listed.
  * @property saleDate The date when the estate was sold (can be null if not sold yet).
@@ -58,7 +55,7 @@ data class EstateEntity(
     val description: String,
 
     @Embedded
-    val address: Address,
+    val addressEntity: AddressEntity,
 
     @ColumnInfo(name = "status")
     val status: Status,
@@ -80,4 +77,20 @@ data class EstateEntity(
 
     @ColumnInfo(name = "facilities_list")
     val facilitiesList: List<Facility> = emptyList()
+)
+
+fun EstateWithDetails.asEstateEntity() = EstateEntity(
+    estateUuid = UUID.fromString(this.uuid),
+    type = this.type,
+    price = this.price,
+    area = this.area,
+    description = this.description,
+    addressEntity = this.address.asAddressEntity(),
+    status = this.status,
+    entryDate = this.entryDate,
+    saleDate = this.saleDate,
+    mainImageId = UUID.fromString(this.images.filter { it.imageType == ImageType.MAIN }[0].uuid),
+    agentId = UUID.fromString(this.agentId),
+    poiList = this.nearbyPointsOfInterest,
+    facilitiesList = this.facilities
 )
