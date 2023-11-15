@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "300995928329",
+    "project_id": "realestatemanager-3174d",
+    "storage_bucket": "realestatemanager-3174d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300995928329:android:dcd99770f759aca81173d8",
+        "android_client_info": {
+          "package_name": "com.waminiyi.realestatemanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANck4FxPCfCbHTTDZ9q6cVekFEkiXvBSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

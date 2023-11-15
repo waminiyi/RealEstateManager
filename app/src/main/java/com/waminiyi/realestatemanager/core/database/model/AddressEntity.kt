@@ -1,6 +1,8 @@
 package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.Embedded
+import com.waminiyi.realestatemanager.core.model.data.Address
+import com.waminiyi.realestatemanager.core.model.data.Location
 
 /**
  * Data class representing the address information for a real estate property.
@@ -18,5 +20,22 @@ data class AddressEntity(
     val city: String,
     val state: String,
     val postalCode: Int,
-    @Embedded val location: LocationEntity
+    @Embedded val location: Location
+){
+    fun asAddress()= Address(
+        streetNumber=this.streetNumber,
+        streetName=this.streetName,
+        city=this.city,
+        state=this.state,
+        postalCode=this.postalCode,
+        location=this.location
+    )
+}
+fun Address.asAddressEntity()= AddressEntity(
+    streetNumber=this.streetNumber,
+    streetName=this.streetName,
+    city=this.city,
+    state=this.state,
+    postalCode=this.postalCode,
+    location=this.location
 )

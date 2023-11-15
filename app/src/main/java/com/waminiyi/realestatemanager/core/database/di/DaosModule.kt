@@ -42,40 +42,4 @@ object DaosModule {
     fun provideImageDao(database: RemDatabase): ImageDao {
         return database.imageDao()
     }
-
-    /**
-     * Provides a singleton instance of [FacilityDao].
-     */
-    @Singleton
-    @Provides
-    fun provideFacilityDao(database: RemDatabase): FacilityDao {
-        return database.facilityDao()
-    }
-
-    /**
-     * Provides a singleton instance of [PointOfInterestDao] .
-     */
-    @Singleton
-    @Provides
-    fun providePointOfInterestDao(database: RemDatabase): PointOfInterestDao {
-        return database.pointOfInterestDao()
-    }
-
-    /**
-     * Provides a singleton instance of [EstateAndFacilityLinkDao] .
-     */
-    @Singleton
-    @Provides
-    fun provideEstateAndFacilityLinkDao(database: RemDatabase): EstateAndFacilityLinkDao {
-        return database.estateAndFacilityLinkDao()
-    }
-
-    /**
-     * Provides a singleton instance of [EstateAndPoiLinkDao] .
-     */
-    @Singleton
-    @Provides
-    fun provideEstateAndPoiLinkDao(database: RemDatabase): EstateAndPoiLinkDao {
-        return database.estateAndPoiLinkDao()
-    }
 }

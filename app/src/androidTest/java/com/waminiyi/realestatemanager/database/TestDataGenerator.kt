@@ -1,6 +1,7 @@
 package com.waminiyi.realestatemanager.database
 
 import com.waminiyi.realestatemanager.core.database.model.*
+import com.waminiyi.realestatemanager.core.database.model.AddressEntity
 import com.waminiyi.realestatemanager.core.model.data.*
 import java.util.*
 
@@ -25,13 +26,14 @@ object TestDataGenerator {
         return AgentEntity(uuid, firstName, lastName, email, phoneNumber)
     }
 
-    fun getRandomFacility(): FacilityEntity {
-        val count = (1..3).random()
-        return FacilityEntity(
-            0,
-            type = FacilityType.values().random(),
-            count = (1..3).random()
-        )
+    fun getRandomFacilities(count: Int): List<Facility> {
+        return (1..count).map {
+            Facility(
+                0,
+                type = FacilityType.values().random(),
+                count = (1..3).random()
+            )
+        }
     }
 
     fun getRandomImage(ownerId: UUID, type: ImageType): ImageEntity {
@@ -39,8 +41,9 @@ object TestDataGenerator {
         return ImageEntity(uuid, ownerId, getRandomString(facilityNames), getRandomString(facilityAdjectives), type)
     }
 
-    fun getRandomPoi(): PointOfInterestEntity {
-        return PointOfInterestEntity(0, PointOfInterestType.values().random())
+    private fun getRandomPoi(count: Int): List<PointOfInterest> {
+        val allTypes = PointOfInterest.values()
+        return (1..count).map { allTypes.random() }
     }
 
     fun getRandomEstate(estateUuid: UUID = UUID.randomUUID(), imageUuid: UUID, agentUuId: UUID): EstateEntity {
@@ -52,12 +55,14 @@ object TestDataGenerator {
             price = (500000..5000000).random(),
             area = getRandomFloat(50f, 500f),
             description = getRandomString(adjectives),
-            address = getRandomAddress(),
+            addressEntity = getRandomAddress(),
             status = status,
             entryDate = getRandomDate(),
             saleDate = if (status == Status.SOLD) getRandomDate() else null,
-            imageUuid,
-            agentUuId
+            mainImageId = imageUuid,
+            agentId = agentUuId,
+            poiList = getRandomPoi((0..8).random()),
+            facilitiesList = getRandomFacilities((0..8).random())
         )
     }
 
@@ -71,7 +76,7 @@ object TestDataGenerator {
         val city = getRandomString(cities)
         val state = getRandomString(states)
         val postalCode = (10000..99999).random()
-        val location = LocationEntity(Math.random() * 180 - 90, Math.random() * 360 - 180)
+        val location = Location(Math.random() * 180 - 90, Math.random() * 360 - 180)
 
         return AddressEntity(streetNumber, streetName, city, state, postalCode, location)
     }

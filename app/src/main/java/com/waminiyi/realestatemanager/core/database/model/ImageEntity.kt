@@ -3,6 +3,7 @@ package com.waminiyi.realestatemanager.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.waminiyi.realestatemanager.core.model.data.Image
 import com.waminiyi.realestatemanager.core.model.data.ImageType
 import java.util.*
 
@@ -32,5 +33,19 @@ data class ImageEntity(
 
     @ColumnInfo(name = "image_type")
     val imageType: ImageType
+){
+    fun asImage() = Image(
+        uuid = this.imageUuid.toString(),
+        name = this.name,
+        description = this.description,
+        imageType = this.imageType
+    )
+}
+fun Image.asImageEntity(ownerId: String) = ImageEntity(
+    imageUuid = UUID.fromString(this.uuid),
+    ownerUuid = UUID.fromString(ownerId),
+    name = this.name,
+    description = this.description,
+    imageType = this.imageType
 )
 
