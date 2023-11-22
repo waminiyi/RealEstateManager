@@ -3,7 +3,6 @@ package com.waminiyi.realestatemanager.database.dao
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.ImageDao
-import com.waminiyi.realestatemanager.core.model.data.ImageType
 import com.waminiyi.realestatemanager.core.model.data.Status
 import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -36,12 +35,12 @@ class EstateDaoTest {
         val estateUuid1: UUID = UUID.randomUUID()
         val estateUuid2: UUID = UUID.randomUUID()
         val mainImageUuid1: UUID = UUID.randomUUID()
-        val image1 = TestDataGenerator.getRandomImage(estateUuid1, ImageType.MAIN)
-        val image2 = TestDataGenerator.getRandomImage(estateUuid2, ImageType.MAIN)
-        val image3 = TestDataGenerator.getRandomImage(estateUuid1, ImageType.ADDITIONAL)
+        val image1 = TestDataGenerator.getRandomImage(estateUuid1, true)
+        val image2 = TestDataGenerator.getRandomImage(estateUuid2, true)
+        val image3 = TestDataGenerator.getRandomImage(estateUuid1, false)
         val agent1 = TestDataGenerator.getRandomAgent()
-        val estate1 = TestDataGenerator.getRandomEstate(estateUuid1, image1.imageUuid, agent1.agentUuid)
-        val estate2 = TestDataGenerator.getRandomEstate(estateUuid2, image2.imageUuid, agent1.agentUuid)
+        val estate1 = TestDataGenerator.getRandomEstate(estateUuid1, agent1.agentUuid)
+        val estate2 = TestDataGenerator.getRandomEstate(estateUuid2, agent1.agentUuid)
     }
 
     @Before
@@ -67,8 +66,7 @@ class EstateDaoTest {
         // Then: The database should contain one estate
         estatesWithImages = estateDao.getAllEstatesWithImages().first()
         assertEquals(1, estatesWithImages.size)
-        assertEquals(estate1, estatesWithImages[0].estateEntity)
-        assertEquals(image1, estatesWithImages[0].imageEntity)
+        assertEquals(image1, estatesWithImages[estate1]!!.first())
 
         // When: Inserting another estate
         estateDao.upsertEstate(estate2)
@@ -76,8 +74,8 @@ class EstateDaoTest {
         // Then: The database should contain two estates
         estatesWithImages = estateDao.getAllEstatesWithImages().first()
         assertEquals(2, estatesWithImages.size)
-        assertEquals(estate1, estatesWithImages[0].estateEntity)
-        assertEquals(estate2, estatesWithImages[1].estateEntity)
+        assertEquals(image1, estatesWithImages[estate1]!!.first())
+        assertEquals(image2, estatesWithImages[estate2]!!.first())
 
         // When: Updating existing estate
         val updatedEstate = estate1.copy(status = Status.SOLD)
@@ -86,9 +84,8 @@ class EstateDaoTest {
         // Then: The database should contain two estates and the target estate should be up to date
         estatesWithImages = estateDao.getAllEstatesWithImages().first()
         assertEquals(2, estatesWithImages.size)
-        assertEquals(estate1.estateUuid, estatesWithImages[0].estateEntity.estateUuid)
-        assertEquals(estate1.type, estatesWithImages[0].estateEntity.type)
-        assertEquals(Status.SOLD, estatesWithImages[0].estateEntity.status)
+        assertEquals(image1, estatesWithImages[updatedEstate]!!.first())
+//        assertEquals(Status.SOLD, estatesWithImages[0].estateEntity.status)
     }
 
     @Test

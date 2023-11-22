@@ -10,7 +10,7 @@ import com.waminiyi.realestatemanager.core.database.util.Converters
 @Database(
     entities = [EstateEntity::class,
         AgentEntity::class,
-        ImageEntity::class],
+        PhotoEntity::class],
     version = 1,
     exportSchema = false
 )

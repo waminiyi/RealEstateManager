@@ -1,9 +1,7 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
-import com.waminiyi.realestatemanager.core.database.dao.ImageDao
 import com.waminiyi.realestatemanager.core.database.model.asAgentEntity
-import com.waminiyi.realestatemanager.core.database.model.asImageEntity
 import com.waminiyi.realestatemanager.core.model.data.Agent
 import com.waminiyi.realestatemanager.core.model.data.Result
 import java.io.IOException
@@ -12,12 +10,10 @@ import javax.inject.Inject
 
 class DefaultAgentRepository @Inject constructor(
     private val agentDao: AgentDao,
-    private val imageDao: ImageDao
 ) : AgentRepository {
     override suspend fun saveAgent(agent: Agent): Result<Unit> {
         return try {
             agentDao.upsertAgent(agent.asAgentEntity())
-            imageDao.upsertImage(agent.image.asImageEntity(agent.uuid))
             Result.Success(Unit)
         } catch (exception: IOException) {
             Result.Error(exception)
@@ -45,5 +41,4 @@ class DefaultAgentRepository @Inject constructor(
             Result.Error(exception)
         }
     }
-
 }

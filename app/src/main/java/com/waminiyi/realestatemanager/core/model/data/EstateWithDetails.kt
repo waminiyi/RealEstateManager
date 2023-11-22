@@ -9,7 +9,7 @@ data class EstateWithDetails(
     val area: Float,
     val facilities: List<Facility>,
     val description: String, // Full description of the property
-    val images: List<Image> = emptyList(), // estate images
+    val photos: List<Photo> = emptyList(), // estate images
     val address: Address, // Address of the property
     val nearbyPointsOfInterest: List<PointOfInterest>, // Points of interest near the property
     val status: Status, // Status of the property (Available, Sold, etc.)

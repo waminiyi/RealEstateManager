@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Facility(
-    @SerialName("facility_id")
-    val id: Int,
     @SerialName("facility_type")
     val type: FacilityType,
     @SerialName("facility_count")

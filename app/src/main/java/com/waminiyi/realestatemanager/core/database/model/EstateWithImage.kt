@@ -8,7 +8,7 @@ import com.waminiyi.realestatemanager.core.model.data.Estate
  * Class representing an estate with its associated main image .
  *
  * @property estateEntity The embedded estate entity containing estate details.
- * @property imageEntity The related image entity representing the main image associated with the estate.
+ * @property photoEntity The related image entity representing the main image associated with the estate.
  */
 data class EstateWithImage(
     @Embedded
@@ -18,14 +18,14 @@ data class EstateWithImage(
         parentColumn = "main_image_id",
         entityColumn = "image_uuid"
     )
-    val imageEntity: ImageEntity
+    val photoEntity: PhotoEntity
 ) {
     fun asEstate() = Estate(
         uuid = this.estateEntity.estateUuid.toString(),
         type = this.estateEntity.type,
         price = this.estateEntity.price,
         area = this.estateEntity.area,
-        mainImage = this.imageEntity.asImage(),
+        mainPhoto = this.photoEntity.asPhoto(),
         address = this.estateEntity.addressEntity.asAddress(),
         status = this.estateEntity.status
     )

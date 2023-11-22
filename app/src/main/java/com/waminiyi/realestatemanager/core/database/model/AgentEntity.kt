@@ -31,13 +31,26 @@ data class AgentEntity(
     val email: String,
 
     @ColumnInfo(name = "phone_number")
-    val phoneNumber: String
-)
+    val phoneNumber: String,
+
+    @ColumnInfo(name = "photo_url")
+    val photoUrl: String
+) {
+    fun asAgent() = Agent(
+        uuid = this.agentUuid.toString(),
+        firstName = this.firstName,
+        lastName = this.lastName,
+        email = this.email,
+        phoneNumber = this.phoneNumber,
+        photoUrl = this.photoUrl
+    )
+}
 
 fun Agent.asAgentEntity() = AgentEntity(
     agentUuid = UUID.fromString(this.uuid),
     firstName = this.firstName,
     lastName = this.lastName,
     email = this.email,
-    phoneNumber = this.phoneNumber
+    phoneNumber = this.phoneNumber,
+    photoUrl = this.photoUrl
 )

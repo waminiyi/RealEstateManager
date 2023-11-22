@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.database.dao
 
 import com.waminiyi.realestatemanager.core.database.dao.ImageDao
-import com.waminiyi.realestatemanager.core.model.data.ImageType
 import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -14,7 +13,7 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltAndroidTest
-class ImageDaoTest {
+class PhotoDaoTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -24,9 +23,9 @@ class ImageDaoTest {
 
     companion object {
         val ownerUuid1: UUID = UUID.randomUUID()
-        val imageEntity1 = TestDataGenerator.getRandomImage(ownerUuid1, ImageType.MAIN)
-        val imageEntity2 = TestDataGenerator.getRandomImage(ownerUuid1, ImageType.ADDITIONAL)
-        val imageEntity3 = TestDataGenerator.getRandomImage(UUID.randomUUID(), ImageType.MAIN)
+        val imageEntity1 = TestDataGenerator.getRandomImage(ownerUuid1, true)
+        val imageEntity2 = TestDataGenerator.getRandomImage(ownerUuid1, false)
+        val imageEntity3 = TestDataGenerator.getRandomImage(UUID.randomUUID(), true)
     }
 
     @Before
@@ -86,7 +85,7 @@ class ImageDaoTest {
         imageDao.upsertImage(imageEntity2)
         imageDao.upsertImage(imageEntity3)
 
-        val imagesByOwner = imageDao.getImagesByOwner(ownerUuid1)
+        val imagesByOwner = imageDao.getImagesByEstate(ownerUuid1)
         assertEquals(2, imagesByOwner.size)
         assertTrue(imagesByOwner.contains(imageEntity1))
         assertTrue(imagesByOwner.contains(imageEntity2))
