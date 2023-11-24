@@ -6,7 +6,7 @@ import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import java.util.*
 
 @Dao
-interface ImageDao {
+interface PhotoDao {
     @Upsert
     suspend fun upsertImage(photoEntity: PhotoEntity)
 

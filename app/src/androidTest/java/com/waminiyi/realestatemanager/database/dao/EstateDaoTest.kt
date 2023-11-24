@@ -2,7 +2,7 @@ package com.waminiyi.realestatemanager.database.dao
 
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
-import com.waminiyi.realestatemanager.core.database.dao.ImageDao
+import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
 import com.waminiyi.realestatemanager.core.model.data.Status
 import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -26,7 +26,7 @@ class EstateDaoTest {
     lateinit var estateDao: EstateDao
 
     @Inject
-    lateinit var imageDao: ImageDao
+    lateinit var mPhotoDao: PhotoDao
 
     @Inject
     lateinit var agentDao: AgentDao
@@ -47,9 +47,9 @@ class EstateDaoTest {
     fun setUp() = runBlocking {
         hiltRule.inject()
         agentDao.upsertAgent(agent1)
-        imageDao.upsertImage(image1)
-        imageDao.upsertImage(image2)
-        imageDao.upsertImage(image3)
+        mPhotoDao.upsertImage(image1)
+        mPhotoDao.upsertImage(image2)
+        mPhotoDao.upsertImage(image3)
     }
 
     @Test

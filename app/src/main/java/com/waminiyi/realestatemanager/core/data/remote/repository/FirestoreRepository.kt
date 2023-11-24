@@ -1,6 +1,6 @@
 package com.waminiyi.realestatemanager.core.data.remote.repository
 
-import com.waminiyi.realestatemanager.core.model.data.Result
+import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteAgent
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteEstate
 import com.waminiyi.realestatemanager.core.data.remote.model.RemotePhoto
@@ -12,43 +12,43 @@ import javax.inject.Inject
 
 class FirestoreRepository @Inject constructor(private val firestoreDao: FirestoreDao) : RemoteDataRepository {
 
-    override suspend fun uploadPhoto(photo: RemotePhoto): Result<Unit> {
+    override suspend fun uploadPhoto(photo: RemotePhoto): DataResult<Unit> {
         return uploadData(getPhotoPath(photo.uuid), photo)
     }
 
-    override suspend fun deletePhoto(photoId: String): Result<Unit> {
+    override suspend fun deletePhoto(photoId: String): DataResult<Unit> {
         return deleteData(getPhotoPath(photoId))
     }
 
-    override suspend fun getPhoto(photoId: String): Result<RemotePhoto?> {
+    override suspend fun getPhoto(photoId: String): DataResult<RemotePhoto?> {
         return getDataInDocument(getPhotoPath(photoId))
     }
 
-    override suspend fun getAllEstatePhotos(estateId: String): Result<List<RemotePhoto>> {
+    override suspend fun getAllEstatePhotos(estateId: String): DataResult<List<RemotePhoto>> {
         return getAllDataInCollectionWhereEqual(photosCollection, "estateUuid" to estateId)
     }
 
-    override suspend fun uploadAgent(agent: RemoteAgent): Result<Unit> {
+    override suspend fun uploadAgent(agent: RemoteAgent): DataResult<Unit> {
         return uploadData(getAgentPath(agent.agentUuid), agent)
     }
 
-    override suspend fun getAgent(agentId: String): Result<RemoteAgent?> {
+    override suspend fun getAgent(agentId: String): DataResult<RemoteAgent?> {
         return getDataInDocument(getAgentPath(agentId))
     }
 
-    override suspend fun getAllAgents(): Result<List<RemoteAgent>> {
+    override suspend fun getAllAgents(): DataResult<List<RemoteAgent>> {
         return getAllDataInCollection(agentsCollection)
     }
 
-    override suspend fun uploadEstate(estate: RemoteEstate): Result<Unit> {
+    override suspend fun uploadEstate(estate: RemoteEstate): DataResult<Unit> {
         return uploadData(getEstatePath(estate.estateUuid), estate)
     }
 
-    override suspend fun getEstate(estateId: String): Result<RemoteEstate?> {
+    override suspend fun getEstate(estateId: String): DataResult<RemoteEstate?> {
         return getDataInDocument(getAgentPath(estateId))
     }
 
-    override suspend fun getAllEstates(): Result<List<RemoteEstate>> {
+    override suspend fun getAllEstates(): DataResult<List<RemoteEstate>> {
         return getAllDataInCollection(estatesCollection)
     }
 
@@ -62,41 +62,41 @@ class FirestoreRepository @Inject constructor(private val firestoreDao: Firestor
     private suspend fun <T : Any> uploadData(
         path: DocumentPath,
         data: T
-    ): Result<Unit> {
+    ): DataResult<Unit> {
         return when (val result = firestoreDao.insertData(path, data)) {
-            is FirebaseResult.Success -> Result.Success(Unit)
-            is FirebaseResult.Error -> Result.Error(result.exception)
+            is FirebaseResult.Success -> DataResult.Success(Unit)
+            is FirebaseResult.Error -> DataResult.Error(result.exception)
         }
     }
 
-    private suspend inline fun <reified T : Any> getDataInDocument(path: DocumentPath): Result<T> {
+    private suspend inline fun <reified T : Any> getDataInDocument(path: DocumentPath): DataResult<T> {
         return when (val result = firestoreDao.getDataInDocument<T>(path)) {
-            is FirebaseResult.Success -> Result.Success(result.data)
-            is FirebaseResult.Error -> Result.Error(result.exception)
+            is FirebaseResult.Success -> DataResult.Success(result.data)
+            is FirebaseResult.Error -> DataResult.Error(result.exception)
         }
     }
 
-    private suspend fun deleteData(path: DocumentPath): Result<Unit> {
+    private suspend fun deleteData(path: DocumentPath): DataResult<Unit> {
         return when (val result = firestoreDao.deleteDocument(path)) {
-            is FirebaseResult.Success -> Result.Success(Unit)
-            is FirebaseResult.Error -> Result.Error(result.exception)
+            is FirebaseResult.Success -> DataResult.Success(Unit)
+            is FirebaseResult.Error -> DataResult.Error(result.exception)
         }
     }
 
-    private suspend inline fun <reified T : Any> getAllDataInCollection(path: CollectionPath): Result<List<T>> {
+    private suspend inline fun <reified T : Any> getAllDataInCollection(path: CollectionPath): DataResult<List<T>> {
         return when (val result = firestoreDao.getAllDataInCollection<T>(path)) {
-            is FirebaseResult.Success -> Result.Success(result.data)
-            is FirebaseResult.Error -> Result.Error(result.exception)
+            is FirebaseResult.Success -> DataResult.Success(result.data)
+            is FirebaseResult.Error -> DataResult.Error(result.exception)
         }
     }
 
     private suspend inline fun <reified T : Any> getAllDataInCollectionWhereEqual(
         path: CollectionPath,
         constraint: Pair<String, Any>
-    ): Result<List<T>> {
+    ): DataResult<List<T>> {
         return when (val result = firestoreDao.getAllDataInCollectionWhereEqualTo<T>(path, constraint)) {
-            is FirebaseResult.Success -> Result.Success(result.data)
-            is FirebaseResult.Error -> Result.Error(result.exception)
+            is FirebaseResult.Success -> DataResult.Success(result.data)
+            is FirebaseResult.Error -> DataResult.Error(result.exception)
         }
     }
 

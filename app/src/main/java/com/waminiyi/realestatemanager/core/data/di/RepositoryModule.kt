@@ -6,7 +6,7 @@ import com.waminiyi.realestatemanager.core.data.repository.DefaultEstateReposito
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
-import com.waminiyi.realestatemanager.core.database.dao.ImageDao
+import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +28,8 @@ object RepositoryModule {
     @Singleton
     fun provideEstateRepository(
         estateDao: EstateDao,
-        imageDao: ImageDao
+        photoDao: PhotoDao
     ): EstateRepository {
-        return DefaultEstateRepository(estateDao, imageDao)
+        return DefaultEstateRepository(estateDao, photoDao)
     }
 }
