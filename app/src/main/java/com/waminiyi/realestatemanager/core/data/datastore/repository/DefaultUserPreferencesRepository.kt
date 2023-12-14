@@ -1,15 +1,20 @@
 package com.waminiyi.realestatemanager.core.data.datastore.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.waminiyi.realestatemanager.core.data.datastore.model.CachedUser
-import com.waminiyi.realestatemanager.core.data.datastore.model.LastCommit
+import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.io.IOException
-import java.sql.Timestamp
 import javax.inject.Inject
 
 
@@ -17,22 +22,7 @@ class DefaultUserPreferencesRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) : UserPreferencesRepository {
 
-    val lastCommitStream: Flow<LastCommit?> = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }.map { preferences ->
-            preferences[LAST_COMMIT_ID_KEY]?.let { id ->
-                preferences[LAST_COMMIT_TIMESTAMP_KEY]?.let { timestamp ->
-                    LastCommit(id, Timestamp(timestamp))
-                }
-            }
-        }
-
-    val defaultCurrencyStream: Flow<CurrencyCode> = dataStore.data
+    private val defaultCurrencyStream: Flow<CurrencyCode> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -45,7 +35,7 @@ class DefaultUserPreferencesRepository @Inject constructor(
             } ?: CurrencyCode.USD
         }
 
-    val cachedUserStream: Flow<CachedUser> = dataStore.data
+    private val cachedUserStream: Flow<CachedUser> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -69,10 +59,22 @@ class DefaultUserPreferencesRepository @Inject constructor(
         }
     }
 
-    override suspend fun updateLastCommit(lastCommit: LastCommit) {
-        dataStore.edit { preferences ->
-            preferences[LAST_COMMIT_ID_KEY] = lastCommit.id
-            preferences[LAST_COMMIT_TIMESTAMP_KEY] = lastCommit.timestamp.time
+    override suspend fun updateLocalVersionsList(update: VersionsList.() -> VersionsList) {
+        try {
+            dataStore.edit { currentPreferences ->
+                val updatedVersionsList = update(
+                    VersionsList(
+                        estateVersion = currentPreferences[ESTATE_VERSION_KEY] ?: -1,
+                        agentVersion = currentPreferences[AGENT_VERSION_KEY] ?: -1,
+                        photoVersion = currentPreferences[PHOTO_VERSION_KEY] ?: -1
+                    )
+                )
+                currentPreferences[ESTATE_VERSION_KEY] = updatedVersionsList.estateVersion
+                currentPreferences[AGENT_VERSION_KEY] = updatedVersionsList.agentVersion
+                currentPreferences[PHOTO_VERSION_KEY] = updatedVersionsList.photoVersion
+            }
+        } catch (ioException: IOException) {
+            Log.e("UserPreferences", "Failed to update user preferences", ioException)
         }
     }
 
@@ -92,9 +94,15 @@ class DefaultUserPreferencesRepository @Inject constructor(
         return defaultCurrencyStream
     }
 
-    override fun getLastCommit(): Flow<LastCommit?> {
-        return lastCommitStream
-    }
+    override suspend fun getLocalVersionsList() = dataStore.data
+        .map { preferences ->
+            VersionsList(
+                estateVersion = preferences[ESTATE_VERSION_KEY] ?: -1,
+                agentVersion = preferences[AGENT_VERSION_KEY] ?: -1,
+                photoVersion = preferences[PHOTO_VERSION_KEY] ?: -1
+            )
+        }.firstOrNull() ?: VersionsList()
+
 
     override fun getCurrentUserInfo(): Flow<CachedUser> {
         return cachedUserStream
@@ -109,7 +117,9 @@ class DefaultUserPreferencesRepository @Inject constructor(
         val CURRENT_USER_EMAIL_KEY = stringPreferencesKey("current_user_photo_url")
         val CURRENT_USER_PHONE_KEY = stringPreferencesKey("current_user_photo_url")
         val DEFAULT_CURRENCY = stringPreferencesKey("default_currency")
-        val LAST_COMMIT_ID_KEY = stringPreferencesKey("last_commit_id")
-        val LAST_COMMIT_TIMESTAMP_KEY = longPreferencesKey("last_commit_timestamp")
+        val ESTATE_VERSION_KEY = longPreferencesKey("estate_version_key")
+        val AGENT_VERSION_KEY = longPreferencesKey("agent_version_key")
+        val PHOTO_VERSION_KEY = longPreferencesKey("photo_version_key")
+
     }
 }

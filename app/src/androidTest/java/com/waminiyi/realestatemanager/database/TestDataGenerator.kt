@@ -30,7 +30,6 @@ object TestDataGenerator {
     private fun getRandomFacilities(count: Int): List<Facility> {
         return (1..count).map {
             Facility(
-                0,
                 type = FacilityType.values().random(),
                 count = (1..3).random()
             )

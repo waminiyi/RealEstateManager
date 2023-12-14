@@ -2,25 +2,30 @@ package com.waminiyi.realestatemanager.core.util.sync
 
 import android.util.Log
 import com.waminiyi.realestatemanager.core.data.datastore.model.LastCommit
+import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
-import com.waminiyi.realestatemanager.core.model.data.DataResult
-import kotlinx.coroutines.CancellationException
+import com.waminiyi.realestatemanager.core.database.model.LocalChangeEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Interface marker for a class that manages synchronization between local data and a remote
  * source for a [Syncable].
  */
 interface Synchronizer {
-    suspend fun getLastLocalChangeCommit(): LastCommit
+    suspend fun getLocalVersionsList(): VersionsList
 
-    suspend fun updateLocalChangeCommit(update: LastCommit.() -> LastCommit)
+    suspend fun updateLocalVersionsList(update: VersionsList.() -> VersionsList)
+
+    suspend fun updateRemoteChanges(update: (List<LocalChangeEntity>) -> List<RemoteChange>)
 
     /**
-     * Syntactic sugar to call [Syncable.syncWith] while omitting the synchronizer argument
+     * Syntactic sugar to call [Syncable.syncFromRemoteWith] while omitting the synchronizer argument
      */
-    suspend fun Syncable.sync() = this@sync.syncWith(this@Synchronizer)
+    suspend fun Syncable.syncFromRemote() = this@syncFromRemote.syncFromRemoteWith(this@Synchronizer)
+
+    suspend fun Syncable.syncToRemote() = this@syncToRemote.syncToRemoteWith(this@Synchronizer)
 }
 
 /**
@@ -32,15 +37,17 @@ interface Syncable {
      * Synchronizes the local database backing the repository with the network.
      * Returns if the sync was successful or not.
      */
-    suspend fun syncWith(synchronizer: Synchronizer): Boolean
+    suspend fun syncFromRemoteWith(synchronizer: Synchronizer): Boolean
+
+    suspend fun syncToRemoteWith(synchronizer: Synchronizer): Boolean
 }
 
 /**
  * Attempts [block], returning a successful [Result] if it succeeds, otherwise a [Result.Failure]
  * taking care not to break structured concurrency
  */
-private suspend fun <T> suspendRunCatching(block: suspend () -> T): DataResult<T> = try {
-    DataResult.Success(block())
+private suspend fun <T> suspendRunCatching(block: suspend () -> T): Result<T> = try {
+    Result.success(block())
 } catch (cancellationException: CancellationException) {
     throw cancellationException
 } catch (exception: Exception) {
@@ -49,44 +56,66 @@ private suspend fun <T> suspendRunCatching(block: suspend () -> T): DataResult<T
         "Failed to evaluate a suspendRunCatchingBlock. Returning failure Result",
         exception,
     )
-    DataResult.Error(exception)
+    Result.failure(exception)
 }
 
 /**
  * Utility function for syncing a repository with the network.
- * [versionReader] Reads the current version of the model that needs to be synced
- * [changeListFetcher] Fetches the change list for the model
- * [versionUpdater] Updates the [LastCommit] after a successful sync
- * [modelDeleter] Deletes models by consuming the ids and the class tag of the models that have been deleted.
- * [modelUpdater] Updates models by consuming the ids and the class tag of the models that have changed.
+ * [currentLocalVersionReader] Reads the current version of the model that needs to be synced
+ * [remoteChangeListFetcher] Fetches the change list for the model
+ * [localVersionUpdater] Updates the [LastCommit] after a successful sync
+ * [localModelUpdater] Updates models by consuming the ids and the class tag of the models that have changed.
  *
  * Note that the blocks defined above are never run concurrently, and the [Synchronizer]
  * implementation must guarantee this.
  */
-suspend fun Synchronizer.changeListSync(
-    versionReader: (LastCommit) -> Long,
-    changeListFetcher: suspend (Long) -> Pair<Long, List<RemoteChange>>,
-    versionUpdater: LastCommit.(Long) -> LastCommit,
-    modelDeleter: suspend (List<Pair<String, String>>) -> Unit,
-    modelUpdater: suspend (List<Pair<String, String>>) -> Unit,
+suspend fun Synchronizer.changeLocalListSync(
+    currentLocalVersionReader: (VersionsList) -> Long,
+    remoteChangeListFetcher: suspend (Long) -> List<RemoteChange>,
+    localVersionUpdater: VersionsList.(Long) -> VersionsList,
+    localModelDeleter: (suspend (List<String>) -> Unit)? = null,
+    localModelUpdater: suspend (List<String>) -> Unit,
 ) = suspendRunCatching {
     // Fetch the change list since last sync (akin to a git fetch)
-    val currentVersion = versionReader(getLastLocalChangeCommit())
-    val changeList = changeListFetcher(currentVersion)
-    if (changeList.second.isEmpty()) return@suspendRunCatching true
+    val currentVersion = currentLocalVersionReader(getLocalVersionsList())
+    val changeList = remoteChangeListFetcher(currentVersion)
+    if (changeList.isEmpty()) return@suspendRunCatching true
 
-    val (deleted, updated) = changeList.second.partition(RemoteChange::isDelete)
+    val (deleted, updated) = changeList.partition(RemoteChange::isDeleted)
 
-    // Delete models that have been deleted server-side
-    modelDeleter(deleted.map { (it.id to it.tag) })
+    localModelDeleter?.let { deleter -> deleter(deleted.map(RemoteChange::id)) }
 
     // Using the change list, pull down and save the changes (akin to a git pull)
-    modelUpdater(updated.map { (it.id to it.tag) })
+    localModelUpdater(updated.map(RemoteChange::id))
 
     // Update the last synced version (akin to updating local git HEAD)
-    val latestVersion = changeList.first
-    updateLocalChangeCommit {
-        versionUpdater(latestVersion)
+    val latestVersion = changeList.last().version
+    updateLocalVersionsList {
+        localVersionUpdater(latestVersion)
+    }
+}.isSuccess
+
+suspend fun <T> Synchronizer.changeRemoteListSync(
+    localChangesFetcher: suspend () -> List<LocalChangeEntity>,
+    localVersionUpdater: VersionsList.(Long) -> VersionsList,
+    remoteVersionUpdater: (List<LocalChangeEntity>) -> List<RemoteChange>,
+    remoteModelDeleter: suspend (List<String>) -> Unit,
+    remoteModelUpdater: suspend (List<String>) -> Unit,
+) = suspendRunCatching {
+    val changeList = localChangesFetcher()
+    if (changeList.isEmpty()) return@suspendRunCatching true
+    val (deleted, updated) = changeList.partition(LocalChangeEntity::isDeleted)
+
+    remoteModelDeleter(deleted.map(LocalChangeEntity::id))
+    remoteModelUpdater(updated.map(LocalChangeEntity::id))
+
+    // Update the last synced version (akin to updating local git HEAD)
+    val latestVersion = System.currentTimeMillis()
+    updateLocalVersionsList {
+        localVersionUpdater(latestVersion)
+    }
+    updateRemoteChanges {
+        remoteVersionUpdater(changeList)
     }
 }.isSuccess
 

@@ -19,9 +19,13 @@ interface EstateDao {
     @Transaction
     @Query(
         "SELECT * FROM estates" +
-                " LEFT JOIN images ON estates.estate_uuid = images.estate_uuid" +
-                " WHERE is_main_image = 1"
+                " LEFT JOIN photos ON estates.estate_uuid = photos.estate_uuid" +
+                " WHERE is_main_photo = 1"
     )
     fun getAllEstatesWithImages(): Flow<Map<EstateEntity, List<PhotoEntity>>>
+
+    @Transaction
+    @Query("SELECT * FROM estates WHERE estate_uuid IN (:estateUuids)")
+    fun getEstatesByIds(estateUuids: List<UUID>): List<EstateEntity>
 
 }

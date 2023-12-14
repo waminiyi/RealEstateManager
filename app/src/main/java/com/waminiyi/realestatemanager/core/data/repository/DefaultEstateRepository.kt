@@ -1,31 +1,36 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
+import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
+import com.waminiyi.realestatemanager.core.data.model.toEstateEntity
+import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepository
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
-import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
+import com.waminiyi.realestatemanager.core.database.dao.LocalChangeDao
+import com.waminiyi.realestatemanager.core.database.model.EstateEntity
+import com.waminiyi.realestatemanager.core.database.model.LocalChangeEntity
 import com.waminiyi.realestatemanager.core.database.model.asEstate
 import com.waminiyi.realestatemanager.core.database.model.asEstateEntity
-import com.waminiyi.realestatemanager.core.database.model.asPhotoEntity
+import com.waminiyi.realestatemanager.core.model.data.ClassTag
+import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
-import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.core.util.sync.Synchronizer
+import com.waminiyi.realestatemanager.core.util.sync.changeLocalListSync
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 class DefaultEstateRepository @Inject constructor(
     private val estateDao: EstateDao,
-    private val photoDao: PhotoDao,
+    private val localChangeDao: LocalChangeDao,
+    private val remoteDataRepository: RemoteDataRepository
 ) : EstateRepository {
     override suspend fun saveEstate(estateWithDetails: EstateWithDetails): DataResult<Unit> {
         return try {
-            val images = estateWithDetails.photos
             estateDao.upsertEstate(estateWithDetails.asEstateEntity())
-            images.map {
-                photoDao.upsertImage(it.asPhotoEntity(estateWithDetails.uuid))
-            }
+            localChangeDao.upsertChange(LocalChangeEntity(estateWithDetails.uuid, ClassTag.Estate, false))
             DataResult.Success(Unit)
         } catch (exception: IOException) {
             DataResult.Error(exception)
@@ -51,6 +56,30 @@ class DefaultEstateRepository @Inject constructor(
         } catch (exception: IOException) {
             DataResult.Error(exception)
         }
+    }
+
+    override suspend fun getEstatesToUpload(): List<EstateEntity> =
+        estateDao.getEstatesByIds(
+            localChangeDao.getChangesByClassTag(ClassTag.Estate)
+                .map { change ->
+                    UUID.fromString(change.id)
+                })
+
+    override suspend fun syncFromRemoteWith(synchronizer: Synchronizer): Boolean {
+        return synchronizer.changeLocalListSync(
+            currentLocalVersionReader = VersionsList::estateVersion,
+            remoteChangeListFetcher = { currentVersion -> remoteDataRepository.getEstatesChangeList(currentVersion) },
+            localVersionUpdater = { latestVersion -> copy(estateVersion = latestVersion) },
+            localModelUpdater = { changedIds ->
+                changedIds.forEach { id ->
+                    remoteDataRepository.getEstate(id)?.let { estateDao.upsertEstate(it.toEstateEntity()) }
+                }
+            }
+        )
+    }
+
+    override suspend fun syncToRemoteWith(synchronizer: Synchronizer): Boolean {
+        TODO("Not yet implemented")
     }
 
 }

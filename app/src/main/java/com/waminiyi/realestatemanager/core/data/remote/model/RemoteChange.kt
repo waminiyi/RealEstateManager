@@ -15,16 +15,13 @@ data class RemoteChange(
     /**
      * The unique tag of the object class name
      */
-    val tag: String,
+    val classTag: String,
 
     /**
-     * Change timestamp
+     * object version
      */
-    val timestamp: Long,
-    /**
-     * Summarizes the update to the model; whether it was deleted or updated.
-     * Updates include creations.
-     */
+    val version: Long,
+
     @field:JvmField
-    val isDelete: Boolean,
+    val isDeleted: Boolean
 )

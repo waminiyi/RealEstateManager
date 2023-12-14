@@ -4,22 +4,23 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.waminiyi.realestatemanager.core.model.data.Photo
-import java.util.*
+import com.waminiyi.realestatemanager.core.model.data.RegistrationStatus
+import java.util.UUID
 
 /**
  * Class representing an image in the real estate application.
  *
- * @property imageUuid The unique identifier (UUID) for the image. Automatically generated if not provided.
+ * @property photoUuid The unique identifier (UUID) for the image. Automatically generated if not provided.
  * @property estateUuid The unique identifier (UUID) of the owner associated with the image.
  * @property url The name of the image.
  * @property description The description of the image (can be null).
- * @property isMainImage Indicate whether it's the main image or not
+ * @property isMainPhoto Indicate whether it's the main image or not
  */
-@Entity(tableName = "images")
+@Entity(tableName = "photos")
 data class PhotoEntity(
     @PrimaryKey
-    @ColumnInfo(name = "image_uuid")
-    val imageUuid: UUID = UUID.randomUUID(),
+    @ColumnInfo(name = "photo_uuid")
+    val photoUuid: UUID = UUID.randomUUID(),
 
     @ColumnInfo(name = "estate_uuid")
     val estateUuid: UUID,
@@ -33,43 +34,48 @@ data class PhotoEntity(
     @ColumnInfo(name = "description")
     val description: String,
 
-    @ColumnInfo(name = "is_main_image")
-    val isMainImage: Boolean = false
+    @ColumnInfo(name = "is_main_photo")
+    val isMainPhoto: Boolean = false,
+
+    @ColumnInfo(name = "upload_status")
+    val registrationStatus: RegistrationStatus = RegistrationStatus.OnGoing
 ) {
-    fun asPhoto(): Photo = if (isMainImage) {
+    fun asPhoto(): Photo = if (isMainPhoto) {
         Photo.MainPhoto(
-            uuid = this.imageUuid.toString(),
+            uuid = this.photoUuid.toString(),
+            estateUuid = this.estateUuid.toString(),
             description = this.description,
             url = this.url,
             localPath = this.localPath
         )
     } else {
         Photo.AdditionalPhoto(
-            uuid = this.imageUuid.toString(),
+            uuid = this.photoUuid.toString(),
+            estateUuid = this.estateUuid.toString(),
             description = this.description,
             url = this.url,
         )
     }
 }
 
-fun Photo.asPhotoEntity(estateId: String): PhotoEntity {
+fun Photo.asPhotoEntity(): PhotoEntity {
     return when (this) {
         is Photo.MainPhoto -> PhotoEntity(
-            imageUuid = UUID.fromString(this.uuid),
-            estateUuid = UUID.fromString(estateId),
+            photoUuid = UUID.fromString(this.uuid),
+            estateUuid = UUID.fromString(this.estateUuid),
             url = this.url,
             localPath = this.localPath,
             description = this.description,
-            isMainImage = true
+            isMainPhoto = true
         )
 
         is Photo.AdditionalPhoto -> PhotoEntity(
-            imageUuid = UUID.fromString(this.uuid),
-            estateUuid = UUID.fromString(estateId),
+            photoUuid = UUID.fromString(this.uuid),
+            estateUuid = UUID.fromString(this.estateUuid),
             url = this.url,
             localPath = "",
             description = this.description,
-            isMainImage = false
+            isMainPhoto = false
         )
     }
 }

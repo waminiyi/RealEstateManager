@@ -67,8 +67,9 @@ data class EstateEntity(
     val poiList: List<PointOfInterest> = emptyList(),
 
     @ColumnInfo(name = "facilities_list")
-    val facilitiesList: List<Facility> = emptyList()
-) {
+    val facilitiesList: List<Facility> = emptyList(),
+
+    ) {
     fun asEstate(photo: Photo) = Estate(
         uuid = this.estateUuid.toString(),
         type = this.type,

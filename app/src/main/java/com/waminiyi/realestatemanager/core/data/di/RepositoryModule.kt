@@ -28,8 +28,7 @@ object RepositoryModule {
     @Singleton
     fun provideEstateRepository(
         estateDao: EstateDao,
-        photoDao: PhotoDao
     ): EstateRepository {
-        return DefaultEstateRepository(estateDao, photoDao)
+        return DefaultEstateRepository(estateDao)
     }
 }

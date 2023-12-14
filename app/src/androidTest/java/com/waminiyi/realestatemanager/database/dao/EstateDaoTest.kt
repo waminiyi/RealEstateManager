@@ -47,9 +47,9 @@ class EstateDaoTest {
     fun setUp() = runBlocking {
         hiltRule.inject()
         agentDao.upsertAgent(agent1)
-        mPhotoDao.upsertImage(image1)
-        mPhotoDao.upsertImage(image2)
-        mPhotoDao.upsertImage(image3)
+        mPhotoDao.upsertPhoto(image1)
+        mPhotoDao.upsertPhoto(image2)
+        mPhotoDao.upsertPhoto(image3)
     }
 
     @Test

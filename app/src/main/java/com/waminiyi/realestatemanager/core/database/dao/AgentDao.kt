@@ -16,4 +16,8 @@ interface AgentDao {
     @Transaction
     @Query("SELECT * FROM agents")
     fun getAllAgents(): List<AgentEntity>
+
+    @Transaction
+    @Query("SELECT * FROM agents WHERE agent_uuid IN (:agentUuids)")
+    fun getAgentsByIds(agentUuids: List<UUID>): List<AgentEntity>
 }

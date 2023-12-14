@@ -86,6 +86,7 @@ class FirestoreDao @Inject constructor(private val firestore: FirebaseFirestore)
                     FirebaseResult.Success(it)
                 } ?: FirebaseResult.Error(Exception("Failed to parse document data"))
             }
+
             is FirebaseResult.Error -> FirebaseResult.Error(result.exception)
         }
     }
@@ -107,6 +108,7 @@ class FirestoreDao @Inject constructor(private val firestore: FirebaseFirestore)
                     }
                     FirebaseResult.Success(dataList)
                 }
+
                 is FirebaseResult.Error -> FirebaseResult.Error(result.exception)
             }
         } catch (e: Exception) {
@@ -114,8 +116,10 @@ class FirestoreDao @Inject constructor(private val firestore: FirebaseFirestore)
         }
     }
 
-    suspend inline fun <reified T : Any> getAllDataInCollectionWhereEqualTo(path: CollectionPath, constraint: Pair<String, Any>):
-            FirebaseResult<List<T>> {
+    suspend inline fun <reified T : Any> getAllDataInCollectionWhereEqualTo(
+        path: CollectionPath,
+        constraint: Pair<String, Any>
+    ): FirebaseResult<List<T>> {
         val result = handleQuerySnapshotTask(
             createCollectionReference(path)
                 .whereEqualTo(constraint.first, constraint.second)
@@ -129,6 +133,7 @@ class FirestoreDao @Inject constructor(private val firestore: FirebaseFirestore)
                     }
                     FirebaseResult.Success(dataList)
                 }
+
                 is FirebaseResult.Error -> FirebaseResult.Error(result.exception)
             }
         } catch (e: Exception) {

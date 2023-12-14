@@ -18,7 +18,7 @@ class SyncNotificationsService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         if (SYNC_TOPIC_SENDER == message.from) {
-            syncManager.requestSync()
+            syncManager.requestSyncFromRemote()
         }
     }
 }

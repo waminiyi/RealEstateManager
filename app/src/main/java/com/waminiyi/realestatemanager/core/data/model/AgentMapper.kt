@@ -2,6 +2,7 @@ package com.waminiyi.realestatemanager.core.data.model
 
 import com.waminiyi.realestatemanager.core.database.model.AgentEntity
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteAgent
+import com.waminiyi.realestatemanager.core.model.data.RegistrationStatus
 import java.util.*
 
 fun RemoteAgent.toAgentEntity() = AgentEntity(
@@ -10,7 +11,8 @@ fun RemoteAgent.toAgentEntity() = AgentEntity(
     lastName = this.lastName,
     email = this.email,
     phoneNumber = this.phoneNumber,
-    photoUrl = this.photoUrl
+    photoUrl = this.photoUrl,
+    registrationStatus = RegistrationStatus.Finished
 )
 
 fun AgentEntity.toRemoteAgent() = RemoteAgent(

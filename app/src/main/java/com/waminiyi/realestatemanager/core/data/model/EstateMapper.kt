@@ -5,6 +5,7 @@ import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Status
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteEstate
+import com.waminiyi.realestatemanager.core.model.data.RegistrationStatus
 import java.util.*
 
 fun RemoteEstate.toEstateEntity() = EstateEntity(
@@ -19,7 +20,8 @@ fun RemoteEstate.toEstateEntity() = EstateEntity(
     saleDate = this.saleDate?.let { Date(it) },
     agentId = UUID.fromString(this.agentId),
     poiList = this.poiList.map { PointOfInterest.valueOf(it) },
-    facilitiesList = this.facilitiesList.map { it.toFacility() }
+    facilitiesList = this.facilitiesList.map { it.toFacility() },
+    registrationStatus = RegistrationStatus.Finished
 )
 
 fun EstateEntity.toRemoteEstate() = RemoteEstate(
