@@ -31,13 +31,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        pickFirst 'META-INF/DEPENDENCIES'
+    }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
     }
 }
 
 dependencies {
-
     implementation libs.firebase.firestore.ktx
     implementation libs.firebase.storage.ktx
     implementation libs.firebase.messaging.ktx
@@ -46,8 +51,6 @@ dependencies {
     implementation libs.play.services.measurement.api
     implementation libs.hilt.work
     implementation libs.core.ktx
-    def room_version = "2.6.0"
-
     implementation libs.core.ktx
     implementation libs.appcompat
     implementation libs.material
@@ -62,6 +65,13 @@ dependencies {
     implementation libs.kotlinx.coroutines.core
     implementation libs.kotlinx.coroutines.android
     implementation libs.firebase.auth.ktx
+
+    // Retrofit
+    implementation libs.retrofit
+    implementation libs.converter.gson
+
+    implementation libs.google.auth.library.oauth2.http
+
     kapt libs.hilt.android.compiler
     kapt libs.room.compiler
     testImplementation libs.room.testing

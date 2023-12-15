@@ -95,18 +95,18 @@ suspend fun Synchronizer.changeLocalListSync(
     }
 }.isSuccess
 
-suspend fun <T> Synchronizer.changeRemoteListSync(
+suspend fun Synchronizer.changeRemoteListSync(
     localChangesFetcher: suspend () -> List<LocalChangeEntity>,
     localVersionUpdater: VersionsList.(Long) -> VersionsList,
-    remoteVersionUpdater: (List<LocalChangeEntity>) -> List<RemoteChange>,
-    remoteModelDeleter: suspend (List<String>) -> Unit,
+    remoteVersionUpdater: (List<LocalChangeEntity>, Long) -> List<RemoteChange>,
+    remoteModelDeleter: (suspend (List<String>) -> Unit)? = null,
     remoteModelUpdater: suspend (List<String>) -> Unit,
 ) = suspendRunCatching {
-    val changeList = localChangesFetcher()
-    if (changeList.isEmpty()) return@suspendRunCatching true
-    val (deleted, updated) = changeList.partition(LocalChangeEntity::isDeleted)
+    val localChanges = localChangesFetcher()
+    if (localChanges.isEmpty()) return@suspendRunCatching true
+    val (deleted, updated) = localChanges.partition(LocalChangeEntity::isDeleted)
 
-    remoteModelDeleter(deleted.map(LocalChangeEntity::id))
+    remoteModelDeleter.let { (deleted.map(LocalChangeEntity::id)) }
     remoteModelUpdater(updated.map(LocalChangeEntity::id))
 
     // Update the last synced version (akin to updating local git HEAD)
@@ -115,7 +115,7 @@ suspend fun <T> Synchronizer.changeRemoteListSync(
         localVersionUpdater(latestVersion)
     }
     updateRemoteChanges {
-        remoteVersionUpdater(changeList)
+        remoteVersionUpdater(localChanges, latestVersion)
     }
 }.isSuccess
 

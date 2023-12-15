@@ -2,6 +2,8 @@ package com.waminiyi.realestatemanager.core.data.repository
 
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.model.toEstateEntity
+import com.waminiyi.realestatemanager.core.data.model.toRemoteEstate
+import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
 import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepository
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.LocalChangeDao
@@ -15,6 +17,7 @@ import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 import com.waminiyi.realestatemanager.core.util.sync.Synchronizer
 import com.waminiyi.realestatemanager.core.util.sync.changeLocalListSync
+import com.waminiyi.realestatemanager.core.util.sync.changeRemoteListSync
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -79,7 +82,20 @@ class DefaultEstateRepository @Inject constructor(
     }
 
     override suspend fun syncToRemoteWith(synchronizer: Synchronizer): Boolean {
-        TODO("Not yet implemented")
+        return synchronizer.changeRemoteListSync(
+            localChangesFetcher = { localChangeDao.getChangesByClassTag(ClassTag.Estate) },
+            localVersionUpdater = { latestVersion -> copy(estateVersion = latestVersion) },
+            remoteVersionUpdater = { localChanges, latestVersion ->
+                localChanges.map {
+                    RemoteChange(it.id, it.classTag.name, latestVersion, it.isDeleted)
+                }
+            },
+            remoteModelUpdater = { changedIds ->
+                estateDao.getEstatesByIds(changedIds.map { UUID.fromString(it) }).forEach { estateEntity ->
+                    remoteDataRepository.uploadEstate(estateEntity.toRemoteEstate())
+                }
+            }
+        )
     }
 
 }

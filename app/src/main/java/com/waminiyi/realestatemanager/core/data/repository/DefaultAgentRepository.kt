@@ -2,6 +2,8 @@ package com.waminiyi.realestatemanager.core.data.repository
 
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.model.toAgentEntity
+import com.waminiyi.realestatemanager.core.data.model.toRemoteAgent
+import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
 import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepository
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.LocalChangeDao
@@ -13,6 +15,7 @@ import com.waminiyi.realestatemanager.core.model.data.ClassTag
 import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.core.util.sync.Synchronizer
 import com.waminiyi.realestatemanager.core.util.sync.changeLocalListSync
+import com.waminiyi.realestatemanager.core.util.sync.changeRemoteListSync
 import java.io.IOException
 import java.util.UUID
 import javax.inject.Inject
@@ -74,6 +77,21 @@ class DefaultAgentRepository @Inject constructor(
     }
 
     override suspend fun syncToRemoteWith(synchronizer: Synchronizer): Boolean {
-        TODO("Not yet implemented")
+        return synchronizer.changeRemoteListSync(
+            localChangesFetcher = { localChangeDao.getChangesByClassTag(ClassTag.Agent) },
+            localVersionUpdater = { latestVersion -> copy(agentVersion = latestVersion) },
+            remoteVersionUpdater = { localChanges, latestVersion ->
+                localChanges.map {
+                    RemoteChange(it.id, it.classTag.name, latestVersion, it.isDeleted)
+                }
+            },
+            remoteModelUpdater = { changedIds ->
+                changedIds.forEach { agentId ->
+                    agentDao.getAgent(UUID.fromString(agentId))?.let {
+                        remoteDataRepository.uploadAgent(it.toRemoteAgent())
+                    }
+                }
+            }
+        )
     }
 }

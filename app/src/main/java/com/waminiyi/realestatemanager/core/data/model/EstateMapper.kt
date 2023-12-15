@@ -1,12 +1,12 @@
 package com.waminiyi.realestatemanager.core.data.model
 
+import com.waminiyi.realestatemanager.core.data.remote.model.RemoteEstate
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Status
-import com.waminiyi.realestatemanager.core.data.remote.model.RemoteEstate
-import com.waminiyi.realestatemanager.core.model.data.RegistrationStatus
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 fun RemoteEstate.toEstateEntity() = EstateEntity(
     estateUuid = UUID.fromString(this.estateUuid),
@@ -21,7 +21,6 @@ fun RemoteEstate.toEstateEntity() = EstateEntity(
     agentId = UUID.fromString(this.agentId),
     poiList = this.poiList.map { PointOfInterest.valueOf(it) },
     facilitiesList = this.facilitiesList.map { it.toFacility() },
-    registrationStatus = RegistrationStatus.Finished
 )
 
 fun EstateEntity.toRemoteEstate() = RemoteEstate(

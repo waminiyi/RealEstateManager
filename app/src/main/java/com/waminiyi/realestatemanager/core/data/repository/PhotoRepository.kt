@@ -12,5 +12,8 @@ interface PhotoRepository : Syncable {
 
     suspend fun deletePhoto(photo: Photo): DataResult<Unit>
 
-    suspend  fun getPhotosToUpload(): List<PhotoEntity>
+    suspend fun getPhotosToUpload(): List<PhotoEntity>
+
+    suspend fun syncPhotoToRemote(photoId: String): DataResult<Unit>
+    suspend fun syncPhotoFromRemote(photoId: String): DataResult<Unit>
 }

@@ -2,8 +2,8 @@ package com.waminiyi.realestatemanager.core.database.dao
 
 import androidx.annotation.VisibleForTesting
 import androidx.room.*
+import com.waminiyi.realestatemanager.core.database.model.AgentEntity
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.RegistrationStatus
 import java.util.*
 
 @Dao
@@ -13,6 +13,9 @@ interface PhotoDao {
 
     @Delete
     suspend fun deletePhoto(photoEntity: PhotoEntity)
+
+    @Query("DELETE FROM photos WHERE photos.photo_uuid = :photoId")
+    suspend fun deletePhoto(photoId: String)
 
     @Query("SELECT * FROM photos WHERE photo_uuid = :photoUuid")
     fun getPhotoById(photoUuid: UUID): PhotoEntity?
@@ -25,6 +28,6 @@ interface PhotoDao {
     fun getAllPhotos(): List<PhotoEntity>
 
     @Transaction
-    @Query("SELECT * FROM photos WHERE upload_status = :status")
-    suspend fun getPhotosWithUploadStatus(status: RegistrationStatus = RegistrationStatus.OnGoing): List<PhotoEntity>
+    @Query("SELECT * FROM photos WHERE photo_uuid IN (:photoUuids)")
+    fun getPhotosByIds(photoUuids: List<UUID>): List<PhotoEntity>
 }

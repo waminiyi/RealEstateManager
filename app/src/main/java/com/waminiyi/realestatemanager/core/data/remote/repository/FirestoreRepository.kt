@@ -4,6 +4,7 @@ import com.waminiyi.realestatemanager.core.data.remote.model.RemoteAgent
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteEstate
 import com.waminiyi.realestatemanager.core.data.remote.model.RemotePhoto
+import com.waminiyi.realestatemanager.core.database.model.LocalChangeEntity
 import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.firebase.firestore.FirestoreDao
 import com.waminiyi.realestatemanager.firebase.model.FirebaseResult
@@ -62,6 +63,10 @@ class FirestoreRepository @Inject constructor(private val firestoreDao: Firestor
     }
 
     override suspend fun getAgentsChangeList(after: Long): List<RemoteChange> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateRemoteChanges(update: (List<LocalChangeEntity>) -> List<RemoteChange>) {
         TODO("Not yet implemented")
     }
 

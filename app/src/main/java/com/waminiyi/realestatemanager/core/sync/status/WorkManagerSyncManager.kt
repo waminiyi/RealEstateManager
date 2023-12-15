@@ -25,7 +25,7 @@ class WorkManagerSyncManager @Inject constructor(
             .map(List<WorkInfo>::anyRunning)
             .conflate()
 
-    override fun requestSyncFromRemote() {
+    override fun requestSync() {
         val workManager = WorkManager.getInstance(context)
         // Run sync on app startup and ensure only one sync worker runs at any time
         workManager.enqueueUniqueWork(

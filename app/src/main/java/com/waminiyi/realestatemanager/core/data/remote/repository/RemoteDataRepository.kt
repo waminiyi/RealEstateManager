@@ -5,6 +5,7 @@ import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteCommit
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteEstate
 import com.waminiyi.realestatemanager.core.data.remote.model.RemotePhoto
+import com.waminiyi.realestatemanager.core.database.model.LocalChangeEntity
 import java.sql.Timestamp
 
 interface RemoteDataRepository {
@@ -24,5 +25,7 @@ interface RemoteDataRepository {
     suspend fun getEstatesChangeList(after: Long): List<RemoteChange>
     suspend fun getPhotosChangeList(after: Long): List<RemoteChange>
     suspend fun getAgentsChangeList(after: Long): List<RemoteChange>
+
+    suspend fun updateRemoteChanges(update: (List<LocalChangeEntity>) -> List<RemoteChange>)
 
 }

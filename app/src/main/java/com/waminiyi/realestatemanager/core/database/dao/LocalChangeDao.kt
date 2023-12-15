@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.core.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -13,8 +12,8 @@ interface LocalChangeDao {
     @Upsert
     suspend fun upsertChange(localChangeEntity: LocalChangeEntity)
 
-    @Delete
-    suspend fun deleteChange(localChangeEntity: LocalChangeEntity)
+    @Query("DELETE FROM local_changes WHERE local_changes.change_uuid = :changeId")
+    suspend fun deleteChange(changeId: String)
 
     @Transaction
     @Query("SELECT * FROM local_changes WHERE class_tag = :classTag")

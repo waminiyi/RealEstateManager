@@ -4,14 +4,10 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import com.waminiyi.realestatemanager.core.database.dao.LocalChangeDao
-import com.waminiyi.realestatemanager.core.database.model.LocalChangeEntity
-import com.waminiyi.realestatemanager.core.model.data.ClassTag
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class DefaultMediaFileRepository @Inject constructor(
-    private val localChangeDao: LocalChangeDao,
     @ApplicationContext private val context: Context
 ) : MediaFileRepository {
     override suspend fun savePhotoFileToInternalStorage(
@@ -30,22 +26,21 @@ class DefaultMediaFileRepository @Inject constructor(
     override suspend fun deletePhotoFileFromInternalStorage(photoUuid: String): Boolean {
         val file = context.getFileStreamPath("$photoUuid.jpg")
         return if (file.exists()) {
-            localChangeDao.upsertChange(LocalChangeEntity(photoUuid, ClassTag.PhotoFile, true))
             file.delete()
         } else {
             false
         }
     }
 
-    override suspend fun uploadPhoto(photoUri: String) {
+    override suspend fun uploadPhotoFile(photoUri: String): String? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun downloadPhoto(photoUrl: String) {
+    override suspend fun downloadPhotoFile(photoUrl: String): String? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePhoto(photoUrl: String) {
+    override suspend fun deletePhotoFromRemote(photoUrl: String) {
         TODO("Not yet implemented")
     }
 
