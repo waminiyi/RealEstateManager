@@ -120,6 +120,9 @@ class DefaultUserPreferencesRepository @Inject constructor(
         val ESTATE_VERSION_KEY = longPreferencesKey("estate_version_key")
         val AGENT_VERSION_KEY = longPreferencesKey("agent_version_key")
         val PHOTO_VERSION_KEY = longPreferencesKey("photo_version_key")
+        val ACCESS_TOKEN_KEY = longPreferencesKey("access_token_key")
+        val FCM_TOKEN_KEY = longPreferencesKey("fcm_token_key")
+
 
     }
 }

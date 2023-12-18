@@ -1,12 +1,12 @@
-
-
 package com.waminiyi.realestatemanager.core.sync.di
 
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
-import com.waminiyi.realestatemanager.core.sync.status.FirebaseSyncSubscriber
 import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
+import com.waminiyi.realestatemanager.core.messenger.RemFirebaseMessenger
+import com.waminiyi.realestatemanager.core.messenger.RemMessenger
+import com.waminiyi.realestatemanager.core.sync.status.FirebaseSyncSubscriber
 import com.waminiyi.realestatemanager.core.sync.status.WorkManagerSyncManager
 import com.waminiyi.realestatemanager.core.util.sync.SyncManager
 import dagger.Binds
@@ -28,6 +28,11 @@ interface SyncModule {
     fun bindsSyncSubscriber(
         syncSubscriber: FirebaseSyncSubscriber,
     ): SyncSubscriber
+
+    @Binds
+    fun bindsRemMessenger(
+        syncSubscriber: RemFirebaseMessenger,
+    ): RemMessenger
 
     companion object {
         @Provides

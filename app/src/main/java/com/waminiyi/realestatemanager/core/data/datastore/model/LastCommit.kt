@@ -17,4 +17,4 @@ data class LastCommit(
     }
 }
 
-fun RemoteCommit.toLastCommit() = LastCommit(this.commitId, this.timestamp)
+//fun RemoteCommit.toLastCommit() = LastCommit(this.commitId, this.timestamp)

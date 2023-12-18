@@ -1,9 +1,10 @@
 package com.waminiyi.realestatemanager.core.messenger
 
-import com.waminiyi.realestatemanager.core.messenger.model.Message
+import com.waminiyi.realestatemanager.core.messenger.model.RemMessage
+
 
 interface RemMessenger {
 
-    fun postMessage(message: Message)
+    fun postMessage(message: RemMessage)
 
 }

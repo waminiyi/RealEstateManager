@@ -8,18 +8,18 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
+import com.waminiyi.realestatemanager.core.data.remote.model.RemoteCommit
 import com.waminiyi.realestatemanager.core.messenger.FirebaseService
-import com.waminiyi.realestatemanager.core.messenger.model.Message
-import com.waminiyi.realestatemanager.core.messenger.model.NotificationX
 import com.waminiyi.realestatemanager.core.messenger.di.RetrofitInstance
-import com.waminiyi.realestatemanager.core.messenger.model.TargetMessage
-import com.waminiyi.realestatemanager.core.messenger.model.TestMessage
 import com.waminiyi.realestatemanager.core.messenger.getServiceAccountAccessToken
+import com.waminiyi.realestatemanager.core.messenger.model.RemMessage
 import com.waminiyi.realestatemanager.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.sql.Timestamp
 
 
 const val TOPIC = "NEWS"
@@ -56,27 +56,37 @@ class MainActivity : AppCompatActivity() {
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         binding.btnSend.setOnClickListener {
+            val remoteChanges = mutableListOf<RemoteChange>()
+            for (i in 1..20) {
+                remoteChanges.add(
+                    RemoteChange(
+                        id = "object_id_$i",
+                        classTag = "ObjectClass",
+                        version = i.toLong(),
+                        isDeleted = false
+                    )
+                )
+            }
+            val gson = Gson()
+            // Creating RemoteCommit with 20 changes
+            val remoteCommit = RemoteCommit(
+                commitId = "commit_id_123",
+                remoteChanges = remoteChanges,
+                timestamp = Timestamp(System.currentTimeMillis()).time,
+                authorId = "author123"
+            )
             val title = binding.etTitle.text.toString()
             val message = binding.etMessage.text.toString()
             if (title.isNotEmpty() && message.isNotEmpty()) {
-                TestMessage(
-                    Message(
-                        hashMapOf(("title" to "topic$title"), ("message" to "title$message")),
-                        NotificationX(title, message),
-                        TOPIC
+                RemMessage()
+                    .setTopic(TOPIC)
+                    .setData(
+                        hashMapOf(
+                            ("title" to "topic $title"),
+                            ("message" to "topic $message"),
+                            ("commit" to gson.toJson(remoteCommit))
+                        )
                     )
-                )
-                    .also {
-                        sendNotification(it)
-                    }
-
-                TestMessage(
-                    TargetMessage(
-                        hashMapOf(("title" to "target$title"), ("message" to "target$message")),
-                        NotificationX(title, message),
-                        token
-                    )
-                )
                     .also {
                         sendNotification(it)
                     }
