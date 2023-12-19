@@ -23,9 +23,9 @@ data class EstateWithDetailsEntity(
 
     @Relation(
         parentColumn = "estate_uuid",
-        entityColumn = "owner_uuid"
+        entityColumn = "estate_uuid"
     )
-    val images: List<ImageEntity>,
+    val images: List<PhotoEntity>,
 ) {
     fun asEstateWithDetails() = EstateWithDetails(
         uuid = this.estateEntity.estateUuid.toString(),
@@ -34,7 +34,7 @@ data class EstateWithDetailsEntity(
         area = this.estateEntity.area,
         facilities = this.estateEntity.facilitiesList,
         description = this.estateEntity.description,
-        images = this.images.map { it.asImage() },
+        photos = this.images.map { it.asPhoto() },
         address = this.estateEntity.addressEntity.asAddress(),
         nearbyPointsOfInterest = this.estateEntity.poiList,
         status = this.estateEntity.status,

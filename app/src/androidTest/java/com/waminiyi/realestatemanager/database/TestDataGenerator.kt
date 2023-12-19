@@ -1,7 +1,9 @@
 package com.waminiyi.realestatemanager.database
 
-import com.waminiyi.realestatemanager.core.database.model.*
 import com.waminiyi.realestatemanager.core.database.model.AddressEntity
+import com.waminiyi.realestatemanager.core.database.model.AgentEntity
+import com.waminiyi.realestatemanager.core.database.model.EstateEntity
+import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import com.waminiyi.realestatemanager.core.model.data.*
 import java.util.*
 
@@ -9,7 +11,6 @@ object TestDataGenerator {
 
     private val firstNames = listOf("John", "Jane", "Alice", "Bob", "Charlie")
     private val lastNames = listOf("Doe", "Smith", "Johnson", "Williams", "Brown")
-    private val facilityNames = listOf("Swimming Pool", "Gym", "Kitchen", "Garden", "Bedroom", "Bathroom")
     private val adjectives = listOf("Spacious", "Cozy", "Modern", "Charming", "Luxurious")
     private val facilityAdjectives = listOf("Modern", "Fully-Equipped", "Relaxing", "Outdoor", "Secure")
     private val streetNames = listOf("Maple", "Oak", "Main", "Cedar", "Elm")
@@ -23,22 +24,21 @@ object TestDataGenerator {
         val lastName = getRandomString(lastNames)
         val email = "$firstName.$lastName@mail.com"
         val phoneNumber = getRandomPhoneNumber()
-        return AgentEntity(uuid, firstName, lastName, email, phoneNumber)
+        return AgentEntity(uuid, firstName, lastName, email, phoneNumber, generateRandomURL())
     }
 
-    fun getRandomFacilities(count: Int): List<Facility> {
+    private fun getRandomFacilities(count: Int): List<Facility> {
         return (1..count).map {
             Facility(
-                0,
                 type = FacilityType.values().random(),
                 count = (1..3).random()
             )
         }
     }
 
-    fun getRandomImage(ownerId: UUID, type: ImageType): ImageEntity {
+    fun getRandomImage(ownerId: UUID, isMainPhoto: Boolean): PhotoEntity {
         val uuid = UUID.randomUUID()
-        return ImageEntity(uuid, ownerId, getRandomString(facilityNames), getRandomString(facilityAdjectives), type)
+        return PhotoEntity(uuid, ownerId, generateRandomURL(), generateRandomLocalPath(), getRandomString(facilityAdjectives), isMainPhoto)
     }
 
     private fun getRandomPoi(count: Int): List<PointOfInterest> {
@@ -46,7 +46,7 @@ object TestDataGenerator {
         return (1..count).map { allTypes.random() }
     }
 
-    fun getRandomEstate(estateUuid: UUID = UUID.randomUUID(), imageUuid: UUID, agentUuId: UUID): EstateEntity {
+    fun getRandomEstate(estateUuid: UUID = UUID.randomUUID(), agentUuId: UUID): EstateEntity {
         val status = Status.values().random()
 
         return EstateEntity(
@@ -59,7 +59,6 @@ object TestDataGenerator {
             status = status,
             entryDate = getRandomDate(),
             saleDate = if (status == Status.SOLD) getRandomDate() else null,
-            mainImageId = imageUuid,
             agentId = agentUuId,
             poiList = getRandomPoi((0..8).random()),
             facilitiesList = getRandomFacilities((0..8).random())
@@ -68,6 +67,22 @@ object TestDataGenerator {
 
     private fun getRandomString(list: List<String>): String {
         return list.random()
+    }
+
+    private fun generateRandomURL(): String {
+        val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+        val randomString = (1..10)
+            .map { chars.random() }
+            .joinToString("")
+        return "https://example.com/$randomString"
+    }
+
+    private fun generateRandomLocalPath(): String {
+        val chars = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+        val randomString = (1..10)
+            .map { chars.random() }
+            .joinToString("")
+        return "/path/to/$randomString"
     }
 
     private fun getRandomAddress(): AddressEntity {

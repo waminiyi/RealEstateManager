@@ -35,11 +35,11 @@ object DaosModule {
     }
 
     /**
-     * Provides a singleton instance of [ImageDao] .
+     * Provides a singleton instance of [PhotoDao] .
      */
     @Singleton
     @Provides
-    fun provideImageDao(database: RemDatabase): ImageDao {
+    fun provideImageDao(database: RemDatabase): PhotoDao {
         return database.imageDao()
     }
 }

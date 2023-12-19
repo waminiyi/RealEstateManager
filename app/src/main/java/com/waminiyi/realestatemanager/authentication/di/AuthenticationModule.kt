@@ -1,8 +1,8 @@
 package com.waminiyi.realestatemanager.authentication.di
 
-import com.google.firebase.auth.FirebaseAuth
-import com.waminiyi.realestatemanager.authentication.repository.AuthenticationRepository
-import com.waminiyi.realestatemanager.authentication.repository.FirebaseAuthenticationRepository
+import com.waminiyi.realestatemanager.authentication.repository.AuthRepository
+import com.waminiyi.realestatemanager.authentication.repository.DefaultAuthRepository
+import com.waminiyi.realestatemanager.firebase.authentication.FirebaseAuthProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object AuthenticationModule {
 
     @Provides
     @Singleton
-    fun provideAuthenticationRepository(firebaseAuth: FirebaseAuth): AuthenticationRepository {
-        return FirebaseAuthenticationRepository(firebaseAuth)
+    fun provideAuthRepository(firebaseAuthProvider: FirebaseAuthProvider): AuthRepository {
+        return DefaultAuthRepository(firebaseAuthProvider)
     }
 }

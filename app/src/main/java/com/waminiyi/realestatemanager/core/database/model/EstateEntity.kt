@@ -27,15 +27,9 @@ import java.util.*
             parentColumns = arrayOf("agent_uuid"),
             childColumns = arrayOf("agent_id"),
             onDelete = ForeignKey.SET_NULL
-        ),
-        ForeignKey(
-            entity = ImageEntity::class,
-            parentColumns = arrayOf("image_uuid"),
-            childColumns = arrayOf("main_image_id"),
-            onDelete = ForeignKey.SET_NULL
         )
     ],
-    indices = [Index("agent_id"), Index("main_image_id")]
+    indices = [Index("agent_id")]
 )
 data class EstateEntity(
     @PrimaryKey
@@ -66,9 +60,6 @@ data class EstateEntity(
     @ColumnInfo(name = "sale_date")
     val saleDate: Date? = null,
 
-    @ColumnInfo(name = "main_image_id")
-    val mainImageId: UUID,
-
     @ColumnInfo(name = "agent_id")
     val agentId: UUID,
 
@@ -76,8 +67,19 @@ data class EstateEntity(
     val poiList: List<PointOfInterest> = emptyList(),
 
     @ColumnInfo(name = "facilities_list")
-    val facilitiesList: List<Facility> = emptyList()
-)
+    val facilitiesList: List<Facility> = emptyList(),
+
+    ) {
+    fun asEstate(photo: Photo) = Estate(
+        uuid = this.estateUuid.toString(),
+        type = this.type,
+        price = this.price,
+        area = this.area,
+        mainPhoto = photo,
+        address = this.addressEntity.asAddress(),
+        status = this.status
+    )
+}
 
 fun EstateWithDetails.asEstateEntity() = EstateEntity(
     estateUuid = UUID.fromString(this.uuid),
@@ -89,8 +91,9 @@ fun EstateWithDetails.asEstateEntity() = EstateEntity(
     status = this.status,
     entryDate = this.entryDate,
     saleDate = this.saleDate,
-    mainImageId = UUID.fromString(this.images.filter { it.imageType == ImageType.MAIN }[0].uuid),
     agentId = UUID.fromString(this.agentId),
     poiList = this.nearbyPointsOfInterest,
     facilitiesList = this.facilities
 )
+
+fun Map.Entry<EstateEntity, List<PhotoEntity>>.asEstate() = this.key.asEstate(this.value.first().asPhoto())
