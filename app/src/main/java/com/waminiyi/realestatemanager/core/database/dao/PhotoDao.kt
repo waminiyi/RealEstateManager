@@ -2,7 +2,6 @@ package com.waminiyi.realestatemanager.core.database.dao
 
 import androidx.annotation.VisibleForTesting
 import androidx.room.*
-import com.waminiyi.realestatemanager.core.database.model.AgentEntity
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import java.util.*
 

@@ -126,17 +126,12 @@ class DefaultPhotoRepository @Inject constructor(
 
     override suspend fun syncPhotoFromRemote(photoId: String): DataResult<Unit> {
         return try {
-            // Fetch the photo object from Firebase
+            // Fetch the photo object from remote
             val remotePhoto = remoteDataRepository.getPhoto(photoId)
                 ?: return DataResult.Error(NullPointerException("Photo with id: $photoId not found on Firebase"))
 
-            val localPath = mediaFileRepository.downloadPhotoFile(remotePhoto.url)
-                ?: return DataResult.Error(IOException("Failed to download photo file to internal storage"))
-
-            val updatedPhoto = remotePhoto.toPhotoEntity().copy(localPath = localPath)
-
             // Save the remote photo to the local database
-            photoDao.upsertPhoto(updatedPhoto)
+            photoDao.upsertPhoto(remotePhoto.toPhotoEntity())
 
             DataResult.Success(Unit)
         } catch (exception: Exception) {

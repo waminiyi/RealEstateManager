@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+        Log.d("<TOPIC>", "suscribed", )
 
         binding.btnSend.setOnClickListener {
             val remoteChanges = mutableListOf<RemoteChange>()
@@ -67,7 +68,6 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
             }
-            val gson = Gson()
             // Creating RemoteCommit with 20 changes
             val remoteCommit = RemoteCommit(
                 commitId = "commit_id_123",
@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity() {
                     .setData(
                         hashMapOf(
                             ("title" to "topic $title"),
-                            ("message" to "topic $message"),
-                            ("commit" to gson.toJson(remoteCommit))
+                            ("message" to "topic $message")
                         )
                     )
                     .also {
@@ -101,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                 "Bearer " + getServiceAccountAccessToken(this@MainActivity), notification
             )
             if (response.isSuccessful) {
-                Log.d(TAG, " Successful Response: ${Gson().toJson(response)}")
+                Log.d(TAG, " Successful Response: $response")
             } else {
                 Log.e(TAG, response.errorBody()?.string().orEmpty())
             }
