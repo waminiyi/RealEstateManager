@@ -198,4 +198,16 @@ class FirestoreDao @Inject constructor(private val firestore: FirebaseFirestore)
     fun createCollectionReference(path: CollectionPath): CollectionReference {
         return firestore.collection(path.toString())
     }
+
+    suspend inline fun <reified T : Any> getListDataInDocument(path: DocumentPath): FirebaseResult<List<T>> {
+        return when (val result = handleDocumentSnapshotTask(createDocReference(path).get())) {
+            is FirebaseResult.Success -> {
+                result.data.data?.entries?.map { entry -> entry.value as T }?.let {
+                    FirebaseResult.Success(it)
+                } ?: FirebaseResult.Error(Exception("Failed to parse document data"))
+            }
+
+            is FirebaseResult.Error -> FirebaseResult.Error(result.exception)
+        }
+    }
 }

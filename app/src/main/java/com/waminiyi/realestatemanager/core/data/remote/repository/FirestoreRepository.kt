@@ -63,7 +63,10 @@ class FirestoreRepository @Inject constructor(private val firestoreDao: Firestor
     }
 
     override suspend fun getAgentsChangeList(after: Long): List<RemoteChange> {
-        TODO("Not yet implemented")
+        return when (val result = firestoreDao.getListDataInDocument<RemoteChange>(changesDoc)) {
+            is FirebaseResult.Success -> result.data
+            else -> emptyList()
+        }
     }
 
     override suspend fun updateRemoteChanges(update: (List<LocalChangeEntity>) -> List<RemoteChange>) {
@@ -76,6 +79,7 @@ class FirestoreRepository @Inject constructor(private val firestoreDao: Firestor
     private val agentsCollection = CollectionPath(listOf("agents"))
     private val estatesCollection = CollectionPath(listOf("estates"))
     private val photosCollection = CollectionPath(listOf("photos"))
+    private val changesDoc = DocumentPath(listOf("versions", "versionDoc"))
 
     private suspend fun <T : Any> uploadData(
         path: DocumentPath,

@@ -52,7 +52,7 @@ class FirebaseService : FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)
         }
-        Log.d("GSON", message.data["commit"].orEmpty())
+        Log.d("GSON - FIREBASESERVICE", message.data["commit"].orEmpty())
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)

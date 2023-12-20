@@ -42,4 +42,10 @@ object DaosModule {
     fun provideImageDao(database: RemDatabase): PhotoDao {
         return database.imageDao()
     }
+
+    @Singleton
+    @Provides
+    fun provideLocalChangeDao(database: RemDatabase): LocalChangeDao {
+        return database.localChangeDao()
+    }
 }

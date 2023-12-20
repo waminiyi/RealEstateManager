@@ -1,6 +1,7 @@
 package com.waminiyi.realestatemanager.core.sync.workers
 
 import android.content.Context
+import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -54,6 +55,7 @@ class SyncWorker @AssistedInject constructor(
 
         analyticsHelper.logSyncStarted()
         syncSubscriber.subscribe()
+        Log.d("SYNC", "suscribed")
 
         // First sync data to remote repositories
         val syncedSuccessfullyToRemote = awaitAll(
@@ -95,7 +97,7 @@ class SyncWorker @AssistedInject constructor(
         /**
          * Expedited one time work to sync data on app startup
          */
-        fun startUpSyncWork() = OneTimeWorkRequestBuilder<DelegatingWorker>()
+        fun startUpSyncWork() = OneTimeWorkRequestBuilder<SyncWorker>()
             .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .setConstraints(SyncConstraints)
             .setInputData(SyncWorker::class.delegatedData())
