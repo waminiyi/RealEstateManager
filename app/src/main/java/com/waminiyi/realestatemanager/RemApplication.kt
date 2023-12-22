@@ -9,7 +9,7 @@ import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.soloader.SoLoader
-import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
+import com.waminiyi.realestatemanager.core.sync.status.SyncSubscriber
 import com.waminiyi.realestatemanager.core.sync.initializers.Sync
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject

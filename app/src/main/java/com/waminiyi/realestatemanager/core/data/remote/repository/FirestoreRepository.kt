@@ -55,22 +55,28 @@ class FirestoreRepository @Inject constructor(private val firestoreDao: Firestor
     }
 
     override suspend fun getEstatesChangeList(after: Long): List<RemoteChange> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     override suspend fun getPhotosChangeList(after: Long): List<RemoteChange> {
-        TODO("Not yet implemented")
+        /*return when (val result = firestoreDao.getListDataInDocument<RemoteChange>(changesDoc)) {
+            is FirebaseResult.Success -> result.data
+            else -> emptyList()
+        }*/
+        return emptyList()
     }
 
     override suspend fun getAgentsChangeList(after: Long): List<RemoteChange> {
-        return when (val result = firestoreDao.getListDataInDocument<RemoteChange>(changesDoc)) {
-            is FirebaseResult.Success -> result.data
-            else -> emptyList()
-        }
+        return listOf(RemoteChange("f40d9e42-2f6c-4cde-be59-1818d8ec3a9e","Agent",2000,false))
+//        return when (val result = firestoreDao.getListDataInDocument<RemoteChange>(changesDoc)) {
+//            is FirebaseResult.Success -> result.data
+//            else -> emptyList()
+//        }
+
     }
 
     override suspend fun updateRemoteChanges(update: (List<LocalChangeEntity>) -> List<RemoteChange>) {
-        TODO("Not yet implemented")
+
     }
 
     private fun getPhotoPath(id: String): DocumentPath = DocumentPath(listOf("photos", id))

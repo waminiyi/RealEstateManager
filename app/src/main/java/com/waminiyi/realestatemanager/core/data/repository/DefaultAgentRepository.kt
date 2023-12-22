@@ -1,7 +1,9 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
+import android.util.Log
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.model.toAgentEntity
+import com.waminiyi.realestatemanager.core.data.model.toEstateEntity
 import com.waminiyi.realestatemanager.core.data.model.toRemoteAgent
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
 import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepository
@@ -70,7 +72,10 @@ class DefaultAgentRepository @Inject constructor(
             localVersionUpdater = { latestVersion -> copy(agentVersion = latestVersion) },
             localModelUpdater = { changedIds ->
                 changedIds.forEach { id ->
-                    remoteDataRepository.getAgent(id)?.let { agentDao.upsertAgent(it.toAgentEntity()) }
+                    remoteDataRepository.getAgent(id)?.let {
+                        Log.d("SYNC-FROM-REMOTE", it.toString())
+                        agentDao.upsertAgent(it.toAgentEntity())
+                        Log.d("SAVED-TO-LOCAL", it.toAgentEntity().toString())}
                 }
             }
         )

@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
+import android.util.Log
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.model.toEstateEntity
 import com.waminiyi.realestatemanager.core.data.model.toRemoteEstate
@@ -75,7 +76,9 @@ class DefaultEstateRepository @Inject constructor(
             localVersionUpdater = { latestVersion -> copy(estateVersion = latestVersion) },
             localModelUpdater = { changedIds ->
                 changedIds.forEach { id ->
-                    remoteDataRepository.getEstate(id)?.let { estateDao.upsertEstate(it.toEstateEntity()) }
+                    remoteDataRepository.getEstate(id)?.let {
+                        estateDao.upsertEstate(it.toEstateEntity())
+                    }
                 }
             }
         )

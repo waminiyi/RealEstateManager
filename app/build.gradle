@@ -87,7 +87,7 @@ dependencies {
 
     implementation libs.google.auth.library.oauth2.http
 
-//    kapt libs.hilt.android.compiler
+    kapt libs.hilt.android.compiler
     kapt("androidx.hilt:hilt-compiler:1.1.0")
     kapt libs.room.compiler
     testImplementation libs.room.testing

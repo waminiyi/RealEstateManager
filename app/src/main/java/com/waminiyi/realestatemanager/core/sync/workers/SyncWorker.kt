@@ -8,7 +8,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
-import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
+import com.waminiyi.realestatemanager.core.sync.status.SyncSubscriber
 import com.waminiyi.realestatemanager.analytics.AnalyticsHelper
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
@@ -64,6 +64,7 @@ class SyncWorker @AssistedInject constructor(
             async { agentRepository.syncToRemote() },
         ).all { it }
 
+        Log.d("SYNC-FROM-REMOTE-STARTED", "SYNC-FROM-REMOTE-STARTED")
         // Then fetch remote changes
         val syncedSuccessfullyFromRemote =
             awaitAll(

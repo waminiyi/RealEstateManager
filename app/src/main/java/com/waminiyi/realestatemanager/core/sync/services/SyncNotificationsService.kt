@@ -79,6 +79,8 @@ class SyncNotificationsService : FirebaseMessagingService() {
             .build()
 
         notificationManager.notify(notificationID, notification)
+        syncManager.requestSync()
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
