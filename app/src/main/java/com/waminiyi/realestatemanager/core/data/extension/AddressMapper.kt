@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.core.data.model
+package com.waminiyi.realestatemanager.core.data.extension
 
 import com.waminiyi.realestatemanager.core.database.model.AddressEntity
 import com.waminiyi.realestatemanager.core.model.data.Location

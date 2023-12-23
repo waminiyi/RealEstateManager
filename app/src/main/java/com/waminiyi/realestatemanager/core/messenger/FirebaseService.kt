@@ -16,7 +16,7 @@ import androidx.core.app.NotificationManagerCompat.IMPORTANCE_HIGH
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
-import com.waminiyi.realestatemanager.MainActivity
+import com.waminiyi.realestatemanager.OrganizerActivity
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteCommit
 import kotlin.random.Random
 
@@ -45,7 +45,7 @@ class FirebaseService : FirebaseMessagingService() {
         super.onMessageReceived(message)
         val gson = Gson()
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, OrganizerActivity::class.java)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationID = Random.nextInt()
 

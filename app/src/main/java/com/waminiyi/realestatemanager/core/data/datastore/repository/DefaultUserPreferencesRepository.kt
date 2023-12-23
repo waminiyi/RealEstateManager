@@ -116,6 +116,7 @@ class DefaultUserPreferencesRepository @Inject constructor(
         val CURRENT_USER_PHOTO_URL_KEY = stringPreferencesKey("current_user_photo_url")
         val CURRENT_USER_EMAIL_KEY = stringPreferencesKey("current_user_photo_url")
         val CURRENT_USER_PHONE_KEY = stringPreferencesKey("current_user_photo_url")
+        val CURRENT_USER_ROLES_KEY = stringPreferencesKey("current_user_roles")
         val DEFAULT_CURRENCY = stringPreferencesKey("default_currency")
         val ESTATE_VERSION_KEY = longPreferencesKey("estate_version_key")
         val AGENT_VERSION_KEY = longPreferencesKey("agent_version_key")
