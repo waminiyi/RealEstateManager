@@ -7,19 +7,70 @@
     tools:context=".features.editestate.EditEstateFragment">
 
     <LinearLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="260dp"
             android:gravity="center">
 
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:elevation="4dp"
+                android:src="@drawable/estate"
+                app:cardCornerRadius="8dp">
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/estate" />
+
+                <ImageButton
+                    android:id="@+id/deleteMainPhotoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/circular_background"
+                    android:src="@drawable/ic_delete" />
+            </com.google.android.material.card.MaterialCardView>
+
             <Button
+                android:id="@+id/addMainPhotoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="Add photos"
+                android:textAllCaps="false"
+                app:icon="@drawable/ic_add" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:padding="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/imageRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/photo_item" />
+
+            <Button
+                android:id="@+id/addMorePhotoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/imageRecyclerView"
+                android:text="Add more"
                 android:textAllCaps="false"
                 app:icon="@drawable/ic_add" />
 
@@ -31,7 +82,7 @@
             android:background="#C3BBBB" />
 
         <LinearLayout
-            android:id="@+id/about_layout"
+            android:id="@+id/aboutLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -43,7 +94,7 @@
                 android:text="About" />
 
             <EditText
-                android:id="@+id/editTextAbout"
+                android:id="@+id/aboutEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
@@ -56,14 +107,14 @@
             android:background="#C3BBBB" />
 
         <LinearLayout
-            android:id="@+id/layoutEstateType"
+            android:id="@+id/estateTypeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textViewTypeLabel"
+                android:id="@+id/typeLabelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -71,11 +122,11 @@
                 android:text="Type" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewEstateType"
+                android:id="@+id/estateTypeRecyclerView"
                 android:layout_width="match_parent"
-                tools:listitem="@layout/estate_type_item"
                 android:layout_height="wrap_content"
-                android:padding="8dp" />
+                android:padding="8dp"
+                tools:listitem="@layout/estate_type_item" />
 
         </LinearLayout>
 
@@ -85,7 +136,7 @@
             android:background="#C3BBBB" />
 
         <TextView
-            android:id="@+id/textViewAreaLabel"
+            android:id="@+id/areaLabelTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -98,14 +149,14 @@
             android:padding="16dp">
 
             <EditText
-                android:id="@+id/editTextArea"
+                android:id="@+id/areaEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:inputType="numberDecimal" />
 
             <TextView
-                android:id="@+id/textViewArea"
+                android:id="@+id/areaTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -120,10 +171,8 @@
             android:background="#C3BBBB" />
 
         <TextView
-            android:id="@+id/textViewRoomsNumberLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:padding="16dp"
             android:text="Number of rooms" />
 
@@ -134,14 +183,14 @@
             android:padding="16dp">
 
             <EditText
-                android:id="@+id/editTextRoomNumber"
+                android:id="@+id/roomCountEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:inputType="number" />
 
             <TextView
-                android:id="@+id/textViewRoomLabel"
+                android:id="@+id/roomCountLabelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -156,7 +205,6 @@
             android:background="#C3BBBB" />
 
         <TextView
-            android:id="@+id/textViewPriceLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -169,14 +217,14 @@
             android:padding="16dp">
 
             <EditText
-                android:id="@+id/editTextPrice"
+                android:id="@+id/priceEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:inputType="number" />
 
             <TextView
-                android:id="@+id/textViewCurrency"
+                android:id="@+id/currencyTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -190,7 +238,7 @@
             android:background="#C3BBBB" />
 
         <LinearLayout
-            android:id="@+id/description_layout"
+            android:id="@+id/descriptionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -202,7 +250,7 @@
                 android:text="Description" />
 
             <EditText
-                android:id="@+id/editTextDescription"
+                android:id="@+id/descriptionEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
@@ -215,21 +263,20 @@
             android:background="#C3BBBB" />
 
         <RelativeLayout
-            android:id="@+id/layoutAddress"
+            android:id="@+id/addressLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textViewAddressLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:text="Address" />
 
             <TextView
-                android:id="@+id/textViewAddress"
+                android:id="@+id/addressTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -244,25 +291,23 @@
             android:background="#C3BBBB" />
 
         <LinearLayout
-            android:id="@+id/layoutPoi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textViewPoiLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:text="Points of interest" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewPoi"
+                android:id="@+id/poiRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/poi_item"
-                android:padding="8dp" />
+                android:padding="8dp"
+                tools:listitem="@layout/poi_item" />
 
         </LinearLayout>
 
@@ -278,14 +323,13 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textViewStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:text="Status" />
 
             <Spinner
-                android:id="@+id/spinnerStatus"
+                android:id="@+id/statusSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -306,14 +350,13 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textViewEntryDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:text="Entry date" />
 
             <TextView
-                android:id="@+id/textViewEntryDate"
+                android:id="@+id/entryDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -334,14 +377,13 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textViewSaleDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:text="Sale date" />
 
             <TextView
-                android:id="@+id/textViewSaleDate"
+                android:id="@+id/saleDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -355,28 +397,25 @@
             android:layout_height="1dp"
             android:background="#C3BBBB" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:orientation="vertical"
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textViewAgentLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:text="Agent" />
 
-            <TextView
-                android:id="@+id/textViewAgent"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/agentRecyclerView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:drawableEnd="@drawable/ic_arrow_forward"
-                android:text="John Doe" />
+                android:padding="8dp"
+                tools:listitem="@layout/agent_item" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -384,7 +423,7 @@
             android:background="#C3BBBB" />
 
         <Button
-            android:id="@+id/btnSaveEstate"
+            android:id="@+id/saveEstateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
