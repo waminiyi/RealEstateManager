@@ -5,5 +5,6 @@ data class Photo(
     val estateUuid: String,
     val localPath: String? = null,
     val remoteUrl: String? = null,
-    val isMain: Boolean = false
+    val isMain: Boolean = false,
+    val description: String? = null
 )

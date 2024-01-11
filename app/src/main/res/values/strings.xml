@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RealEstateManager</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_add">Add</string>
+    <string name="title_edit">Edit</string>
+    <string name="title_filter">Filter</string>
 </resources>

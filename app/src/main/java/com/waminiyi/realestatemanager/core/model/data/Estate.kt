@@ -4,8 +4,7 @@ data class Estate(
     val uuid: String, // Unique identifier for the property
     val type: EstateType, // Type of the property (e.g., Apartment, House, etc.)
     val price: Int, // Price of the property in dollars
-    val area:Float,
+    val area: Float,
     val mainPhoto: Photo, // Main property image
-    val address: Address, // Address of the property
-    val status: Status, // Status of the property (Available, Sold, etc.)
+    val addressCity: String, // Address of the property
 )

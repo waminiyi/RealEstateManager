@@ -1,11 +1,10 @@
 package com.waminiyi.realestatemanager.core.database.util
 
 import androidx.room.TypeConverter
-import com.waminiyi.realestatemanager.core.model.data.Facility
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
 import java.util.*
 
 class Converters {
@@ -20,15 +19,8 @@ class Converters {
     }
 
    @TypeConverter
-   fun poiListToString(value:List<PointOfInterest>):String= Json.encodeToString(value)
+   fun poiListToString(value:List<PointOfInterest>):String = Json.encodeToString(value)
 
     @TypeConverter
     fun poiListFromString(value:String):List<PointOfInterest> = Json.decodeFromString(value)
-
-    @TypeConverter
-    fun facilitiesListToString(value:List<Facility>):String= Json.encodeToString(value)
-
-    @TypeConverter
-    fun facilitiesListFromString(value:String):List<Facility> = Json.decodeFromString(value)
-
 }

@@ -1,8 +1,8 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
-import com.waminiyi.realestatemanager.core.data.model.toPhotoEntity
-import com.waminiyi.realestatemanager.core.data.model.toRemotePhoto
+import com.waminiyi.realestatemanager.core.data.extension.toPhotoEntity
+import com.waminiyi.realestatemanager.core.data.extension.toRemotePhoto
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
 import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepository
 import com.waminiyi.realestatemanager.core.database.dao.LocalChangeDao

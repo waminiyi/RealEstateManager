@@ -1,37 +1,34 @@
 package com.waminiyi.realestatemanager
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
-import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
-import com.waminiyi.realestatemanager.core.data.remote.model.RemoteCommit
 import com.waminiyi.realestatemanager.core.messenger.FirebaseService
 import com.waminiyi.realestatemanager.core.messenger.di.RetrofitInstance
 import com.waminiyi.realestatemanager.core.messenger.getServiceAccountAccessToken
-import com.waminiyi.realestatemanager.core.messenger.model.RemMessage
-import com.waminiyi.realestatemanager.databinding.ActivityMainBinding
+import com.waminiyi.realestatemanager.databinding.ActivityOrganizerBinding
+import com.waminiyi.realestatemanager.features.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.sql.Timestamp
 
 
 const val TOPIC = "NEWS"
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class OrganizerActivity : AppCompatActivity() {
     val TAG = "MainActivity"
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityOrganizerBinding
     private lateinit var token: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityOrganizerBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -54,10 +51,11 @@ class MainActivity : AppCompatActivity() {
         FirebaseService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
-        Log.d("<TOPIC>", "suscribed", )
+        Log.d("<TOPIC>", "suscribed")
 
         binding.btnSend.setOnClickListener {
-            val remoteChanges = mutableListOf<RemoteChange>()
+            navigateToHome()
+            /*val remoteChanges = mutableListOf<RemoteChange>()
             for (i in 1..20) {
                 remoteChanges.add(
                     RemoteChange(
@@ -91,13 +89,14 @@ class MainActivity : AppCompatActivity() {
                     }
 
             }
+        }*/
         }
     }
 
     private fun sendNotification(notification: Any) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val response = RetrofitInstance.api.postMessage(
-                "Bearer " + getServiceAccountAccessToken(this@MainActivity), notification
+                "Bearer " + getServiceAccountAccessToken(this@OrganizerActivity), notification
             )
             if (response.isSuccessful) {
                 Log.d(TAG, " Successful Response: $response")
@@ -124,4 +123,12 @@ class MainActivity : AppCompatActivity() {
 //        println("Successfully sent message: $response")
 //
 //    }
+
+
+    private fun navigateToHome() {
+        // Skip signing in, navigate to the main activity
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish() // Finish the current activity to prevent going back to it
+    }
 }

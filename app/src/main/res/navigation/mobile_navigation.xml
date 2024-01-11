@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_add">
+
+    <fragment
+        android:id="@+id/navigation_add"
+        android:name="com.waminiyi.realestatemanager.features.estateslist.EstateListFragment"
+        android:label="@string/title_add"
+        tools:layout="@layout/fragment_estate_list" />
+
+    <fragment
+        android:id="@+id/navigation_edit"
+        android:name="com.waminiyi.realestatemanager.features.editestate.EditEstateFragment"
+        android:label="@string/title_edit"
+        tools:layout="@layout/fragment_editestate" />
+
+    <fragment
+        android:id="@+id/navigation_filter"
+        android:name="com.waminiyi.realestatemanager.features.home.ui.notifications.NotificationsFragment"
+        android:label="@string/title_filter"
+        tools:layout="@layout/fragment_notifications" />
+</navigation>

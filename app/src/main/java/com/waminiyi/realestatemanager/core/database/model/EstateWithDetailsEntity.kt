@@ -1,8 +1,10 @@
 package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.Embedded
+import androidx.room.Junction
 import androidx.room.Relation
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.data.Facility
 
 /**
  * Class representing an estate with its associated details.
@@ -25,22 +27,23 @@ data class EstateWithDetailsEntity(
         parentColumn = "estate_uuid",
         entityColumn = "estate_uuid"
     )
-    val images: List<PhotoEntity>,
+    val images: List<PhotoEntity>
+
 ) {
     fun asEstateWithDetails() = EstateWithDetails(
         uuid = this.estateEntity.estateUuid.toString(),
         type = this.estateEntity.type,
         price = this.estateEntity.price,
         area = this.estateEntity.area,
-        facilities = this.estateEntity.facilitiesList,
-        description = this.estateEntity.description,
+        roomsCount = this.estateEntity.roomsCount,
+        fullDescription = this.estateEntity.description,
         photos = this.images.map { it.asPhoto() },
         address = this.estateEntity.addressEntity.asAddress(),
         nearbyPointsOfInterest = this.estateEntity.poiList,
         status = this.estateEntity.status,
         entryDate = this.estateEntity.entryDate,
         saleDate = this.estateEntity.saleDate,
-        agentId = this.agentEntity.agentUuid.toString()
+        agent = this.agentEntity.asAgent()
     )
 }
 

@@ -48,4 +48,5 @@ object DaosModule {
     fun provideLocalChangeDao(database: RemDatabase): LocalChangeDao {
         return database.localChangeDao()
     }
+
 }

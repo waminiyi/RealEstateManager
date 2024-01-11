@@ -34,6 +34,9 @@ data class PhotoEntity(
     @ColumnInfo(name = "is_main_photo")
     val isMainPhoto: Boolean = false,
 
+    @ColumnInfo(name = "description")
+    val description: String? = null
+
 ) {
     fun asPhoto(): Photo = Photo(
         uuid = this.photoUuid.toString(),

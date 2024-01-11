@@ -1,8 +1,8 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
-import com.waminiyi.realestatemanager.core.data.model.toEstateEntity
-import com.waminiyi.realestatemanager.core.data.model.toRemoteEstate
+import com.waminiyi.realestatemanager.core.data.extension.toEstateEntity
+import com.waminiyi.realestatemanager.core.data.extension.toRemoteEstate
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
 import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepository
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
@@ -33,7 +33,7 @@ class DefaultEstateRepository @Inject constructor(
     override suspend fun saveEstate(estateWithDetails: EstateWithDetails): DataResult<Unit> {
         return try {
             estateDao.upsertEstate(estateWithDetails.asEstateEntity())
-            localChangeDao.upsertChange(LocalChangeEntity(estateWithDetails.uuid, ClassTag.Estate, false))
+            //localChangeDao.upsertChange(LocalChangeEntity(estateWithDetails.uuid, ClassTag.Estate, false))
             DataResult.Success(Unit)
         } catch (exception: IOException) {
             DataResult.Error(exception)
@@ -75,7 +75,9 @@ class DefaultEstateRepository @Inject constructor(
             localVersionUpdater = { latestVersion -> copy(estateVersion = latestVersion) },
             localModelUpdater = { changedIds ->
                 changedIds.forEach { id ->
-                    remoteDataRepository.getEstate(id)?.let { estateDao.upsertEstate(it.toEstateEntity()) }
+                    remoteDataRepository.getEstate(id)?.let {
+                        estateDao.upsertEstate(it.toEstateEntity())
+                    }
                 }
             }
         )

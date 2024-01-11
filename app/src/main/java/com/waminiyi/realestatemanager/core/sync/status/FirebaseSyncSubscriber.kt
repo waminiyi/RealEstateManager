@@ -4,7 +4,6 @@ package com.waminiyi.realestatemanager.core.sync.status
 
 import com.google.firebase.messaging.FirebaseMessaging
 import com.waminiyi.realestatemanager.core.sync.initializers.SYNC_TOPIC
-import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 

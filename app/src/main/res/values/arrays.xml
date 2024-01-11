@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="estate_types">
+        <item>Apartment</item>
+        <item>House</item>
+    </string-array>
+
+    <string-array name="estate_status">
+        <item>Available</item>
+        <item>Sold</item>
+    </string-array>
+</resources>
