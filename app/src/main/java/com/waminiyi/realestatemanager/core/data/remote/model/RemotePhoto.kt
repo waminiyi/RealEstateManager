@@ -9,6 +9,7 @@ data class RemotePhoto(
     val estateUuid: String,
     val url: String,
     @field:JvmField
-    val isMainImage: Boolean
+    val isMainImage: Boolean,
+    val description: String? = null
 )
 

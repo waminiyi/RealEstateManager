@@ -55,7 +55,7 @@ androidx-test-runner = "1.5.2"
 
 androidx-datastore = "1.0.0"
 
-kotlinx-serialization = "1.2.1"
+kotlinx-serialization = "1.6.0"
 
 kotlinx-coroutines = "1.6.4"
 

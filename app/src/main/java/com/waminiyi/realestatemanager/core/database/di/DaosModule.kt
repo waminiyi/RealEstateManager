@@ -49,27 +49,4 @@ object DaosModule {
         return database.localChangeDao()
     }
 
-    @Singleton
-    @Provides
-    fun provideFacilityDao(database: RemDatabase): FacilityDao {
-        return database.facilityDao()
-    }
-
-    @Singleton
-    @Provides
-    fun providePoiDao(database: RemDatabase): PointOfInterestDao {
-        return database.pointOfInterestDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideEstateAndFacilityLinkDao(database: RemDatabase): EstateAndFacilityLinkDao {
-        return database.estateAndFacilityLinkDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideEstateAndPoiLinkDao(database: RemDatabase): EstateAndPoiLinkDao {
-        return database.estateAndPoiLinkDao()
-    }
 }

@@ -16,7 +16,6 @@ import java.util.*
  * @property status The status of the estate (AVAILABLE, SOLD, etc.).
  * @property entryDate The date when the estate was listed.
  * @property saleDate The date when the estate was sold (can be null if not sold yet).
- * @property mainImageId The unique identifier (UUID) of the main image associated with the estate.
  * @property agentId The unique identifier (UUID) of the agent associated with the estate.
  */
 @Entity(
@@ -45,6 +44,9 @@ data class EstateEntity(
     @ColumnInfo(name = "area")
     val area: Float,
 
+    @ColumnInfo(name = "rooms_count")
+    val roomsCount: Int,
+
     @ColumnInfo(name = "description")
     val description: String,
 
@@ -64,20 +66,16 @@ data class EstateEntity(
     val agentId: UUID,
 
     @ColumnInfo(name = "poi_list")
-    val poiList: List<PointOfInterest> = emptyList(),
+    val poiList: List<PointOfInterest> = emptyList()
 
-    @ColumnInfo(name = "facilities_list")
-    val facilitiesList: List<Facility> = emptyList(),
-
-    ) {
+) {
     fun asEstate(photo: Photo) = Estate(
         uuid = this.estateUuid.toString(),
         type = this.type,
         price = this.price,
         area = this.area,
         mainPhoto = photo,
-        address = this.addressEntity.asAddress(),
-        status = this.status
+        addressCity = this.addressEntity.city,
     )
 }
 
@@ -86,14 +84,15 @@ fun EstateWithDetails.asEstateEntity() = EstateEntity(
     type = this.type,
     price = this.price,
     area = this.area,
-    description = this.description,
+    roomsCount = this.roomsCount,
+    description = this.fullDescription,
     addressEntity = this.address.asAddressEntity(),
     status = this.status,
     entryDate = this.entryDate,
     saleDate = this.saleDate,
-    agentId = UUID.fromString(this.agentId),
+    agentId = UUID.fromString(this.agent.uuid),
     poiList = this.nearbyPointsOfInterest,
-    facilitiesList = this.facilities
 )
 
-fun Map.Entry<EstateEntity, List<PhotoEntity>>.asEstate() = this.key.asEstate(this.value.first().asPhoto())
+fun Map.Entry<EstateEntity, List<PhotoEntity>>.asEstate() =
+    this.key.asEstate(this.value.first().asPhoto())

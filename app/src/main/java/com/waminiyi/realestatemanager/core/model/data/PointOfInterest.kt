@@ -5,16 +5,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class PointOfInterest {
-    @SerialName("school")
     SCHOOL,
 
-    @SerialName("public_transport")
     PUBLIC_TRANSPORT,
 
-    @SerialName("grocery_store")
     GROCERY_STORE,
 
-    @SerialName("park")
+  /*  @SerialName("park")
     PARK,
 
     @SerialName("medical_facility")
@@ -63,5 +60,5 @@ enum class PointOfInterest {
     AIRPORT,
 
     @SerialName("train_station")
-    TRAIN_STATION
+    TRAIN_STATION*/
 }

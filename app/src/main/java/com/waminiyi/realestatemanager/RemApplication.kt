@@ -18,24 +18,10 @@ import javax.inject.Inject
 class RemApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
-    @Inject
-    lateinit var  syncSubscriber: SyncSubscriber
+
     override fun onCreate() {
         super.onCreate()
-        Sync.initialize(this)
-        SoLoader.init(this, false)
-
-        if (BuildConfig.DEBUG && FlipperUtils.shouldEnableFlipper(this)) {
-            val client = AndroidFlipperClient.getInstance(this)
-            client.addPlugin(InspectorFlipperPlugin(this, DescriptorMapping.withDefaults()))
-            client.start()
-        } else if (BuildConfig.DEBUG && FlipperUtils.shouldEnableFlipper(this)) {
-            val client = AndroidFlipperClient.getInstance(this);
-            client.addPlugin(NetworkFlipperPlugin())
-            client.addPlugin(InspectorFlipperPlugin(this, DescriptorMapping.withDefaults()));
-            client.start();
-        }
-
+        //Sync.initialize(this)
     }
 
     override val workManagerConfiguration: Configuration

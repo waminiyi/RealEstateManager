@@ -33,7 +33,7 @@ class DefaultEstateRepository @Inject constructor(
     override suspend fun saveEstate(estateWithDetails: EstateWithDetails): DataResult<Unit> {
         return try {
             estateDao.upsertEstate(estateWithDetails.asEstateEntity())
-            localChangeDao.upsertChange(LocalChangeEntity(estateWithDetails.uuid, ClassTag.Estate, false))
+            //localChangeDao.upsertChange(LocalChangeEntity(estateWithDetails.uuid, ClassTag.Estate, false))
             DataResult.Success(Unit)
         } catch (exception: IOException) {
             DataResult.Error(exception)

@@ -10,11 +10,14 @@ fun RemotePhoto.toPhotoEntity() = PhotoEntity(
     url = this.url,
     localPath = "",
     isMainPhoto = this.isMainImage,
+    description = this.description
 )
 
 fun PhotoEntity.toRemotePhoto() = RemotePhoto(
     uuid = this.photoUuid.toString(),
     estateUuid = this.estateUuid.toString(),
     url = this.url,
-    isMainImage = this.isMainPhoto
+    isMainImage = this.isMainPhoto,
+    description = this.description
+
 )

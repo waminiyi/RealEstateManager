@@ -30,7 +30,7 @@ object TestDataGenerator {
     private fun getRandomFacilities(count: Int): List<Facility> {
         return (1..count).map {
             Facility(
-                type = FacilityType.values().random(),
+                type = FacilityType.entries.toTypedArray().random(),
                 count = (1..3).random()
             )
         }
@@ -38,7 +38,7 @@ object TestDataGenerator {
 
     fun getRandomImage(ownerId: UUID, isMainPhoto: Boolean): PhotoEntity {
         val uuid = UUID.randomUUID()
-        return PhotoEntity(uuid, ownerId, generateRandomURL(), generateRandomLocalPath(), getRandomString(facilityAdjectives), isMainPhoto)
+        return PhotoEntity(uuid, ownerId, generateRandomURL(), generateRandomLocalPath(), isMainPhoto,getRandomString(facilityAdjectives))
     }
 
     private fun getRandomPoi(count: Int): List<PointOfInterest> {
@@ -47,13 +47,14 @@ object TestDataGenerator {
     }
 
     fun getRandomEstate(estateUuid: UUID = UUID.randomUUID(), agentUuId: UUID): EstateEntity {
-        val status = Status.values().random()
+        val status = Status.entries.toTypedArray().random()
 
         return EstateEntity(
             estateUuid = estateUuid,
-            type = EstateType.values().random(),
+            type = EstateType.entries.toTypedArray().random(),
             price = (500000..5000000).random(),
             area = getRandomFloat(50f, 500f),
+            roomsCount = (2..10).random(),
             description = getRandomString(adjectives),
             addressEntity = getRandomAddress(),
             status = status,
@@ -61,7 +62,6 @@ object TestDataGenerator {
             saleDate = if (status == Status.SOLD) getRandomDate() else null,
             agentId = agentUuId,
             poiList = getRandomPoi((0..8).random()),
-            facilitiesList = getRandomFacilities((0..8).random())
         )
     }
 
