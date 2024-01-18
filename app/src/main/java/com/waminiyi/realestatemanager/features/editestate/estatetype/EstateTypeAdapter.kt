@@ -5,12 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.EstateType
+import com.waminiyi.realestatemanager.features.extensions.showAsEstateType
+import com.waminiyi.realestatemanager.features.extensions.showAsSelected
+import com.waminiyi.realestatemanager.features.model.asUiEstateType
 
 class EstateTypeAdapter(
     private val estateTypes: List<EstateType>,
@@ -57,8 +61,12 @@ class EstateTypeAdapter(
 
     class EstateTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(estateType: EstateType, isSelected: Boolean) {
-            itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.TRANSPARENT)
-            itemView.findViewById<TextView>(R.id.estateTypeNameTextView).text = estateType.name
+            val imageView: ImageView = itemView.findViewById(R.id.itemEstateTypeImageView)
+            val textView: TextView = itemView.findViewById(R.id.itemEstateTypeNameTextView)
+            textView.text = estateType.asUiEstateType(itemView.context).name
+            imageView.setImageResource(estateType.asUiEstateType(itemView.context).iconResId)
+            textView.showAsSelected(isSelected)
+            imageView.showAsSelected(isSelected)
         }
     }
 

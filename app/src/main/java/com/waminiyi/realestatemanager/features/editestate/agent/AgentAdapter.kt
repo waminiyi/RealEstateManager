@@ -12,7 +12,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.Agent
-import com.waminiyi.realestatemanager.features.setAgentSelection
+import com.waminiyi.realestatemanager.features.extensions.showAsSelected
 
 class AgentAdapter(
     private val agents: List<Agent>,
@@ -67,8 +67,8 @@ class AgentAdapter(
                 error(R.drawable.person_error)
             }
             "${agent.firstName}  ${agent.lastName[0]}.".also { textView.text = it }
-            imageView.setAgentSelection(isSelected)
-            textView.setAgentSelection(isSelected)
+            imageView.showAsSelected(isSelected)
+            textView.showAsSelected(isSelected)
 
         }
     }

@@ -9,4 +9,26 @@
         <item>Available</item>
         <item>Sold</item>
     </string-array>
+
+    <string-array name="estate_type_names">
+        <item>Apartment</item>
+        <item>House</item>
+        <item>Villa</item>
+        <item>Cottage</item>
+        <item>Bungalow</item>
+        <item>Chalet</item>
+        <item>Castle</item>
+        <item>Other</item>
+    </string-array>
+
+    <integer-array name="estate_type_icons">
+        <item>@drawable/ic_apartment</item>
+        <item>@drawable/ic_house</item>
+        <item>@drawable/ic_villa</item>
+        <item>@drawable/ic_cottage</item>
+        <item>@drawable/ic_bungalow</item>
+        <item>@drawable/ic_chalet</item>
+        <item>@drawable/ic_castle</item>
+        <item>@drawable/ic_other_houses</item>
+    </integer-array>
 </resources>

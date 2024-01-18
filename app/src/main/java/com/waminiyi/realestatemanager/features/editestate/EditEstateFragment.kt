@@ -20,10 +20,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
 import com.waminiyi.realestatemanager.databinding.FragmentEditestateBinding
 import com.waminiyi.realestatemanager.features.agentEntities
 import com.waminiyi.realestatemanager.features.editestate.agent.AgentAdapter
@@ -33,6 +35,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -105,7 +110,9 @@ class EditEstateFragment : Fragment() {
             }
 
             else -> {
-                Log.d("UISTATE", "EMPTY")
+                binding.entryDateTextView.text = getFormattedDate(uiState.entryDate)
+
+                Log.d("UISTATE", uiState.toString())
             }
         }
     }
@@ -131,6 +138,18 @@ class EditEstateFragment : Fragment() {
         binding.saveEstateButton.setOnClickListener {
             viewModel.saveEstate()
         }
+        binding.entryDateTextView.setOnClickListener {
+            showDatePickerDialog(onDatePicked = {
+                viewModel.setEntryDate(it)
+            })
+        }
+
+        binding.saleDateTextView.setOnClickListener {
+            showDatePickerDialog(onDatePicked = {
+                viewModel.setSaleDate(it)
+            })
+        }
+
         setUpEstateTypeView()
         setUpPoiView()
         setUpAgentsView()
@@ -176,6 +195,29 @@ class EditEstateFragment : Fragment() {
         } else {
             binding.estateSavingErrorTextView.visibility = View.GONE
         }
+    }
+
+    private fun showDatePickerDialog(onDatePicked: (Date) -> Unit) {
+        val builder = MaterialDatePicker.Builder.datePicker()
+        val picker = builder.build()
+
+        //TODO : add a logic to ensure saleDate comes after entryDate
+        /* val minDate = Calendar.getInstance().apply {
+             set(Calendar.YEAR, 2022)
+             set(Calendar.MONTH, Calendar.JANUARY)
+             set(Calendar.DAY_OF_MONTH, 1)
+         }
+         builder.setCalendarConstraints(
+             CalendarConstraints.Builder()
+                 .setValidator(DateValidatorPointForward.from(minDate.timeInMillis))
+                 .build()
+         )*/
+
+        picker.addOnPositiveButtonClickListener { selectedDate ->
+            onDatePicked(Date(selectedDate))
+        }
+
+        picker.show(parentFragmentManager, picker.toString())
     }
 
     private fun setUpEstateTypeView() {

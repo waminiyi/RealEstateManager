@@ -454,7 +454,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Error saving the estate"
+                android:text="@string/estate_saving_error_text_placeholder"
+                android:layout_marginTop="8dp"
                 android:textColor="#CD0549" />
 
             <Button

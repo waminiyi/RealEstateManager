@@ -62,16 +62,24 @@ class EstateListFragment : Fragment() {
                     Log.d("ESTATELIST-FRagment", uiState.toString())
                     when {
                         uiState.isLoading -> {
+                            binding.recyclerview.visibility = View.GONE
+                            binding.estateListCircularProgressBar.visibility = View.VISIBLE
+                            binding.estateListErrorTextView.visibility = View.GONE
+
                             Log.d("UISTATE", "LOADING")
                         }
 
                         uiState.isError -> {
-                            Log.d("UISTATE", "ERROR")
-                            binding.errorTv.text = uiState.errorMessage
+                            binding.recyclerview.visibility = View.GONE
+                            binding.estateListCircularProgressBar.visibility = View.GONE
+                            binding.estateListErrorTextView.visibility = View.VISIBLE
+                            binding.estateListErrorTextView.text = uiState.errorMessage
                         }
 
                         uiState.estates.isNotEmpty() -> {
-                            Log.d("UISTATE", "NOTEMPTY")
+                            binding.recyclerview.visibility = View.VISIBLE
+                            binding.estateListCircularProgressBar.visibility = View.GONE
+                            binding.estateListErrorTextView.visibility = View.GONE
                             adapter.submitList(uiState.estates)
                         }
 
