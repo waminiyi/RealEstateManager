@@ -88,6 +88,7 @@ dependencies {
     implementation libs.kotlinx.coroutines.core
     implementation libs.kotlinx.coroutines.android
     implementation libs.firebase.auth.ktx
+    implementation 'io.coil-kt:coil:1.3.2'
 
     // Retrofit
     implementation libs.retrofit

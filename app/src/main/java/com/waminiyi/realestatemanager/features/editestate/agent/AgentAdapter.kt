@@ -1,14 +1,18 @@
 package com.waminiyi.realestatemanager.features.editestate.agent
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.Agent
+import com.waminiyi.realestatemanager.features.setAgentSelection
 
 class AgentAdapter(
     private val agents: List<Agent>,
@@ -43,7 +47,7 @@ class AgentAdapter(
         holder.itemView.setOnClickListener {
 
             if (selectedItem == agent) {
-                // Already selected, do nothing or handle deselection
+                // Already selected
             } else {
                 setCurrentAgent(agent)
                 onAgentSelected.invoke(agent)
@@ -55,9 +59,17 @@ class AgentAdapter(
 
     class AgentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(agent: Agent, isSelected: Boolean) {
-            // Update the UI based on the isSelected state
-            itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.TRANSPARENT)
-            // Set other views accordingly (e.g., text, icons)
+            val imageView: ImageView = itemView.findViewById(R.id.itemAgentImageView)
+            val textView: TextView = itemView.findViewById(R.id.itemAgentNameTextView)
+            imageView.load(agent.photoUrl) {
+                transformations(CircleCropTransformation())
+                placeholder(R.drawable.person)
+                error(R.drawable.person_error)
+            }
+            "${agent.firstName}  ${agent.lastName[0]}.".also { textView.text = it }
+            imageView.setAgentSelection(isSelected)
+            textView.setAgentSelection(isSelected)
+
         }
     }
 

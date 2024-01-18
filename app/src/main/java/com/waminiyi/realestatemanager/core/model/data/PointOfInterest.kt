@@ -11,7 +11,7 @@ enum class PointOfInterest {
 
     GROCERY_STORE,
 
-  /*  @SerialName("park")
+    @SerialName("park")
     PARK,
 
     @SerialName("medical_facility")
@@ -60,5 +60,5 @@ enum class PointOfInterest {
     AIRPORT,
 
     @SerialName("train_station")
-    TRAIN_STATION*/
+    TRAIN_STATION
 }

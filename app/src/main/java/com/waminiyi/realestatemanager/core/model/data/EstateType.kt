@@ -17,7 +17,7 @@ enum class EstateType {
     @SerialName("farmhouse")
     FARMHOUSE,
 
-   /* @SerialName("condominium")
+   @SerialName("condominium")
     CONDOMINIUM,
 
     @SerialName("townhouse")
@@ -63,5 +63,5 @@ enum class EstateType {
     BEACH_HOUSE,
 
     @SerialName("cabin")
-    CABIN*/
+    CABIN
 }

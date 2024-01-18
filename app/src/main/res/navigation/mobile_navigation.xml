@@ -3,19 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_add">
+    app:startDestination="@+id/navigation_estateList">
+
+    <fragment
+        android:id="@+id/navigation_estateList"
+        android:name="com.waminiyi.realestatemanager.features.estateslist.EstateListFragment"
+        android:label="Estates"
+        tools:layout="@layout/fragment_estate_list">
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_add"
-        android:name="com.waminiyi.realestatemanager.features.estateslist.EstateListFragment"
+        android:name="com.waminiyi.realestatemanager.features.editestate.EditEstateFragment"
         android:label="@string/title_add"
-        tools:layout="@layout/fragment_estate_list" />
+        tools:layout="@layout/fragment_editestate">
+        <argument
+            android:name="estate_id"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_edit"
-        android:name="com.waminiyi.realestatemanager.features.editestate.EditEstateFragment"
-        android:label="@string/title_edit"
-        tools:layout="@layout/fragment_editestate" />
+        android:id="@+id/navigation_estatedetails"
+        android:name="com.waminiyi.realestatemanager.features.estatedetails.EstateDetailsFragment"
+        android:label="@string/title_filter"
+        tools:layout="@layout/fragment_estate_details" />
 
     <fragment
         android:id="@+id/navigation_filter"

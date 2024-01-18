@@ -6,7 +6,9 @@ import com.waminiyi.realestatemanager.core.database.model.EstateWithDetailsEntit
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import kotlinx.coroutines.flow.Flow
 import java.util.*
+import javax.inject.Singleton
 
+@Singleton
 @Dao
 interface EstateDao {
     @Upsert

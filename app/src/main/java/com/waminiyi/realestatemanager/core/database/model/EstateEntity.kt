@@ -58,6 +58,7 @@ data class EstateEntity(
 
     @ColumnInfo(name = "entry_date")
     val entryDate: Date,
+    //TODO use LocalDate instead of Date ???
 
     @ColumnInfo(name = "sale_date")
     val saleDate: Date? = null,

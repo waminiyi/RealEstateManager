@@ -27,15 +27,6 @@ object TestDataGenerator {
         return AgentEntity(uuid, firstName, lastName, email, phoneNumber, generateRandomURL())
     }
 
-    private fun getRandomFacilities(count: Int): List<Facility> {
-        return (1..count).map {
-            Facility(
-                type = FacilityType.entries.toTypedArray().random(),
-                count = (1..3).random()
-            )
-        }
-    }
-
     fun getRandomImage(ownerId: UUID, isMainPhoto: Boolean): PhotoEntity {
         val uuid = UUID.randomUUID()
         return PhotoEntity(uuid, ownerId, generateRandomURL(), generateRandomLocalPath(), isMainPhoto,getRandomString(facilityAdjectives))

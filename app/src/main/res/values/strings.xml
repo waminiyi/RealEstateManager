@@ -4,4 +4,8 @@
     <string name="title_add">Add</string>
     <string name="title_edit">Edit</string>
     <string name="title_filter">Filter</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="agent_selection">Select an agent</string>
+    <string name="agent_name_placeholder">John D.</string>
 </resources>

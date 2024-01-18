@@ -1,9 +1,11 @@
 package com.waminiyi.realestatemanager.features.editestate.estatetype
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +45,7 @@ class EstateTypeAdapter(
         holder.itemView.setOnClickListener {
 
             if (selectedItem == estateType) {
-                // Already selected, do nothing or handle deselection
+                // Already selected, do nothing
             } else {
                 setCurrentType(estateType)
                 onTypeSelected.invoke(estateType)
@@ -55,9 +57,8 @@ class EstateTypeAdapter(
 
     class EstateTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(estateType: EstateType, isSelected: Boolean) {
-            // Update the UI based on the isSelected state
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.TRANSPARENT)
-            // Set other views accordingly (e.g., text, icons)
+            itemView.findViewById<TextView>(R.id.estateTypeNameTextView).text = estateType.name
         }
     }
 

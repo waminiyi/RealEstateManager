@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -55,9 +56,8 @@ class PoiAdapter(
 
     class PoiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(poi: PointOfInterest, isSelected: Boolean) {
-            // Update the UI based on the isSelected state
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.TRANSPARENT)
-            // Set other views accordingly (e.g., text, icons)
+            itemView.findViewById<TextView>(R.id.poiNameTextView).text = poi.name
         }
     }
 

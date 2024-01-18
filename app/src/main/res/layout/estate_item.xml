@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
+                android:id="@+id/estateItemImageView"
                 android:src="@drawable/estate" />
         </com.google.android.material.card.MaterialCardView>
 

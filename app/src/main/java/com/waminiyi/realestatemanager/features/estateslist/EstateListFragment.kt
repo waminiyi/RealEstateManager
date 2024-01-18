@@ -5,10 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +22,7 @@ import com.waminiyi.realestatemanager.databinding.FragmentEstateListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,6 +32,11 @@ class EstateListFragment : Fragment() {
     private var _binding: FragmentEstateListBinding? = null
 
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,46 +48,64 @@ class EstateListFragment : Fragment() {
         val root: View = binding.root
 
         val recyclerView = binding.recyclerview
-        val adapter = EstateListAdapter()
+        val adapter = EstateListAdapter(onEstateSelected = {
+            navigateToDetailsFragment(it)
+        })
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         val fragmentScope = CoroutineScope(Dispatchers.Main)
 
         fragmentScope.launch {
-            viewModel.uiState.collect { uiState ->
-                when {
-                    uiState.isLoading -> {
-                        Log.d("UISTATE","LOADING")
-                    }
+            viewModel.uiState.onCompletion { Log.d("ESTATELIST-FRagment", "complete") }
+                .collect { uiState ->
+                    Log.d("ESTATELIST-FRagment", uiState.toString())
+                    when {
+                        uiState.isLoading -> {
+                            Log.d("UISTATE", "LOADING")
+                        }
 
-                    uiState.isError -> {
-                        Log.d("UISTATE","ERROR")
-                        binding.errorTv.text=uiState.errorMessage
-                    }
+                        uiState.isError -> {
+                            Log.d("UISTATE", "ERROR")
+                            binding.errorTv.text = uiState.errorMessage
+                        }
 
-                    uiState.estates.isNotEmpty() -> {
-                        Log.d("UISTATE","NOTEMPTY")
-                        adapter.submitList(uiState.estates)
-                    }
+                        uiState.estates.isNotEmpty() -> {
+                            Log.d("UISTATE", "NOTEMPTY")
+                            adapter.submitList(uiState.estates)
+                        }
 
-                    else -> {
-                        Log.d("UISTATE","EMPTY")
+                        else -> {
+                            Log.d("UISTATE", "EMPTY")
+                        }
                     }
                 }
-            }
         }
-
         return root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.removeItem(R.id.navigation_edit)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle the menu selection
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun navigateToDetailsFragment(estateUuid: String) {
+        Toast.makeText(context, "estate with id $estateUuid clicked", Toast.LENGTH_LONG).show()
     }
 }
