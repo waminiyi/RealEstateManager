@@ -10,4 +10,5 @@
     <string name="agent_name_placeholder">John D.</string>
     <string name="estate_saving_error_text_placeholder">Error saving the estate</string>
     <string name="estate_type_placeholder">Estate Type</string>
+    <string name="point_of_interest_placeholder">Point of interest</string>
 </resources>

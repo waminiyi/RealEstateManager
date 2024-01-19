@@ -11,23 +11,23 @@ enum class EstateType {
     @SerialName("apartment")
     APARTMENT,
 
+    @SerialName("bungalow")
+    BUNGALOW,
+
+    @SerialName("castle")
+    CASTLE,
+
+    @SerialName("cottage")
+    COTTAGE,
+
+    @SerialName("chalet")
+    CHALET,
+
     @SerialName("house")
     HOUSE,
 
     @SerialName("villa")
     VILLA,
-
-    @SerialName("cottage")
-    COTTAGE,
-
-    @SerialName("bungalow")
-    BUNGALOW,
-
-    @SerialName("chalet")
-    CHALET,
-
-    @SerialName("castle")
-    CASTLE,
 
     @SerialName("other")
     OTHER,

@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.Agent
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import com.waminiyi.realestatemanager.features.extensions.showAsSelected
+import com.waminiyi.realestatemanager.features.model.asUiEstateType
+import com.waminiyi.realestatemanager.features.model.asUiPointOfInterest
 
 class PoiAdapter(
     private val poiList: List<PointOfInterest>,
@@ -56,8 +60,12 @@ class PoiAdapter(
 
     class PoiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(poi: PointOfInterest, isSelected: Boolean) {
-            itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.TRANSPARENT)
-            itemView.findViewById<TextView>(R.id.poiNameTextView).text = poi.name
+            val imageView: ImageView = itemView.findViewById(R.id.itemPoiImageView)
+            val textView: TextView = itemView.findViewById(R.id.itemPoiNameTextView)
+            textView.text = poi.asUiPointOfInterest(itemView.context).name
+            imageView.setImageResource(poi.asUiPointOfInterest(itemView.context).iconResId)
+            textView.showAsSelected(isSelected)
+            imageView.showAsSelected(isSelected)
         }
     }
 
