@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.features.editestate
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -14,17 +15,31 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.model.AddressComponent
+import com.google.android.libraries.places.api.model.AddressComponents
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.waminiyi.realestatemanager.R
+import com.waminiyi.realestatemanager.core.model.data.Address
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.Location
+import com.waminiyi.realestatemanager.core.model.data.toRawString
+import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
 import com.waminiyi.realestatemanager.databinding.FragmentEditestateBinding
 import com.waminiyi.realestatemanager.features.agentEntities
@@ -35,9 +50,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -50,6 +63,9 @@ class EditEstateFragment : Fragment() {
     private var estateId: String? = null
 
     private val binding get() = _binding!!
+
+    private val startAutocomplete = registerForPlaceSearchCallBack()
+
 
     companion object {
         const val ARG_ESTATE_ID = "estate_id"
@@ -78,6 +94,24 @@ class EditEstateFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        binding.addressTextView.setOnClickListener {
+            launchPlaceAutocompleteActivity()
+        }
+
+
+    }
+
+    private fun launchPlaceAutocompleteActivity() {
+        val fields = listOf(
+            Place.Field.ID,
+            Place.Field.NAME,
+            Place.Field.ADDRESS_COMPONENTS,
+            Place.Field.LAT_LNG
+        )
+
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+            .build(requireContext())
+        startAutocomplete.launch(intent)
     }
 
     private fun updateUi(uiState: EditEstateUiState) {
@@ -111,6 +145,8 @@ class EditEstateFragment : Fragment() {
 
             else -> {
                 binding.entryDateTextView.text = getFormattedDate(uiState.entryDate)
+                binding.saleDateTextView.text = getFormattedDate(uiState.saleDate)
+                binding.addressTextView.text=uiState.address?.toRawString().orEmpty()
 
                 Log.d("UISTATE", uiState.toString())
             }
@@ -288,9 +324,9 @@ class EditEstateFragment : Fragment() {
                         position: Int,
                         id: Long
                     ) {
-                        val status = Status.valueOf(statusOptions[position].uppercase())
-                        viewModel.setStatus(status)
-                        Log.d("NEWSTATUS", status.name)
+                        val estateStatus = EstateStatus.valueOf(statusOptions[position].uppercase())
+                        viewModel.setStatus(estateStatus)
+                        Log.d("NEWSTATUS", estateStatus.name)
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -298,4 +334,24 @@ class EditEstateFragment : Fragment() {
                 }
         }
     }
+
+    private fun registerForPlaceSearchCallBack() =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                if (intent != null) {
+                    val place = Autocomplete.getPlaceFromIntent(intent)
+                    Log.i(
+                        "Place", "Place: ${createAddressFromPlace(place)}"
+                    )
+                    viewModel.setAddress(createAddressFromPlace(place))
+                }
+            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                Log.i("Place", "User canceled autocomplete")
+            }
+        }
+
+
 }

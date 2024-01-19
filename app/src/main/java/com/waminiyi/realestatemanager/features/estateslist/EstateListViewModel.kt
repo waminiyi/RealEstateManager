@@ -9,11 +9,10 @@ import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
 import com.waminiyi.realestatemanager.core.database.model.AddressEntity
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
-import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.Location
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.features.agentEntities
 import com.waminiyi.realestatemanager.features.estateEntities
 import com.waminiyi.realestatemanager.features.mainPhotoEntities
@@ -100,7 +99,7 @@ class EstateListViewModel @Inject constructor(
                 description = "Beautiful Apartment",
                 addressEntity = address1,
                 agentId = UUID.fromString("39bd0f42-d6a1-4968-8971-07b27b08ee95"),
-                status = Status.AVAILABLE,
+                estateStatus = EstateStatus.AVAILABLE,
                 entryDate = Date(System.currentTimeMillis())
 
 
@@ -114,7 +113,7 @@ class EstateListViewModel @Inject constructor(
                 description = "Spacious House",
                 addressEntity = address2,
                 agentId = UUID.fromString("39bd0f42-d6a1-4968-8971-07b27b08ee95"),
-                status = Status.AVAILABLE,
+                estateStatus = EstateStatus.AVAILABLE,
                 entryDate = Date(System.currentTimeMillis())
             ),
         )

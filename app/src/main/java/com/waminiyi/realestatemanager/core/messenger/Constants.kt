@@ -13,6 +13,7 @@ object Constants {
     const val SERVER_KEY = "ENTER SERVER KEY HERE"
     const val CONTENT_TYPE = "application/json"
     const val SCOPE = "https://www.googleapis.com/auth/firebase.messaging"
+    const val  GOOGLE_PLACES_API_KEY="GOOGLE_PLACES_API_KEY"
 }
 
 @Throws(IOException::class)

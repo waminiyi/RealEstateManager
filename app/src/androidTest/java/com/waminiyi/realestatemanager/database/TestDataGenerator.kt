@@ -38,7 +38,7 @@ object TestDataGenerator {
     }
 
     fun getRandomEstate(estateUuid: UUID = UUID.randomUUID(), agentUuId: UUID): EstateEntity {
-        val status = Status.entries.toTypedArray().random()
+        val estateStatus = EstateStatus.entries.toTypedArray().random()
 
         return EstateEntity(
             estateUuid = estateUuid,
@@ -48,9 +48,9 @@ object TestDataGenerator {
             roomsCount = (2..10).random(),
             description = getRandomString(adjectives),
             addressEntity = getRandomAddress(),
-            status = status,
+            estateStatus = estateStatus,
             entryDate = getRandomDate(),
-            saleDate = if (status == Status.SOLD) getRandomDate() else null,
+            saleDate = if (estateStatus == EstateStatus.SOLD) getRandomDate() else null,
             agentId = agentUuId,
             poiList = getRandomPoi((0..8).random()),
         )

@@ -1,10 +1,8 @@
 package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.Embedded
-import androidx.room.Junction
 import androidx.room.Relation
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
-import com.waminiyi.realestatemanager.core.model.data.Facility
 
 /**
  * Class representing an estate with its associated details.
@@ -40,7 +38,7 @@ data class EstateWithDetailsEntity(
         photos = this.images.map { it.asPhoto() },
         address = this.estateEntity.addressEntity.asAddress(),
         nearbyPointsOfInterest = this.estateEntity.poiList,
-        status = this.estateEntity.status,
+        estateStatus = this.estateEntity.estateStatus,
         entryDate = this.estateEntity.entryDate,
         saleDate = this.estateEntity.saleDate,
         agent = this.agentEntity.asAgent()

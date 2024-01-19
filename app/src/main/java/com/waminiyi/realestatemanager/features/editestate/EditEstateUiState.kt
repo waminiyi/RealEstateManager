@@ -6,7 +6,7 @@ import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 import com.waminiyi.realestatemanager.core.model.data.Photo
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import java.lang.NullPointerException
 import java.util.Date
 import java.util.UUID
@@ -22,7 +22,7 @@ data class EditEstateUiState(
     val additionalPhotos: List<Photo> = emptyList(),
     val address: Address? = null,
     val nearbyPointsOfInterest: List<PointOfInterest> = emptyList(),
-    val status: Status? = null,
+    val estateStatus: EstateStatus? = null,
     val entryDate: Date? = null,
     val saleDate: Date? = null,
     val agent: Agent? = null,
@@ -50,7 +50,7 @@ data class EditEstateUiState(
             photos = photos,
             address = address ?: throw NullPointerException("Address can not be null"),
             nearbyPointsOfInterest = nearbyPointsOfInterest,
-            status = status ?: throw NullPointerException("Status can not be null"),
+            estateStatus = estateStatus ?: throw NullPointerException("Status can not be null"),
             entryDate = entryDate ?: throw NullPointerException("Entry date can not be null"),
             saleDate = saleDate,
             agent = agent ?: throw NullPointerException("Agent can not be null"),

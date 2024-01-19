@@ -3,7 +3,7 @@ package com.waminiyi.realestatemanager.database.dao
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -78,7 +78,7 @@ class EstateDaoTest {
         assertEquals(image2, estatesWithImages[estate2]!!.first())
 
         // When: Updating existing estate
-        val updatedEstate = estate1.copy(status = Status.SOLD)
+        val updatedEstate = estate1.copy(estateStatus = EstateStatus.SOLD)
         estateDao.upsertEstate(updatedEstate)
 
         // Then: The database should contain two estates and the target estate should be up to date

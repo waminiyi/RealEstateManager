@@ -13,7 +13,7 @@ import java.util.*
  * @property area The area of the estate in square meters.
  * @property description The description of the estate.
  * @property addressEntity The address details of the estate.
- * @property status The status of the estate (AVAILABLE, SOLD, etc.).
+ * @property estateStatus The status of the estate (AVAILABLE, SOLD, etc.).
  * @property entryDate The date when the estate was listed.
  * @property saleDate The date when the estate was sold (can be null if not sold yet).
  * @property agentId The unique identifier (UUID) of the agent associated with the estate.
@@ -54,7 +54,7 @@ data class EstateEntity(
     val addressEntity: AddressEntity,
 
     @ColumnInfo(name = "status")
-    val status: Status,
+    val estateStatus: EstateStatus,
 
     @ColumnInfo(name = "entry_date")
     val entryDate: Date,
@@ -88,7 +88,7 @@ fun EstateWithDetails.asEstateEntity() = EstateEntity(
     roomsCount = this.roomsCount,
     description = this.fullDescription,
     addressEntity = this.address.asAddressEntity(),
-    status = this.status,
+    estateStatus = this.estateStatus,
     entryDate = this.entryDate,
     saleDate = this.saleDate,
     agentId = UUID.fromString(this.agent.uuid),

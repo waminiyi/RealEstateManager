@@ -87,12 +87,13 @@
                     android:id="@+id/imageRecyclerView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     tools:listitem="@layout/photo_item" />
 
                 <Button
                     android:id="@+id/addMorePhotoButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@id/imageRecyclerView"
@@ -310,6 +311,7 @@
                     android:text="20 Crispy road, Atlanta" />
 
             </RelativeLayout>
+
 
             <View
                 android:layout_width="match_parent"

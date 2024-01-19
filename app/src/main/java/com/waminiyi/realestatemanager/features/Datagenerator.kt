@@ -7,7 +7,7 @@ import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.Location
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -195,11 +195,11 @@ fun generatePoiList(index: Int): List<PointOfInterest> {
     )
 }
 
-fun generateEstateStatus(index: Int): Status {
+fun generateEstateStatus(index: Int): EstateStatus {
     return if (index % 2 == 0) {
-        Status.AVAILABLE
+        EstateStatus.AVAILABLE
     } else {
-        Status.SOLD
+        EstateStatus.SOLD
     }
 }
 
@@ -219,7 +219,7 @@ fun generateDatePairs(): List<Pair<Date, Date?>> {
 
     for (i in entryDates.indices) {
         val entryDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(entryDates[i])
-        val saleDate = if (generateEstateStatus(i) == Status.SOLD) {
+        val saleDate = if (generateEstateStatus(i) == EstateStatus.SOLD) {
             // Calculate sale date as one month after entry date
             val calendar = Calendar.getInstance()
             calendar.time = entryDate as Date
@@ -247,7 +247,7 @@ val estateEntities = estateUuidList.mapIndexed { index, uuid ->
         roomsCount = (2 + index % 3),
         description = "A beautiful $type in a prime location.",
         addressEntity = addresses[index],
-        status = generateEstateStatus(index),
+        estateStatus = generateEstateStatus(index),
         entryDate = generateDatePairs()[index].first,
         saleDate = generateDatePairs()[index].second,
         agentId = agentId,

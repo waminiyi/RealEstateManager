@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class Status {
+enum class EstateStatus {
     @SerialName("available")
     AVAILABLE,
 

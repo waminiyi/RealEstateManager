@@ -13,7 +13,7 @@ import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.Photo
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -86,8 +86,8 @@ class EditEstateViewModel @Inject constructor(
         _uiState.update { it.copy(nearbyPointsOfInterest = nearbyPointsOfInterest) }
     }
 
-    fun setStatus(status: Status?) {
-        _uiState.update { it.copy(status = status) }
+    fun setStatus(estateStatus: EstateStatus?) {
+        _uiState.update { it.copy(estateStatus = estateStatus) }
     }
 
     fun setEntryDate(entryDate: Date?) {
@@ -149,7 +149,7 @@ class EditEstateViewModel @Inject constructor(
                         additionalPhotos = estate.photos.filter { !it.isMain },
                         address = estate.address,
                         nearbyPointsOfInterest = estate.nearbyPointsOfInterest,
-                        status = estate.status,
+                        estateStatus = estate.estateStatus,
                         entryDate = estate.entryDate,
                         saleDate = estate.saleDate,
                         agent = estate.agent,

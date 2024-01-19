@@ -4,7 +4,7 @@ import com.waminiyi.realestatemanager.core.model.data.Address
 import com.waminiyi.realestatemanager.core.model.data.Agent
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.Photo
-import com.waminiyi.realestatemanager.core.model.data.Status
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import java.util.Date
 
 class Validator {
@@ -20,7 +20,7 @@ class Validator {
                     validateMainPhoto(uiState.mainPhoto).successful &&
                     validateMainPhotoDescription(uiState.mainPhotoDescription).successful &&
                     validateEntryDate(uiState.entryDate).successful &&
-                    validateStatus(uiState.status).successful &&
+                    validateStatus(uiState.estateStatus).successful &&
                     validateType(uiState.type).successful
         )
     }
@@ -58,8 +58,8 @@ class Validator {
         return ValidationResult(successful = address != null)
     }
 
-    private fun validateStatus(status: Status?): ValidationResult {
-        return ValidationResult(successful = status != null)
+    private fun validateStatus(estateStatus: EstateStatus?): ValidationResult {
+        return ValidationResult(successful = estateStatus != null)
     }
 
     private fun validateEntryDate(entryDate: Date?): ValidationResult {
