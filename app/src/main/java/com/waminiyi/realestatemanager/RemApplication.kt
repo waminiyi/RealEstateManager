@@ -25,9 +25,7 @@ class RemApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         //Sync.initialize(this)
-        val configProperties = PropertiesUtil().loadProperties()
-        val apiKey = configProperties.getProperty(GOOGLE_PLACES_API_KEY)
-        Places.initialize(applicationContext, apiKey)
+        Places.initialize(applicationContext, BuildConfig.GOOGLE_PLACES_API_KEY)
     }
 
     override val workManagerConfiguration: Configuration
