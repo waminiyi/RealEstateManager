@@ -49,7 +49,7 @@ class AgentAdapter(
             if (selectedItem == agent) {
                 // Already selected
             } else {
-                setCurrentAgent(agent)
+                //setCurrentAgent(agent)
                 onAgentSelected.invoke(agent)
             }
         }

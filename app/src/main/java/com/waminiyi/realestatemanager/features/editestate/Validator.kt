@@ -17,7 +17,7 @@ class Validator {
                     validateRoomsCount(uiState.roomsCount).successful &&
                     validateAgent(uiState.agent).successful &&
                     validateFullDescription(uiState.fullDescription).successful &&
-                    validateMainPhoto(uiState.mainPhoto).successful &&
+                    validateMainPhoto(uiState.photos).successful &&
                     validateMainPhotoDescription(uiState.mainPhotoDescription).successful &&
                     validateEntryDate(uiState.entryDate).successful &&
                     validateStatus(uiState.estateStatus).successful &&
@@ -29,16 +29,16 @@ class Validator {
         return ValidationResult(successful = type != null)
     }
 
-    private fun validatePrice(price: Int): ValidationResult {
-        return ValidationResult(successful = price > 0)
+    private fun validatePrice(price: Int?): ValidationResult {
+        return ValidationResult(successful = price != null && price > 0)
     }
 
-    private fun validateArea(area: Float): ValidationResult {
-        return ValidationResult(successful = area > 0)
+    private fun validateArea(area: Float?): ValidationResult {
+        return ValidationResult(successful = area != null && area > 0)
     }
 
-    private fun validateRoomsCount(roomsCount: Int): ValidationResult {
-        return ValidationResult(successful = roomsCount > 0)
+    private fun validateRoomsCount(roomsCount: Int?): ValidationResult {
+        return ValidationResult(successful = roomsCount != null && roomsCount > 0)
     }
 
     private fun validateFullDescription(fullDescription: String): ValidationResult {
@@ -49,8 +49,8 @@ class Validator {
         return ValidationResult(successful = description.isNotBlank())
     }
 
-    private fun validateMainPhoto(mainPhoto: Photo?): ValidationResult {
-        return ValidationResult(successful = mainPhoto != null)
+    private fun validateMainPhoto(photos: List<Photo>): ValidationResult {
+        return ValidationResult(successful = photos.isNotEmpty())
     }
 
 

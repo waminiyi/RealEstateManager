@@ -51,7 +51,7 @@ class EstateTypeAdapter(
             if (selectedItem == estateType) {
                 // Already selected, do nothing
             } else {
-                setCurrentType(estateType)
+                //setCurrentType(estateType)
                 onTypeSelected.invoke(estateType)
             }
         }

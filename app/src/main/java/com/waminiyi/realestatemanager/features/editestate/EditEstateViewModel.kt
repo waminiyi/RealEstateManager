@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.features.editestate
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,13 +13,16 @@ import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.Photo
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Collections
 import java.util.Date
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,77 +31,122 @@ class EditEstateViewModel @Inject constructor(
     private val addEstateUseCase: AddEstateUseCase,
     private val estateRepository: EstateRepository
 ) : ViewModel() {
-    private val estateId: String? = savedStateHandle["estate_id"]
+    private var estateId: String? = savedStateHandle["estate_id"]
+    private val photosToDelete = mutableListOf<String>()
+    private var currentEstate: EstateWithDetails? = null
 
     private val _uiState = MutableStateFlow(EditEstateUiState())
     val uiState: StateFlow<EditEstateUiState> = _uiState.asStateFlow()
 
     init {
-        if (estateId != null) {
-            loadEstate(estateId)
+        estateId?.let { loadEstate(it) }
+        if (estateId == null) {
+            estateId = UUID.randomUUID().toString()
         }
     }
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
-    }
-    val text: LiveData<String> = _text
-
-
     fun setType(type: EstateType) {
         _uiState.update { it.copy(type = type) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setPrice(price: Int) {
+    fun setPrice(price: Int?) {
         _uiState.update { it.copy(price = price) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setArea(area: Float) {
+    fun setArea(area: Float?) {
         _uiState.update { it.copy(area = area) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setRoomsCount(roomsCount: Int) {
+    fun setRoomsCount(roomsCount: Int?) {
         _uiState.update { it.copy(roomsCount = roomsCount) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setFullDescription(fullDescription: String) {
         _uiState.update { it.copy(fullDescription = fullDescription) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setMainPhoto(mainPhoto: Photo?) {
-        _uiState.update { it.copy(mainPhoto = mainPhoto) }
+    fun setAsMainPhoto(photo: Photo?) {
+        _uiState.update {
+            //TODO: add logic for changing the booleans isMain value and photo description
+            val photoMutableList = mutableListOf<Photo>()
+            photoMutableList.addAll(it.photos)
+            photoMutableList.swap(0, it.photos.indexOf(photo))
+            it.copy(photos = photoMutableList)
+        }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setMainPhotoDescription(mainPhotoDescription: String) {
         _uiState.update { it.copy(mainPhotoDescription = mainPhotoDescription) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setAdditionalPhotos(additionalPhotos: List<Photo>) {
-        _uiState.update { it.copy(additionalPhotos = additionalPhotos) }
+    fun addPhotos(addedPhotosUri: List<Uri>) {
+        estateId?.let { estateId ->
+            val photoMutableList = mutableListOf<Photo>()
+            photoMutableList.addAll(uiState.value.photos)
+            addedPhotosUri.map {
+                val photo = Photo(
+                    uuid = UUID.randomUUID().toString(),
+                    estateUuid = estateId,
+                    localPath = it.toString()
+                )
+                photoMutableList.add(photo)
+            }
+            _uiState.update { it.copy(photos = photoMutableList) }
+            _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
+        }
+    }
+
+    fun removePhoto(removedPhoto: Photo) {
+        photosToDelete.add(removedPhoto.estateUuid)
+        _uiState.update {
+            it.copy(photos = it.photos.minus(removedPhoto))
+        }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
+    }
+
+    fun swapPhotoItems(fromPosition: Int, toPosition: Int) {
+        val photoMutableList = mutableListOf<Photo>()
+        photoMutableList.addAll(uiState.value.photos)
+        Collections.swap(photoMutableList, fromPosition, toPosition)
+        _uiState.update { it.copy(photos = photoMutableList) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setAddress(address: Address?) {
         _uiState.update { it.copy(address = address) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setPoiList(nearbyPointsOfInterest: List<PointOfInterest>) {
         _uiState.update { it.copy(nearbyPointsOfInterest = nearbyPointsOfInterest) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setStatus(estateStatus: EstateStatus?) {
+    fun setStatus(estateStatus: EstateStatus) {
         _uiState.update { it.copy(estateStatus = estateStatus) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setEntryDate(entryDate: Date?) {
         _uiState.update { it.copy(entryDate = entryDate) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setSaleDate(saleDate: Date?) {
         _uiState.update { it.copy(saleDate = saleDate) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setAgent(agent: Agent?) {
         _uiState.update { it.copy(agent = agent) }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun saveEstate() {
@@ -135,6 +182,7 @@ class EditEstateViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false) }
             } else {
                 val estate = result.data
+                currentEstate = estate
                 _uiState.update { editEstateUiState ->
                     editEstateUiState.copy(
                         isLoading = false,
@@ -143,10 +191,8 @@ class EditEstateViewModel @Inject constructor(
                         area = estate.area,
                         roomsCount = estate.roomsCount,
                         fullDescription = estate.fullDescription,
-                        // Assuming the Photo, Address, PointOfInterest, Status, Date, and Agent classes are defined
-                        mainPhoto = estate.photos.first { it.isMain },
                         mainPhotoDescription = estate.photos.first { it.isMain }.description.orEmpty(),
-                        additionalPhotos = estate.photos.filter { !it.isMain },
+                        photos = estate.photos,
                         address = estate.address,
                         nearbyPointsOfInterest = estate.nearbyPointsOfInterest,
                         estateStatus = estate.estateStatus,
@@ -159,4 +205,30 @@ class EditEstateViewModel @Inject constructor(
             }
         }
     }
+
+    fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
+        val tmp = this[index1]
+        this[index1] = this[index2]
+        this[index2] = tmp
+    }
+
+    private val hasChangesComparedToInitialEstate: Boolean
+        get() {
+
+            return currentEstate?.let { currentEstate ->
+                uiState.value.type != currentEstate.type &&
+                        uiState.value.price != currentEstate.price &&
+                        uiState.value.area != currentEstate.area &&
+                        uiState.value.roomsCount != currentEstate.roomsCount &&
+                        uiState.value.fullDescription != currentEstate.fullDescription &&
+                        uiState.value.mainPhotoDescription != currentEstate.photos.first { it.isMain }.description.orEmpty() &&
+                        uiState.value.photos != currentEstate.photos &&
+                        uiState.value.address != currentEstate.address &&
+                        uiState.value.nearbyPointsOfInterest != currentEstate.nearbyPointsOfInterest &&
+                        uiState.value.estateStatus != currentEstate.estateStatus &&
+                        uiState.value.entryDate != currentEstate.entryDate &&
+                        uiState.value.saleDate != currentEstate.saleDate &&
+                        uiState.value.agent != currentEstate.agent
+            } ?: uiState.value.isNotDefaultState()
+        }
 }

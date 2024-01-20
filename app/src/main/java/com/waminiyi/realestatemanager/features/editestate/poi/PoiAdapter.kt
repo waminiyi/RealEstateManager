@@ -21,11 +21,11 @@ class PoiAdapter(
     private val onPoiSelected: (List<PointOfInterest>) -> Unit
 ) : ListAdapter<PointOfInterest, PoiAdapter.PoiViewHolder>(PoiComparator()) {
 
-    private var selectedItems = mutableListOf<PointOfInterest>()
+    private var selectedItems = listOf<PointOfInterest>()
 
-    fun setPoiList(currentList: List<PointOfInterest>) {
+    fun setSelectedPoiList(currentList: List<PointOfInterest>) {
 
-        this.selectedItems = currentList.toMutableList()
+        this.selectedItems = currentList
         selectedItems.forEach { poi ->
             val position = poiList.indexOf(poi)
             if (position != -1) {
@@ -45,13 +45,14 @@ class PoiAdapter(
         holder.bind(poi, selectedItems.contains(poi))
 
         holder.itemView.setOnClickListener {
-
-            if (selectedItems.contains(poi)) {
-                selectedItems.remove(poi)
+            val newSelectedList = mutableListOf<PointOfInterest>()
+            newSelectedList.addAll(selectedItems)
+            if (newSelectedList.contains(poi)) {
+                newSelectedList.remove(poi)
             } else {
-                selectedItems.add(poi)
+                newSelectedList.add(poi)
             }
-            onPoiSelected.invoke(selectedItems)
+            onPoiSelected.invoke(newSelectedList)
             notifyItemChanged(position)
         }
     }
