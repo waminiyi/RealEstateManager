@@ -51,49 +51,37 @@ class HomeActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.navigation_add -> {
-                        // Handle the click on the "Add" menu item
-                        // Example: navigate to the AddFragment
                         navigateToAddFragment()
                         return true
                     }
 
                     R.id.navigation_edit -> {
-                        // Handle the click on the "Edit" menu item
-                        // Example: navigate to the EditFragment
                         showDialog("edit")
                         navigateToEditFragment()
                         return true
                     }
 
                     R.id.navigation_filter -> {
-                        // Handle the click on the "Filter" menu item
-                        // Example: show a filter dialog
                         showDialog("Filter")
                         return true
                     }
 
                     R.id.currency_dollars -> {
-                        // Handle the click on the "Dollars" sub-menu item
-                        // Example: set the currency to Dollars
                         setCurrencyToDollars()
                         return true
                     }
 
                     R.id.currency_euro -> {
-                        // Handle the click on the "Euro" sub-menu item
-                        // Example: set the currency to Euro
                         setCurrencyToEuro()
                         return true
                     }
 
                     R.id.navigation_settings -> {
-                        // Handle the click on the "Settings" menu item
-                        // Example: navigate to the SettingsFragment
                         navigateToSettingsFragment()
-                        return true
+                        return false
                     }
 
-                    else -> return true
+                    else -> return false
                 }
             }
         })

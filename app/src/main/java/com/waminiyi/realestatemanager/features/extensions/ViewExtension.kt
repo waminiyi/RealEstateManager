@@ -2,7 +2,10 @@ package com.waminiyi.realestatemanager.features.extensions
 
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -44,4 +47,24 @@ fun TextView.showAsEstateType(estateType: EstateType) {
 
     this.setCompoundDrawablesWithIntrinsicBounds(null, estateTypeIcon, null, null)
     this.text = estateType.asUiEstateType(context).name
+}
+
+fun EditText.afterTextChanged(handleNewValue: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(
+            s: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            val enteredText = s.toString().trim()
+            handleNewValue(enteredText)
+        }
+    })
 }
