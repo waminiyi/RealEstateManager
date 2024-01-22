@@ -26,6 +26,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.model.Place
@@ -196,7 +197,17 @@ class EditEstateFragment : Fragment() {
             }
         )
 
+        //TODO: avoid this raising multiple time
         if (uiState.isEstateSaved){
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Estate saved")
+                .setMessage("Your estate has been save")
+                .setPositiveButton("OK") { dialog, which ->
+                    dialog.dismiss()
+                    findNavController().navigateUp()
+                }
+                .show()
+
             Toast.makeText(requireContext(),"saved",Toast.LENGTH_LONG).show()
         }
 

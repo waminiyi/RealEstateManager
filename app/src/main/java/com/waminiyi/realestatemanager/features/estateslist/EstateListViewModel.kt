@@ -58,64 +58,14 @@ class EstateListViewModel @Inject constructor(
     private fun addSampleEstates() {
         viewModelScope.launch {
             agentEntities.forEach { agentEntity ->
-                agentDao.upsertAgent(agentEntity).also { Log.d("WRITETODB", it.toString()) }
+                agentDao.upsertAgent(agentEntity)
             }
             estateEntities.forEach { estateEntity ->
-                estateDao.upsertEstate(estateEntity).also { Log.d("WRITETODB", it.toString()) }
+                estateDao.upsertEstate(estateEntity)
             }
             mainPhotoEntities.forEach { photoEntity ->
-                photoDao.upsertPhoto(photoEntity).also { Log.d("WRITETODB", it.toString()) }
+                photoDao.upsertPhoto(photoEntity)
             }
         }
-    }
-
-    private fun getInitialEstates(): List<EstateEntity> {
-
-        val address1 = AddressEntity(
-            streetNumber = 123,
-            streetName = "Main Street",
-            city = "Cityville",
-            state = "Stateville",
-            postalCode = 12345,
-            location = Location(latitude = 40.7128, longitude = -74.0060)
-        )
-
-        val address2 = AddressEntity(
-            streetNumber = 456,
-            streetName = "Broadway",
-            city = "Metro City",
-            state = "Stateville",
-            postalCode = 67890,
-            location = Location(latitude = 34.0522, longitude = -118.2437)
-        )
-//TODO (provide a list of uuid to avoid creating estates again and again)
-        return listOf(
-            EstateEntity(
-                estateUuid = UUID.randomUUID(),
-                type = EstateType.APARTMENT,
-                price = 100000,
-                area = 80.0f,
-                roomsCount = 4,
-                description = "Beautiful Apartment",
-                addressEntity = address1,
-                agentId = UUID.fromString("39bd0f42-d6a1-4968-8971-07b27b08ee95"),
-                estateStatus = EstateStatus.AVAILABLE,
-                entryDate = Date(System.currentTimeMillis())
-
-
-            ),
-            EstateEntity(
-                estateUuid = UUID.randomUUID(),
-                type = EstateType.HOUSE,
-                price = 200000,
-                area = 150.0f,
-                roomsCount = 6,
-                description = "Spacious House",
-                addressEntity = address2,
-                agentId = UUID.fromString("39bd0f42-d6a1-4968-8971-07b27b08ee95"),
-                estateStatus = EstateStatus.AVAILABLE,
-                entryDate = Date(System.currentTimeMillis())
-            ),
-        )
     }
 }

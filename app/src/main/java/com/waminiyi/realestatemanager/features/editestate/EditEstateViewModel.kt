@@ -9,6 +9,10 @@ import com.waminiyi.realestatemanager.core.data.repository.DefaultMediaFileRepos
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.data.repository.MediaFileRepository
 import com.waminiyi.realestatemanager.core.data.repository.PhotoRepository
+import com.waminiyi.realestatemanager.core.database.dao.EstateDao
+import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
+import com.waminiyi.realestatemanager.core.database.model.AddressEntity
+import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.domain.usecases.AddEstateUseCase
 import com.waminiyi.realestatemanager.core.model.data.Address
 import com.waminiyi.realestatemanager.core.model.data.Agent
@@ -18,6 +22,9 @@ import com.waminiyi.realestatemanager.core.model.data.Photo
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.data.Location
+import com.waminiyi.realestatemanager.features.estateEntities
+import com.waminiyi.realestatemanager.features.mainPhotoEntities
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +42,9 @@ class EditEstateViewModel @Inject constructor(
     private val addEstateUseCase: AddEstateUseCase,
     private val estateRepository: EstateRepository,
     private val photoRepository: PhotoRepository,
-    private val mediaFileRepository: MediaFileRepository
+    private val mediaFileRepository: MediaFileRepository,
+    private val estateDao: EstateDao,
+    private val photoDao: PhotoDao
 ) : ViewModel() {
     private var estateId: String? = savedStateHandle["estate_id"]
     private val photosToDelete = mutableListOf<String>()
@@ -182,6 +191,15 @@ class EditEstateViewModel @Inject constructor(
                     _uiState.value.asEstateWithDetails(estateId)
                         .also { Log.d("EstateTosave", it.toString()) }
                 )
+                /*   val estate = estateEntities.first()
+                       .copy(estateUuid = UUID.randomUUID(), poiList = emptyList())
+                   estateDao.upsertEstate(
+                       estate
+                   )
+                   photoDao.upsertPhoto(
+                       mainPhotoEntities.first()
+                           .copy(photoUuid = UUID.randomUUID(), estateUuid = estate.estateUuid)
+                   )*/
                 _uiState.update { it.copy(isEstateSaved = true) }
 
             } catch (e: Exception) {
@@ -296,6 +314,24 @@ class EditEstateViewModel @Inject constructor(
                 )
             }
             return false
+        } else {
+            _uiState.update {
+                it.copy(
+                    typeError = null,
+                    priceError = null,
+                    areaError = null,
+                    addressError = null,
+                    roomsCountError = null,
+                    agentError = null,
+                    fullDescriptionError = null,
+                    mainPhotoDescriptionError = null,
+                    photosError = null,
+                    entryDateError = null,
+                    hasSavingError = false,
+                    savingError = null
+                )
+            }
+
         }
         return true
     }

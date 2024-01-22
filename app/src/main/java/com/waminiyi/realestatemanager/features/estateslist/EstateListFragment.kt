@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.databinding.FragmentEstateListBinding
@@ -57,39 +58,41 @@ class EstateListFragment : Fragment() {
         val fragmentScope = CoroutineScope(Dispatchers.Main)
 
         fragmentScope.launch {
-            viewModel.uiState.onCompletion {
-                Log.d("ESTATELIST-FRagment", "complete")
-            }
-                .collect { uiState ->
-                    Log.d("ESTATELIST-FRagment", uiState.toString())
-                    when {
-                        uiState.isLoading -> {
-                            binding.recyclerview.visibility = View.GONE
-                            binding.estateListCircularProgressBar.visibility = View.VISIBLE
-                            binding.estateListErrorTextView.visibility = View.GONE
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.uiState.onCompletion {
+                    Log.d("ESTATELIST-FRagment", "complete")
+                }
+                    .collect { uiState ->
+                        Log.d("ESTATELIST-FRagment", uiState.toString())
+                        when {
+                            uiState.isLoading -> {
+                                binding.recyclerview.visibility = View.GONE
+                                binding.estateListCircularProgressBar.visibility = View.VISIBLE
+                                binding.estateListErrorTextView.visibility = View.GONE
 
-                            Log.d("UISTATE", "LOADING")
-                        }
+                                Log.d("UISTATE", "LOADING")
+                            }
 
-                        uiState.isError -> {
-                            binding.recyclerview.visibility = View.GONE
-                            binding.estateListCircularProgressBar.visibility = View.GONE
-                            binding.estateListErrorTextView.visibility = View.VISIBLE
-                            binding.estateListErrorTextView.text = uiState.errorMessage
-                        }
+                            uiState.isError -> {
+                                binding.recyclerview.visibility = View.GONE
+                                binding.estateListCircularProgressBar.visibility = View.GONE
+                                binding.estateListErrorTextView.visibility = View.VISIBLE
+                                binding.estateListErrorTextView.text = uiState.errorMessage
+                            }
 
-                        uiState.estates.isNotEmpty() -> {
-                            binding.recyclerview.visibility = View.VISIBLE
-                            binding.estateListCircularProgressBar.visibility = View.GONE
-                            binding.estateListErrorTextView.visibility = View.GONE
-                            adapter.submitList(uiState.estates)
-                        }
+                            uiState.estates.isNotEmpty() -> {
+                                binding.recyclerview.visibility = View.VISIBLE
+                                binding.estateListCircularProgressBar.visibility = View.GONE
+                                binding.estateListErrorTextView.visibility = View.GONE
+                                adapter.submitList(uiState.estates)
+                            }
 
-                        else -> {
-                            Log.d("UISTATE", "EMPTY")
+                            else -> {
+                                Log.d("UISTATE", "EMPTY")
+                            }
                         }
                     }
-                }
+            }
         }
         return root
     }
