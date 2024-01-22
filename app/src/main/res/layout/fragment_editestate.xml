@@ -26,65 +26,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="260dp"
-                 android:gravity="center">
-
-                 <TextView
-                     android:id="@+id/coverPhotoLabel"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="top|start"
-                     android:layout_margin="12dp"
-                     android:background="@drawable/round_rectangle_background"
-                     android:elevation="20dp"
-                     android:padding="4dp"
-                     android:text="Cover photo" />
-
-                 <com.google.android.material.card.MaterialCardView
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:src="@drawable/estate"
-                     app:cardCornerRadius="0dp"
-                     app:cardElevation="0dp">
-
-                     <ImageView
-                         android:id="@+id/mainPhotoImageView"
-                         android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         android:scaleType="centerCrop"
-                         android:src="@drawable/estate" />
-
-                     <ImageButton
-                         android:id="@+id/deleteMainPhotoButton"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_gravity="top|end"
-                         android:layout_margin="12dp"
-                         android:background="@drawable/circular_background"
-                         android:padding="4dp"
-                         android:src="@drawable/ic_delete" />
-                 </com.google.android.material.card.MaterialCardView>
-
-                 <Button
-                     android:id="@+id/addMainPhotoButton"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_centerInParent="true"
-                     android:text="Add photos"
-                     android:textAllCaps="false"
-                     app:icon="@drawable/ic_add" />
-
-             </RelativeLayout>-->
-
-            <ScrollView
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     android:padding="8dp">
 
@@ -94,17 +43,35 @@
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/photo_item" />
 
-                    <Button
-                        android:id="@+id/addPhotoButton"
-                        android:layout_width="140dp"
-                        android:layout_height="140dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Add more"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_add" />
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/addPhotoButton"
+                            android:src="@drawable/ic_add_a_photo"
+                            android:textAllCaps="false"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:layout_margin="4dp"
+                            android:elevation="4dp"
+                            app:cardCornerRadius="8dp"
+                            app:tint="#F44336" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/photoErrorTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="#6E0404" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
-            </ScrollView>
+            </HorizontalScrollView>
 
 
             <View
@@ -112,25 +79,25 @@
                 android:layout_height="8dp"
                 android:background="#C3BBBB" />
 
-            <LinearLayout
-                android:id="@+id/aboutLayout"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/aboutTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_margin="16dp"
+                android:hint="About"
+                app:counterEnabled="true"
+                app:counterMaxLength="250"
+                app:errorEnabled="true"
+                app:helperText="Briefly describe the main photo"
+                app:helperTextEnabled="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="About" />
-
-                <EditText
-                    android:id="@+id/aboutEditText"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/aboutTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
-
-            </LinearLayout>
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -144,7 +111,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/typeLabelTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -166,127 +133,72 @@
                 android:layout_height="1dp"
                 android:background="#C3BBBB" />
 
-            <TextView
-                android:id="@+id/areaLabelTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/areaTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Area" />
+                android:layout_margin="16dp"
+                android:hint="Area"
+                app:errorEnabled="true"
+                app:suffixText="m²">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="16dp">
-
-                <EditText
-                    android:id="@+id/areaEditText"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/areaTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/areaTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:drawablePadding="8dp"
-                    android:text="m2" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C3BBBB" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Number of rooms" />
-
-            <RelativeLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/roomsCountTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="16dp">
+                android:layout_margin="16dp"
+                android:hint="Number of rooms"
+                app:errorEnabled="true"
+                app:suffixText="room(s)">
 
-                <EditText
-                    android:id="@+id/roomCountEditText"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/roomsCountTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/roomCountLabelTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:drawablePadding="8dp"
-                    android:text="room(s)" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C3BBBB" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Price" />
-
-            <RelativeLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/priceTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="16dp">
+                android:layout_margin="16dp"
+                android:hint="Price"
+                app:errorEnabled="true"
+                app:suffixText="$">
 
-                <EditText
-                    android:id="@+id/priceEditText"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/priceTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/currencyTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="$" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C3BBBB" />
-
-            <LinearLayout
-                android:id="@+id/descriptionLayout"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/descriptionTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_margin="16dp"
+                android:hint="Description"
+                app:errorEnabled="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Description" />
-
-                <EditText
-                    android:id="@+id/descriptionEditText"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/descriptionTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
-
-            </LinearLayout>
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -300,13 +212,14 @@
                 android:gravity="center_vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/addressLabelTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:text="Address" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/addressTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -328,7 +241,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
@@ -354,7 +267,7 @@
                 android:gravity="center_vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -381,13 +294,14 @@
                 android:gravity="center_vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/entryDateLabelTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:text="Entry date" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/entryDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -408,13 +322,13 @@
                 android:gravity="center_vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:text="Sale date" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/saleDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -435,9 +349,10 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
+                    android:id="@+id/agentLabel"
                     android:layout_height="wrap_content"
                     android:text="@string/agent_selection" />
 
@@ -455,18 +370,11 @@
                 android:layout_height="1dp"
                 android:background="#C3BBBB" />
 
-            <TextView
-                android:id="@+id/estateSavingErrorTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:text="@string/estate_saving_error_text_placeholder"
-                android:textColor="#CD0549" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/saveEstateButton"
                 android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"

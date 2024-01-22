@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.features.estateslist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,10 +40,19 @@ class EstateListAdapter(private val onEstateSelected: (String) -> Unit) :
             cityView.text = estate.addressCity
             areaView.text = estate.area.toString()
             priceView.text = estate.price.toString()
-            imageView.load(estate.mainPhoto.remoteUrl) {
-                placeholder(R.drawable.estate)
-                error(R.drawable.estate)
+
+            if (!estate.mainPhoto.remoteUrl.isNullOrBlank()) {
+                imageView.load(estate.mainPhoto.remoteUrl) {
+                    placeholder(R.drawable.estate)
+                    error(R.drawable.estate)
+                }
+            } else {
+                imageView.load(estate.mainPhoto.localPath) {
+                    placeholder(R.drawable.estate)
+                    error(R.drawable.estate)
+                }
             }
+            Log.d("Item", estate.toString())
         }
 
         companion object {

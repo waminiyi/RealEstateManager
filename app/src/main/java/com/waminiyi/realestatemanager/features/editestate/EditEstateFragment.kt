@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -27,15 +28,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.load
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textview.MaterialTextView
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.Photo
 import com.waminiyi.realestatemanager.core.model.data.toRawString
 import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
@@ -113,7 +116,6 @@ class EditEstateFragment : Fragment() {
             launchPlaceAutocompleteActivity()
         }
 
-
     }
 
     private fun launchPlaceAutocompleteActivity() {
@@ -131,47 +133,76 @@ class EditEstateFragment : Fragment() {
 
     private fun updateUi(uiState: EditEstateUiState) {
         updateProgressBarView(uiState.isLoading || uiState.isEstateSaving)
-        updateErrorView(uiState.savingError.isNotBlank(), uiState.savingError)
+        if (uiState.hasSavingError) {
+            showSavingErrorDialog(uiState.savingError)
+        }
 
         binding.saveEstateButton.isEnabled = uiState.hasChanges
 
-        when {
-            uiState.isLoading -> {
-                Log.d("UISTATE", "LOADING")
-                binding.estateSavingErrorTextView.visibility = View.GONE
-            }
-
-            uiState.savingError.isNotBlank() -> {
-                Log.d("UISTATE", "ERROR")
-                binding.estateSavingErrorTextView.visibility = View.VISIBLE
-                binding.estateSavingErrorTextView.text = uiState.savingError
-                //TODO: find a way to reset this, so we can continue completing the form after error
-            }
-
-            uiState.isEstateSaving -> {
-                Log.d("UISTATE", "NOTEMPTY")
-                binding.estateSavingErrorTextView.visibility = View.VISIBLE
-            }
-
-            else -> {
-                binding.entryDateTextView.text = getFormattedDate(uiState.entryDate)
-                binding.saleDateTextView.text = getFormattedDate(uiState.saleDate)
-                binding.addressTextView.text = uiState.address?.toRawString().orEmpty()
-                agentAdapter.setCurrentAgent(uiState.agent)
-                estateTypeAdapter.setCurrentType(uiState.type)
-                poiAdapter.setSelectedPoiList(uiState.nearbyPointsOfInterest)
-                photoAdapter.submitList(uiState.photos)
-                binding.statusSpinner.setSelection(
-                    when (uiState.estateStatus) {
-                        EstateStatus.AVAILABLE -> 0
-                        EstateStatus.SOLD -> 1
-                        else -> -1
-                    }
-                )
-
-                Log.d("UISTATE", uiState.toString())
-            }
+        with(binding.aboutTextInputEditText) {
+            setText(uiState.mainPhotoDescription)
+            setSelection(uiState.mainPhotoDescription.length)
         }
+        binding.aboutTextInputLayout.error = uiState.mainPhotoDescriptionError
+
+        with(binding.areaTextInputEditText) {
+            setText(uiState.area?.toString().orEmpty())
+            setSelection(uiState.area?.toString().orEmpty().length)
+        }
+        binding.areaTextInputLayout.error = uiState.areaError
+
+        with(binding.roomsCountTextInputEditText) {
+            setText(uiState.roomsCount?.toString().orEmpty())
+            setSelection(uiState.roomsCount?.toString().orEmpty().length)
+        }
+        binding.roomsCountTextInputLayout.error = uiState.roomsCountError
+
+        with(binding.priceTextInputEditText) {
+            setText(uiState.price?.toString().orEmpty())
+            setSelection(uiState.price?.toString().orEmpty().length)
+        }
+        //TODO:Change price type to long
+        binding.priceTextInputLayout.error = uiState.priceError
+
+        with(binding.descriptionTextInputEditText) {
+            setText(uiState.fullDescription)
+            setSelection(uiState.fullDescription.length)
+        }
+        binding.descriptionTextInputLayout.error = uiState.fullDescriptionError
+
+        binding.entryDateTextView.text = getFormattedDate(uiState.entryDate)
+        binding.entryDateLabelTextView.requestFocus()
+        binding.entryDateLabelTextView.error = uiState.entryDateError
+
+        binding.saleDateTextView.text = getFormattedDate(uiState.saleDate)
+
+        binding.addressTextView.text = uiState.address?.toRawString().orEmpty()
+        binding.addressLabelTextView.error = uiState.addressError
+
+        agentAdapter.setCurrentAgent(uiState.agent)
+        binding.agentLabel.error = uiState.agentError
+
+        estateTypeAdapter.setCurrentType(uiState.type)
+        binding.typeLabelTextView.error = uiState.typeError
+
+        poiAdapter.setSelectedPoiList(uiState.nearbyPointsOfInterest)
+        photoAdapter.submitList(uiState.photos)
+        binding.photoErrorTextView.error = uiState.photosError
+
+        binding.statusSpinner.setSelection(
+            when (uiState.estateStatus) {
+                EstateStatus.AVAILABLE -> 0
+                EstateStatus.SOLD -> 1
+            }
+        )
+
+        if (uiState.isEstateSaved){
+            Toast.makeText(requireContext(),"saved",Toast.LENGTH_LONG).show()
+        }
+
+        Log.d("UISTATE", uiState.toString())
+
+
     }
 
     override fun onCreateView(
@@ -211,10 +242,10 @@ class EditEstateFragment : Fragment() {
         setUpPoiView()
         setUpAgentsView()
         setUpTextChangedListener(
-            binding.aboutEditText,
+            binding.aboutTextInputEditText,
             handleNewValue = { viewModel.setMainPhotoDescription(it) })
         setUpTextChangedListener(
-            binding.areaEditText,
+            binding.areaTextInputEditText,
             handleNewValue = {
                 viewModel.setArea(
                     if (it.isNotBlank()) {
@@ -225,7 +256,7 @@ class EditEstateFragment : Fragment() {
                 )
             })
         setUpTextChangedListener(
-            binding.roomCountEditText,
+            binding.roomsCountTextInputEditText,
             handleNewValue = {
                 viewModel.setRoomsCount(
                     if (it.isNotBlank()) {
@@ -236,7 +267,7 @@ class EditEstateFragment : Fragment() {
                 )
             })
         setUpTextChangedListener(
-            binding.priceEditText,
+            binding.priceTextInputEditText,
             handleNewValue = {
                 viewModel.setPrice(
                     if (it.isNotBlank()) {
@@ -247,7 +278,7 @@ class EditEstateFragment : Fragment() {
                 )
             })
         setUpTextChangedListener(
-            binding.descriptionEditText,
+            binding.descriptionTextInputEditText,
             handleNewValue = { viewModel.setFullDescription(it) })
 
         configureStatusView(context)
@@ -267,7 +298,8 @@ class EditEstateFragment : Fragment() {
 
         // Example: Launch camera when another button is clicked
         binding.addPhotoButton.setOnClickListener {
-            multiplePhotosLauncher.launch("image/*")
+            showPhotoInputOptionsDialog()
+            //  multiplePhotosLauncher.launch("image/*")
 
         }
 
@@ -280,21 +312,25 @@ class EditEstateFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateProgressBarView(isLoading: Boolean) {
-        if (isLoading) {
+    private fun updateProgressBarView(isLoadingOrSaving: Boolean) {
+        if (isLoadingOrSaving) {
             binding.circularProgressBar.visibility = View.VISIBLE
         } else {
             binding.circularProgressBar.visibility = View.GONE
         }
     }
 
-    private fun updateErrorView(hasError: Boolean, errorMessage: String?) {
-        if (hasError) {
+    private fun showSavingErrorDialog(errorMessage: String?) {
+        errorMessage.let {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Error saving the estate")
+                .setMessage(it)
+                .setPositiveButton("OK") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
             Log.d("UISTATE", "ERROR")
-            binding.estateSavingErrorTextView.visibility = View.VISIBLE
-            binding.estateSavingErrorTextView.text = errorMessage
-        } else {
-            binding.estateSavingErrorTextView.visibility = View.GONE
+            viewModel.resetError()
         }
     }
 
@@ -428,6 +464,7 @@ class EditEstateFragment : Fragment() {
                 if (intent != null) {
                     val place = Autocomplete.getPlaceFromIntent(intent)
                     Log.i(
+                        //TODO: handle the case the selected address doesn't match the good format
                         "Place", "Place: ${createAddressFromPlace(place)}"
                     )
                     viewModel.setAddress(createAddressFromPlace(place))
@@ -449,8 +486,10 @@ class EditEstateFragment : Fragment() {
     private fun registerForMultipleImageSelectionResult() =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri>? ->
             uris?.let {
-                selectedImageUri = it.first()
-                viewModel.addPhotos(uris)
+                Log.d("GetContents", "selected: ${uris.toString()}")
+                if (uris.isNotEmpty()) {
+                    viewModel.addPhotos(uris)
+                }
                 Log.d("GetContents", "Number of items selected: ${uris.size}")
             }
         }
@@ -458,6 +497,11 @@ class EditEstateFragment : Fragment() {
     private fun registerForCameraResult() =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
             if (success) {
+                Log.d("fragmenturi", temporaryCapturedImageUri.toString())
+                temporaryCapturedImageUri?.let { uri ->
+                    viewModel.addPhotos(listOf(uri))
+                }
+
                 //binding.mainPhotoImageView.load(temporaryCapturedImageUri)
                 temporaryCapturedImageUri = null
             }
@@ -468,5 +512,34 @@ class EditEstateFragment : Fragment() {
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val fileName = "IMG_${timeStamp}"
         return File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "$fileName.jpg")
+    }
+
+    private fun showPhotoInputOptionsDialog() {
+
+        val view = LayoutInflater.from(requireActivity())
+            .inflate(R.layout.photo_input_options_layout, null, false)
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Add photos")
+            .setView(view)
+            .setCancelable(true)
+            .create()
+
+
+        view.findViewById<MaterialTextView>(R.id.optionLibraryTextView).setOnClickListener {
+            dialog.dismiss()
+            multiplePhotosLauncher.launch("image/*")
+        }
+
+        view.findViewById<MaterialTextView>(R.id.optionCameraTextView).setOnClickListener {
+            dialog.dismiss()
+            temporaryCapturedImageUri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.provider",
+                createImageFile(requireContext())
+            )
+            cameraLauncher.launch(temporaryCapturedImageUri)
+        }
+        dialog.show()
     }
 }

@@ -36,7 +36,9 @@ class DefaultEstateRepository @Inject constructor(
             estateDao.upsertEstate(estateWithDetails.asEstateEntity())
             DataResult.Success(Unit)
         } catch (exception: IOException) {
+            exception.printStackTrace()
             DataResult.Error(exception)
+            throw exception
         }
     }
 

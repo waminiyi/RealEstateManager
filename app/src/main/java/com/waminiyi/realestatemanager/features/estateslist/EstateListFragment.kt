@@ -57,7 +57,9 @@ class EstateListFragment : Fragment() {
         val fragmentScope = CoroutineScope(Dispatchers.Main)
 
         fragmentScope.launch {
-            viewModel.uiState.onCompletion { Log.d("ESTATELIST-FRagment", "complete") }
+            viewModel.uiState.onCompletion {
+                Log.d("ESTATELIST-FRagment", "complete")
+            }
                 .collect { uiState ->
                     Log.d("ESTATELIST-FRagment", uiState.toString())
                     when {

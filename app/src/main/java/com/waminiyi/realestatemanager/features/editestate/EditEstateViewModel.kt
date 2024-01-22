@@ -1,10 +1,14 @@
 package com.waminiyi.realestatemanager.features.editestate
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.waminiyi.realestatemanager.core.data.repository.DefaultMediaFileRepository
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
+import com.waminiyi.realestatemanager.core.data.repository.MediaFileRepository
+import com.waminiyi.realestatemanager.core.data.repository.PhotoRepository
 import com.waminiyi.realestatemanager.core.domain.usecases.AddEstateUseCase
 import com.waminiyi.realestatemanager.core.model.data.Address
 import com.waminiyi.realestatemanager.core.model.data.Agent
@@ -29,7 +33,9 @@ import javax.inject.Inject
 class EditEstateViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle,
     private val addEstateUseCase: AddEstateUseCase,
-    private val estateRepository: EstateRepository
+    private val estateRepository: EstateRepository,
+    private val photoRepository: PhotoRepository,
+    private val mediaFileRepository: MediaFileRepository
 ) : ViewModel() {
     private var estateId: String? = savedStateHandle["estate_id"]
     private val photosToDelete = mutableListOf<String>()
@@ -70,16 +76,16 @@ class EditEstateViewModel @Inject constructor(
         _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setAsMainPhoto(photo: Photo?) {
-        _uiState.update {
-            //TODO: add logic for changing the booleans isMain value and photo description
-            val photoMutableList = mutableListOf<Photo>()
-            photoMutableList.addAll(it.photos)
-            photoMutableList.swap(0, it.photos.indexOf(photo))
-            it.copy(photos = photoMutableList)
-        }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
-    }
+    /*    fun setAsMainPhoto(photo: Photo?) {
+            _uiState.update {
+                //TODO: add logic for changing the booleans isMain value and photo description
+                val photoMutableList = mutableListOf<Photo>()
+                photoMutableList.addAll(it.photos)
+                photoMutableList.swap(0, it.photos.indexOf(photo))
+                it.copy(photos = photoMutableList)
+            }
+            _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
+        }*/
 
     fun setMainPhotoDescription(mainPhotoDescription: String) {
         _uiState.update { it.copy(mainPhotoDescription = mainPhotoDescription) }
@@ -90,12 +96,15 @@ class EditEstateViewModel @Inject constructor(
         estateId?.let { estateId ->
             val photoMutableList = mutableListOf<Photo>()
             photoMutableList.addAll(uiState.value.photos)
-            addedPhotosUri.map {
+            addedPhotosUri.map { uri ->
+                val uuid = UUID.randomUUID().toString()
                 val photo = Photo(
-                    uuid = UUID.randomUUID().toString(),
+                    uuid = uuid,
                     estateUuid = estateId,
-                    localPath = it.toString()
+                    localPath = savePhotoToInternalStorage(uri, uuid).toString()
+                        .also { Log.d("vmsaveduri", it) }
                 )
+                Log.d("uri", uri.toString())
                 photoMutableList.add(photo)
             }
             _uiState.update { it.copy(photos = photoMutableList) }
@@ -109,6 +118,12 @@ class EditEstateViewModel @Inject constructor(
             it.copy(photos = it.photos.minus(removedPhoto))
         }
         _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
+        viewModelScope.launch {
+            photoRepository.deletePhoto(removedPhoto)
+            removedPhoto.localPath?.let {
+                mediaFileRepository.deletePhotoFileFromInternalStorage(it)
+            }
+        }
     }
 
     fun swapPhotoItems(fromPosition: Int, toPosition: Int) {
@@ -149,10 +164,13 @@ class EditEstateViewModel @Inject constructor(
         _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
+    fun resetError() {
+        _uiState.update { it.copy(hasSavingError = false, savingError = null) }
+    }
+
     fun saveEstate() {
-        val hasError = !Validator().validate(_uiState.value).successful
-        if (hasError) {
-            _uiState.update { it.copy(savingError = "Some fields are missing") }
+
+        if (!isValidState()) {
             return
         }
 
@@ -162,10 +180,12 @@ class EditEstateViewModel @Inject constructor(
                 _uiState.update { it.copy(isEstateSaving = true) }
                 addEstateUseCase(
                     _uiState.value.asEstateWithDetails(estateId)
+                        .also { Log.d("EstateTosave", it.toString()) }
                 )
                 _uiState.update { it.copy(isEstateSaved = true) }
 
             } catch (e: Exception) {
+                e.printStackTrace()
                 _uiState.update { it.copy(savingError = e.message.orEmpty()) }
             } finally {
                 _uiState.update { it.copy(isEstateSaving = false) }
@@ -231,4 +251,64 @@ class EditEstateViewModel @Inject constructor(
                         uiState.value.agent != currentEstate.agent
             } ?: uiState.value.isNotDefaultState()
         }
+
+    private fun isValidState(): Boolean {
+        val priceResult = validatePrice(uiState.value.price)
+        val areaResult = validateArea(uiState.value.area)
+        val addressResult = validateAddress(uiState.value.address)
+        val roomsCountResult = validateRoomsCount(uiState.value.roomsCount)
+        val agentResult = validateAgent(uiState.value.agent)
+        val fullDescriptionResult = validateFullDescription(uiState.value.fullDescription)
+        val photoResult = validateMainPhoto(uiState.value.photos)
+        val mainPhotoDescriptionResult =
+            validateMainPhotoDescription(uiState.value.mainPhotoDescription)
+        val entryDateResult = validateEntryDate(uiState.value.entryDate)
+        val typeResult = validateType(uiState.value.type)
+
+        val hasError = listOf(
+            priceResult,
+            areaResult,
+            addressResult,
+            roomsCountResult,
+            agentResult,
+            fullDescriptionResult,
+            mainPhotoDescriptionResult,
+            photoResult,
+            entryDateResult,
+            typeResult
+        ).any { !it.successful }
+
+        if (hasError) {
+            _uiState.update {
+                it.copy(
+                    typeError = typeResult.errorMessage,
+                    priceError = priceResult.errorMessage,
+                    areaError = areaResult.errorMessage,
+                    addressError = addressResult.errorMessage,
+                    roomsCountError = roomsCountResult.errorMessage,
+                    agentError = agentResult.errorMessage,
+                    fullDescriptionError = fullDescriptionResult.errorMessage,
+                    mainPhotoDescriptionError = mainPhotoDescriptionResult.errorMessage,
+                    photosError = photoResult.errorMessage,
+                    entryDateError = entryDateResult.errorMessage,
+                    hasSavingError = true,
+                    savingError = "Some fields are missing"
+                )
+            }
+            return false
+        }
+        return true
+    }
+
+    fun savePhotoToInternalStorage(temporaryCapturedImageUri: Uri, outputName: String): Uri? {
+        var finalUri: Uri? = null
+        viewModelScope.launch {
+            finalUri = mediaFileRepository.savePhotoFileToInternalStorage(
+                temporaryCapturedImageUri,
+                outputName
+            )
+            Log.d("finaluri", finalUri.toString())
+        }
+        return finalUri
+    }
 }

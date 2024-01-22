@@ -30,7 +30,9 @@ class DefaultPhotoRepository @Inject constructor(
             photoDao.upsertPhoto(photo.asPhotoEntity())
             DataResult.Success(Unit)
         } catch (exception: IOException) {
+            exception.printStackTrace()
             DataResult.Error(exception)
+            throw exception
         }
     }
 

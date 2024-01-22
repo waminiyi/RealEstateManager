@@ -7,66 +7,104 @@ import com.waminiyi.realestatemanager.core.model.data.Photo
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import java.util.Date
 
-class Validator {
 
-    fun validate(uiState: EditEstateUiState): ValidationResult {
-        return ValidationResult(
-            validatePrice(uiState.price).successful &&
-                    validateArea(uiState.area).successful &&
-                    validateAddress(uiState.address).successful &&
-                    validateRoomsCount(uiState.roomsCount).successful &&
-                    validateAgent(uiState.agent).successful &&
-                    validateFullDescription(uiState.fullDescription).successful &&
-                    validateMainPhoto(uiState.photos).successful &&
-                    validateMainPhotoDescription(uiState.mainPhotoDescription).successful &&
-                    validateEntryDate(uiState.entryDate).successful &&
-                    validateStatus(uiState.estateStatus).successful &&
-                    validateType(uiState.type).successful
-        )
+fun validate(uiState: EditEstateUiState): ValidationResult {
+    return ValidationResult(
+        validatePrice(uiState.price).successful &&
+                validateArea(uiState.area).successful &&
+                validateAddress(uiState.address).successful &&
+                validateRoomsCount(uiState.roomsCount).successful &&
+                validateAgent(uiState.agent).successful &&
+                validateFullDescription(uiState.fullDescription).successful &&
+                validateMainPhoto(uiState.photos).successful &&
+                validateMainPhotoDescription(uiState.mainPhotoDescription).successful &&
+                validateEntryDate(uiState.entryDate).successful &&
+                validateStatus(uiState.estateStatus).successful &&
+                validateType(uiState.type).successful
+    )
+}
+
+fun validateType(type: EstateType?): ValidationResult {
+    return if (type != null) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Please select a type")
     }
+}
 
-    private fun validateType(type: EstateType?): ValidationResult {
-        return ValidationResult(successful = type != null)
+fun validatePrice(price: Int?): ValidationResult {
+    return if (price != null && price > 0) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "You must enter a price greater than 0")
     }
+}
 
-    private fun validatePrice(price: Int?): ValidationResult {
-        return ValidationResult(successful = price != null && price > 0)
+fun validateArea(area: Float?): ValidationResult {
+    return if (area != null && area > 0) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "You must enter an area value greater than 0")
     }
+}
 
-    private fun validateArea(area: Float?): ValidationResult {
-        return ValidationResult(successful = area != null && area > 0)
+fun validateRoomsCount(roomsCount: Int?): ValidationResult {
+    return if (roomsCount != null && roomsCount > 0) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "You must enter a number of rooms greater than 0")
     }
+}
 
-    private fun validateRoomsCount(roomsCount: Int?): ValidationResult {
-        return ValidationResult(successful = roomsCount != null && roomsCount > 0)
+fun validateFullDescription(fullDescription: String): ValidationResult {
+    return if (fullDescription.isNotBlank()) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Please provide a description for the estate")
     }
+}
 
-    private fun validateFullDescription(fullDescription: String): ValidationResult {
-        return ValidationResult(successful = fullDescription.isNotBlank())
+fun validateMainPhotoDescription(description: String): ValidationResult {
+    return if (description.isNotBlank()) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Please provide a description for the main photo")
     }
+}
 
-    private fun validateMainPhotoDescription(description: String): ValidationResult {
-        return ValidationResult(successful = description.isNotBlank())
+fun validateMainPhoto(photos: List<Photo>): ValidationResult {
+    return if (photos.isNotEmpty()) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Please select at least one photo")
     }
+}
 
-    private fun validateMainPhoto(photos: List<Photo>): ValidationResult {
-        return ValidationResult(successful = photos.isNotEmpty())
+
+fun validateAddress(address: Address?): ValidationResult {
+    return if (address != null) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Please select the estate's address")
     }
+}
 
+fun validateStatus(estateStatus: EstateStatus?): ValidationResult {
+    return ValidationResult(successful = estateStatus != null)
+}
 
-    private fun validateAddress(address: Address?): ValidationResult {
-        return ValidationResult(successful = address != null)
+fun validateEntryDate(entryDate: Date?): ValidationResult {
+    return if (entryDate != null) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Please select the estate's entry date")
     }
+}
 
-    private fun validateStatus(estateStatus: EstateStatus?): ValidationResult {
-        return ValidationResult(successful = estateStatus != null)
-    }
-
-    private fun validateEntryDate(entryDate: Date?): ValidationResult {
-        return ValidationResult(successful = entryDate != null)
-    }
-
-    private fun validateAgent(agent: Agent?): ValidationResult {
-        return ValidationResult(successful = agent != null)
+fun validateAgent(agent: Agent?): ValidationResult {
+    return if (agent != null) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Please select an agent")
     }
 }
