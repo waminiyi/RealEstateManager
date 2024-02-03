@@ -2,33 +2,23 @@
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="140dp"
-    android:layout_height="140dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="260dp"
     android:elevation="4dp"
     android:src="@drawable/estate"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="0dp">
 
     <ImageView
-        android:id="@+id/photoItemImageView"
+        android:id="@+id/detailsPhotoItemImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/estate"
-        android:contentDescription="@string/estate_photo" />
+        android:contentDescription="@string/estate_photo"
+        android:src="@drawable/estate" />
 
-    <ImageButton
-        android:id="@+id/deletePhotoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="4dp"
-        android:background="@drawable/circular_background"
-        android:src="@drawable/ic_delete"
-        android:contentDescription="@string/delete_photo" />
     <TextView
-        android:id="@+id/photoItemDescriptionTextView"
+        android:id="@+id/detailsDescriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

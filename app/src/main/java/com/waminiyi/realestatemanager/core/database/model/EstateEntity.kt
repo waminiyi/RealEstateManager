@@ -42,7 +42,7 @@ data class EstateEntity(
     val price: Int,
 
     @ColumnInfo(name = "area")
-    val area: Float,
+    val area: Int,
 
     @ColumnInfo(name = "rooms_count")
     val roomsCount: Int,

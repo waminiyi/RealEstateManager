@@ -15,12 +15,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/save_estate_menu_item"
-        android:icon="@drawable/ic_save"
-        android:title="@string/title_edit"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/navigation_filter"
         android:icon="@drawable/ic_filter"
         android:title="@string/title_filter"

@@ -8,7 +8,7 @@ data class Address(
     val postalCode: Int,
     val location: Location
 )
-
+//TODO: add country field
 fun Address.toRawString(): String {
     return "$streetNumber $streetName, $postalCode $city"
 }

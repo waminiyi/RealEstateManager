@@ -5,26 +5,19 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.waminiyi.realestatemanager.core.data.repository.DefaultMediaFileRepository
+import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.data.repository.MediaFileRepository
 import com.waminiyi.realestatemanager.core.data.repository.PhotoRepository
-import com.waminiyi.realestatemanager.core.database.dao.EstateDao
-import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
-import com.waminiyi.realestatemanager.core.database.model.AddressEntity
-import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.domain.usecases.AddEstateUseCase
 import com.waminiyi.realestatemanager.core.model.data.Address
 import com.waminiyi.realestatemanager.core.model.data.Agent
 import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
+import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 import com.waminiyi.realestatemanager.core.model.data.Photo
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
-import com.waminiyi.realestatemanager.core.model.data.Location
-import com.waminiyi.realestatemanager.features.estateEntities
-import com.waminiyi.realestatemanager.features.mainPhotoEntities
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,18 +36,19 @@ class EditEstateViewModel @Inject constructor(
     private val estateRepository: EstateRepository,
     private val photoRepository: PhotoRepository,
     private val mediaFileRepository: MediaFileRepository,
-    private val estateDao: EstateDao,
-    private val photoDao: PhotoDao
 ) : ViewModel() {
-    private var estateId: String? = savedStateHandle["estate_id"]
+    private var estateId: String? = savedStateHandle[Constants.ARG_ESTATE_ID]
     private val photosToDelete = mutableListOf<String>()
-    private var currentEstate: EstateWithDetails? = null
+    private var initialEstate: EstateWithDetails? = null
 
     private val _uiState = MutableStateFlow(EditEstateUiState())
     val uiState: StateFlow<EditEstateUiState> = _uiState.asStateFlow()
 
     init {
-        estateId?.let { loadEstate(it) }
+        estateId?.let {
+            loadEstate(it)
+            Log.d("estateid", it)
+        }
         if (estateId == null) {
             estateId = UUID.randomUUID().toString()
         }
@@ -62,43 +56,26 @@ class EditEstateViewModel @Inject constructor(
 
     fun setType(type: EstateType) {
         _uiState.update { it.copy(type = type) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setPrice(price: Int?) {
         _uiState.update { it.copy(price = price) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
-    fun setArea(area: Float?) {
+    fun setArea(area: Int?) {
         _uiState.update { it.copy(area = area) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setRoomsCount(roomsCount: Int?) {
         _uiState.update { it.copy(roomsCount = roomsCount) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setFullDescription(fullDescription: String) {
         _uiState.update { it.copy(fullDescription = fullDescription) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
-
-    /*    fun setAsMainPhoto(photo: Photo?) {
-            _uiState.update {
-                //TODO: add logic for changing the booleans isMain value and photo description
-                val photoMutableList = mutableListOf<Photo>()
-                photoMutableList.addAll(it.photos)
-                photoMutableList.swap(0, it.photos.indexOf(photo))
-                it.copy(photos = photoMutableList)
-            }
-            _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
-        }*/
 
     fun setMainPhotoDescription(mainPhotoDescription: String) {
         _uiState.update { it.copy(mainPhotoDescription = mainPhotoDescription) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun addPhotos(addedPhotosUri: List<Uri>) {
@@ -117,7 +94,6 @@ class EditEstateViewModel @Inject constructor(
                 photoMutableList.add(photo)
             }
             _uiState.update { it.copy(photos = photoMutableList) }
-            _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
         }
     }
 
@@ -140,37 +116,32 @@ class EditEstateViewModel @Inject constructor(
         photoMutableList.addAll(uiState.value.photos)
         Collections.swap(photoMutableList, fromPosition, toPosition)
         _uiState.update { it.copy(photos = photoMutableList) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setAddress(address: Address?) {
         _uiState.update { it.copy(address = address) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setPoiList(nearbyPointsOfInterest: List<PointOfInterest>) {
         _uiState.update { it.copy(nearbyPointsOfInterest = nearbyPointsOfInterest) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setStatus(estateStatus: EstateStatus) {
+        //TODO: add a constraint so when this is set, the sale date
+        //should be set an vice versa
         _uiState.update { it.copy(estateStatus = estateStatus) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setEntryDate(entryDate: Date?) {
         _uiState.update { it.copy(entryDate = entryDate) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setSaleDate(saleDate: Date?) {
         _uiState.update { it.copy(saleDate = saleDate) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setAgent(agent: Agent?) {
         _uiState.update { it.copy(agent = agent) }
-        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun resetError() {
@@ -178,28 +149,19 @@ class EditEstateViewModel @Inject constructor(
     }
 
     fun saveEstate() {
-
         if (!isValidState()) {
             return
         }
-
+        if (!hasChangesComparedToInitialEstate) {
+            return
+        }
         viewModelScope.launch {
-
             try {
                 _uiState.update { it.copy(isEstateSaving = true) }
                 addEstateUseCase(
                     _uiState.value.asEstateWithDetails(estateId)
                         .also { Log.d("EstateTosave", it.toString()) }
                 )
-                /*   val estate = estateEntities.first()
-                       .copy(estateUuid = UUID.randomUUID(), poiList = emptyList())
-                   estateDao.upsertEstate(
-                       estate
-                   )
-                   photoDao.upsertPhoto(
-                       mainPhotoEntities.first()
-                           .copy(photoUuid = UUID.randomUUID(), estateUuid = estate.estateUuid)
-                   )*/
                 _uiState.update { it.copy(isEstateSaved = true) }
 
             } catch (e: Exception) {
@@ -208,7 +170,6 @@ class EditEstateViewModel @Inject constructor(
             } finally {
                 _uiState.update { it.copy(isEstateSaving = false) }
             }
-
         }
     }
 
@@ -220,7 +181,8 @@ class EditEstateViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false) }
             } else {
                 val estate = result.data
-                currentEstate = estate
+                Log.d("estate_loaded", estate.toString())
+                initialEstate = estate
                 _uiState.update { editEstateUiState ->
                     editEstateUiState.copy(
                         isLoading = false,
@@ -244,30 +206,26 @@ class EditEstateViewModel @Inject constructor(
         }
     }
 
-    fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
-        val tmp = this[index1]
-        this[index1] = this[index2]
-        this[index2] = tmp
-    }
-
     private val hasChangesComparedToInitialEstate: Boolean
         get() {
 
-            return currentEstate?.let { currentEstate ->
-                uiState.value.type != currentEstate.type &&
-                        uiState.value.price != currentEstate.price &&
-                        uiState.value.area != currentEstate.area &&
-                        uiState.value.roomsCount != currentEstate.roomsCount &&
-                        uiState.value.fullDescription != currentEstate.fullDescription &&
-                        uiState.value.mainPhotoDescription != currentEstate.photos.first { it.isMain }.description.orEmpty() &&
-                        uiState.value.photos != currentEstate.photos &&
-                        uiState.value.address != currentEstate.address &&
-                        uiState.value.nearbyPointsOfInterest != currentEstate.nearbyPointsOfInterest &&
-                        uiState.value.estateStatus != currentEstate.estateStatus &&
-                        uiState.value.entryDate != currentEstate.entryDate &&
-                        uiState.value.saleDate != currentEstate.saleDate &&
-                        uiState.value.agent != currentEstate.agent
-            } ?: uiState.value.isNotDefaultState()
+            return initialEstate?.let {
+                val currentEstate = uiState.value.asEstateWithDetails(estateId)
+                with(currentEstate) {
+                    type != it.type &&
+                            price != it.price &&
+                            area != it.area &&
+                            roomsCount != it.roomsCount &&
+                            fullDescription != it.fullDescription &&
+                            photos != it.photos &&
+                            address != it.address &&
+                            nearbyPointsOfInterest != it.nearbyPointsOfInterest &&
+                            estateStatus != it.estateStatus &&
+                            entryDate != it.entryDate &&
+                            saleDate != it.saleDate &&
+                            agent != it.agent
+                }
+            } ?: true
         }
 
     private fun isValidState(): Boolean {
@@ -331,12 +289,11 @@ class EditEstateViewModel @Inject constructor(
                     savingError = null
                 )
             }
-
         }
         return true
     }
 
-    fun savePhotoToInternalStorage(temporaryCapturedImageUri: Uri, outputName: String): Uri? {
+    private fun savePhotoToInternalStorage(temporaryCapturedImageUri: Uri, outputName: String): Uri? {
         var finalUri: Uri? = null
         viewModelScope.launch {
             finalUri = mediaFileRepository.savePhotoFileToInternalStorage(

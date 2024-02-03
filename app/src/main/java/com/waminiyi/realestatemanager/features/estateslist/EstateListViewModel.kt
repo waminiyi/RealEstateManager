@@ -64,6 +64,7 @@ class EstateListViewModel @Inject constructor(
                 estateDao.upsertEstate(estateEntity)
             }
             mainPhotoEntities.forEach { photoEntity ->
+                Log.d("photo", photoEntity.toString())
                 photoDao.upsertPhoto(photoEntity)
             }
         }

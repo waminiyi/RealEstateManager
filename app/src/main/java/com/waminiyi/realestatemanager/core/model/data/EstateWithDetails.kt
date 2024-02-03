@@ -1,13 +1,13 @@
 package com.waminiyi.realestatemanager.core.model.data
 
-import java.util.*
+import java.util.Date
 
 
 data class EstateWithDetails(
     val uuid: String, // TODO : change type to UUID
     val type: EstateType,
     val price: Int, // Price of the property in dollars
-    val area: Float,
+    val area: Int,
     val roomsCount: Int,
     val fullDescription: String, // Full description of the property
     val photos: List<Photo> = emptyList(), // estate images

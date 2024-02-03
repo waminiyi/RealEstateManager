@@ -4,7 +4,7 @@ data class RemoteEstate(
     val estateUuid: String = "",
     val type: String = "",
     val price: Int = 0,
-    val area: Float = 0.0f,
+    val area: Int = 0,
     val roomsCount: Int = 0,
     val description: String = "",
     val address: RemoteAddress = RemoteAddress(),

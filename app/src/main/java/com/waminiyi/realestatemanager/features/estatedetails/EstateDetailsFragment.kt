@@ -1,60 +1,229 @@
 package com.waminiyi.realestatemanager.features.estatedetails
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.waminiyi.realestatemanager.R
+import com.waminiyi.realestatemanager.core.Constants
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.data.toRawString
+import com.waminiyi.realestatemanager.core.util.util.formatAsUSDollar
+import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
+import com.waminiyi.realestatemanager.databinding.FragmentEstateDetailsBinding
+import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
+import com.waminiyi.realestatemanager.features.estatedetails.adapters.PoiAdapter
+import com.waminiyi.realestatemanager.features.model.asUiEstateType
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EstateDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class EstateDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //region Variables initialization
+    private val viewModel: EstateDetailsViewModel by viewModels()
+    private var _binding: FragmentEstateDetailsBinding? = null
+    private val binding get() = _binding!!
+    private var estateId: String? = null
+    private lateinit var poiAdapter: PoiAdapter
+    private lateinit var photoAdapter: PhotoAdapter
+    //endregion
+
+    companion object {
+        @JvmStatic
+        fun newInstance(estateId: String) =
+            EstateDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putString(Constants.ARG_ESTATE_ID, estateId)
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_estate_details, container, false)
-    }
+    ): View {
+        _binding = FragmentEstateDetailsBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
+        val fragmentScope = CoroutineScope(Dispatchers.Main)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EstateDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EstateDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        fragmentScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.uiState.collect { uiState ->
+                    updateUi(uiState)
                 }
             }
+        }
+        return root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(R.menu.details_fragment_appbar_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.navigation_edit -> {
+                        openEditEstateFragment(estateId)
+                        return true
+                    }
+                }
+                return false
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        setUpPhotosRecyclerView()
+        setUpPoiRecyclerView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    //region UI updates
+    private fun updateUi(uiState: EstateDetailsUiState) {
+        when {
+            uiState.isLoading -> {
+                showLoadingView()
+            }
+
+            !uiState.loadingError.isNullOrEmpty() -> {
+                showErrorView()
+                binding.detailsErrorTextView.text = uiState.loadingError
+            }
+
+            uiState.estateWithDetails != null -> {
+                showDetailsView()
+                updateDetailsView(uiState.estateWithDetails)
+            }
+        }
+    }
+
+    //endregion
+    private fun showLoadingView() {
+        binding.detailsCircularProgressBar.visibility = View.VISIBLE
+        binding.detailsErrorTextView.visibility = View.GONE
+        binding.detailsRootLayout.visibility = View.GONE
+    }
+
+    private fun showErrorView() {
+        binding.detailsCircularProgressBar.visibility = View.GONE
+        binding.detailsErrorTextView.visibility = View.VISIBLE
+        binding.detailsRootLayout.visibility = View.GONE
+    }
+
+    private fun showDetailsView() {
+        binding.detailsCircularProgressBar.visibility = View.GONE
+        binding.detailsErrorTextView.visibility = View.GONE
+        binding.detailsRootLayout.visibility = View.VISIBLE
+    }
+
+    private fun updateDetailsView(estate: EstateWithDetails) {
+        photoAdapter.submitList(estate.photos)
+        poiAdapter.submitList(estate.nearbyPointsOfInterest)
+        when (estate.estateStatus) {
+            EstateStatus.AVAILABLE -> {
+                with(binding.detailsStatusTextView) {
+                    text = getString(R.string.available)
+                    setTextColor(ContextCompat.getColor(context, R.color.green))
+                }
+                binding.detailsSaleDateLayout.visibility = View.GONE
+            }
+
+            EstateStatus.SOLD -> {
+                with(binding.detailsStatusTextView) {
+                    text = getString(R.string.sold)
+                    setTextColor(ContextCompat.getColor(context, R.color.red))
+                }
+                binding.detailsSaleDateTextView.text = getFormattedDate(estate.saleDate)
+            }
+        }
+
+        binding.detailsPriceTextView.text = estate.price.formatAsUSDollar()
+        binding.detailsCityTextView.text = estate.address.city
+        binding.detailsEntryDateTextView.text = getFormattedDate(estate.entryDate)
+        binding.detailsEstateTypeTextView.text = estate.type.asUiEstateType(requireContext()).name
+        binding.detailsRoomsCountTextView.text =
+            resources.getQuantityString(R.plurals.roomsCount, estate.roomsCount, estate.roomsCount)
+        binding.detailsAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area.toInt())
+        binding.detailsDescriptionTextView.text = estate.fullDescription
+        binding.featuresTypeTextView.text = estate.type.asUiEstateType(requireContext()).name
+        binding.featuresRoomsCountTextView.text =
+            resources.getQuantityString(R.plurals.roomsCount, estate.roomsCount, estate.roomsCount)
+        binding.featuresAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area.toInt())
+        binding.addressTextView.text = estate.address.toRawString()
+        binding.agentImageView.load(estate.agent.photoUrl) {
+            transformations(CircleCropTransformation())
+            placeholder(R.drawable.person)
+            error(R.drawable.person_error)
+        }
+        "${estate.agent.firstName}  ${estate.agent.lastName[0]}.".also {
+            binding.agentNameTextView.text = it
+        }
+
+
+    }
+
+    private fun openEditEstateFragment(estateUuid: String?) {
+        estateUuid?.let {
+            val bundle = Bundle().apply { putString(Constants.ARG_ESTATE_ID, it) }
+            findNavController().navigate(R.id.navigation_add, bundle)
+        }
+    }
+
+    // region RecyclerViews
+    private fun setUpPhotosRecyclerView() {
+        val recyclerView = binding.detailsPhotosRecyclerView
+        photoAdapter = PhotoAdapter()
+        recyclerView.adapter = photoAdapter
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                layoutManager?.let {
+                    val indexText = "${it.findFirstVisibleItemPosition() + 1} / ${it.itemCount}"
+                    binding.photoItemCountTextView.text = indexText
+                }
+            }
+        })
+    }
+
+    private fun setUpPoiRecyclerView() {
+        val recyclerView = binding.detailsPoiRecyclerView
+        poiAdapter = PoiAdapter()
+        recyclerView.adapter = poiAdapter
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    }
+    //endregion
 }

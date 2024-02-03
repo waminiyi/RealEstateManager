@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.waminiyi.realestatemanager.core.model.data.Photo
-import com.waminiyi.realestatemanager.core.model.data.UploadStatus
 import java.util.UUID
 
 /**
@@ -43,7 +42,8 @@ data class PhotoEntity(
         estateUuid = this.estateUuid.toString(),
         remoteUrl = this.url,
         localPath = this.localPath,
-        isMain = this.isMainPhoto
+        isMain = this.isMainPhoto,
+        description = this.description
     )
 }
 

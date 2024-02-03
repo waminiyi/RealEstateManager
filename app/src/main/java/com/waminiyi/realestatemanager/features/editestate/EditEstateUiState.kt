@@ -16,7 +16,7 @@ data class EditEstateUiState(
     val typeError: String? = null,
     val price: Int? = null,
     val priceError: String? = null,
-    val area: Float? = null,
+    val area: Int? = null,
     val areaError: String? = null,
     val roomsCount: Int? = null,
     val roomsCountError: String? = null,

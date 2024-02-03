@@ -40,7 +40,7 @@ fun validatePrice(price: Int?): ValidationResult {
     }
 }
 
-fun validateArea(area: Float?): ValidationResult {
+fun validateArea(area: Int?): ValidationResult {
     return if (area != null && area > 0) {
         ValidationResult(true)
     } else {

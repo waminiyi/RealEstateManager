@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -34,9 +33,10 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import com.waminiyi.realestatemanager.R
+import com.waminiyi.realestatemanager.core.Constants
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.toRawString
 import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
@@ -71,7 +71,6 @@ class EditEstateFragment : Fragment() {
     private var isInitialStatusSpinnerSelection = true
     private val binding get() = _binding!!
     private val startAutocomplete = registerForPlaceSearchCallBack()
-    private var selectedImageUri: Uri? = null
     private var temporaryCapturedImageUri: Uri? = null
     private val multiplePhotosLauncher = registerForPhotosPickingResult()
     private val cameraLauncher = registerForCameraResult()
@@ -79,18 +78,13 @@ class EditEstateFragment : Fragment() {
     //endregion
 
     companion object {
-        const val ARG_ESTATE_ID = "estate_id"
         const val IMAGE = "image/*"
 
-        fun newInstance(estateId: String?): EditEstateFragment {
-            val fragment = EditEstateFragment()
-            val args = Bundle()
-            args.putString(ARG_ESTATE_ID, estateId)
-            fragment.arguments = args
-            return fragment
+        fun newInstance(estateId: String?) = EditEstateFragment().apply {
+            arguments = Bundle().apply {
+                putString(Constants.ARG_ESTATE_ID, estateId)
+            }
         }
-
-
     }
 
     override fun onCreateView(
@@ -98,11 +92,10 @@ class EditEstateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentEditestateBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        estateId = arguments?.getString(ARG_ESTATE_ID)
-        viewModel.savedStateHandle[ARG_ESTATE_ID] = estateId
+        estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
+        //viewModel.savedStateHandle[ARG_ESTATE_ID] = estateId
 
         val fragmentScope = CoroutineScope(Dispatchers.Main)
 
@@ -126,8 +119,8 @@ class EditEstateFragment : Fragment() {
 
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // menu.clear()
-                // menuInflater.inflate(R.menu.appbar_menu, menu)
+                menu.clear()
+                menuInflater.inflate(R.menu.edit_fragment_appbar_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -159,13 +152,31 @@ class EditEstateFragment : Fragment() {
 
     //region UI updates
     private fun updateUi(uiState: EditEstateUiState) {
-        updateProgressBarView(uiState.isLoading || uiState.isEstateSaving)
-        if (uiState.hasSavingError) {
-            showSavingErrorDialog(uiState.savingError)
+        when {
+            uiState.isLoading || uiState.isEstateSaving -> showProgressBar()
+            uiState.hasSavingError -> showSavingErrorDialog(uiState.savingError)
+            //TODO: avoid this raising multiple time
+            uiState.isEstateSaved -> showEstateSavedDialog()
+
+            else -> {
+                showDetailsView()
+                updateDetailsView(uiState)
+            }
         }
+    }
 
-        //   binding.saveEstateButton.isEnabled = uiState.hasChanges
 
+    private fun showProgressBar() {
+        binding.circularProgressBar.visibility = View.VISIBLE
+        binding.rootLayout.visibility = View.GONE
+    }
+
+    private fun showDetailsView() {
+        binding.circularProgressBar.visibility = View.GONE
+        binding.rootLayout.visibility = View.VISIBLE
+    }
+
+    private fun updateDetailsView(uiState: EditEstateUiState) {
         with(binding.aboutTextInputEditText) {
             setText(uiState.mainPhotoDescription)
             setSelection(uiState.mainPhotoDescription.length)
@@ -223,32 +234,8 @@ class EditEstateFragment : Fragment() {
             }
         )
 
-        //TODO: avoid this raising multiple time
-        if (uiState.isEstateSaved) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Estate saved")
-                .setMessage("Your estate has been save")
-                .setPositiveButton("OK") { dialog, which ->
-                    dialog.dismiss()
-                    findNavController().navigateUp()
-                }
-                .show()
-
-            Toast.makeText(requireContext(), "saved", Toast.LENGTH_LONG).show()
-        }
-
         Log.d("UISTATE", uiState.toString())
 
-
-    }
-
-
-    private fun updateProgressBarView(isLoadingOrSaving: Boolean) {
-        if (isLoadingOrSaving) {
-            binding.circularProgressBar.visibility = View.VISIBLE
-        } else {
-            binding.circularProgressBar.visibility = View.GONE
-        }
     }
     //endregion
 
@@ -276,7 +263,7 @@ class EditEstateFragment : Fragment() {
         binding.areaTextInputEditText.afterTextChanged {
             viewModel.setArea(
                 if (it.isNotBlank()) {
-                    it.toFloat()
+                    it.toInt()
                 } else {
                     null
                 }
@@ -492,6 +479,17 @@ class EditEstateFragment : Fragment() {
                 .show()
             viewModel.resetError()
         }
+    }
+
+    private fun showEstateSavedDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Estate saved")
+            .setMessage("Your estate has been save")
+            .setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+                findNavController().navigateUp()
+            }
+            .show()
     }
 
     private fun showDatePickerDialog(onDatePicked: (Date) -> Unit) {

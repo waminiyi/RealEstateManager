@@ -11,6 +11,9 @@
         android:label="Estates"
         tools:layout="@layout/fragment_estate_list">
 
+        <action
+            android:id="@+id/action_navigation_estateList_to_navigation_estatedetails"
+            app:destination="@id/navigation_estatedetails" />
     </fragment>
 
     <fragment
@@ -27,8 +30,12 @@
     <fragment
         android:id="@+id/navigation_estatedetails"
         android:name="com.waminiyi.realestatemanager.features.estatedetails.EstateDetailsFragment"
-        android:label="@string/title_filter"
-        tools:layout="@layout/fragment_estate_details" />
+        android:label="Estate details"
+        tools:layout="@layout/fragment_estate_details" >
+        <argument
+            android:name="estate_id"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_filter"

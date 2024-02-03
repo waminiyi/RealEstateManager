@@ -55,12 +55,6 @@ class HomeActivity : AppCompatActivity() {
                         return true
                     }
 
-                    R.id.navigation_edit -> {
-                        showDialog("edit")
-                        navigateToEditFragment()
-                        return true
-                    }
-
                     R.id.navigation_filter -> {
                         showDialog("Filter")
                         return true

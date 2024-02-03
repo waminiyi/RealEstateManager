@@ -14,4 +14,29 @@
     <string name="add_photos">Add photos</string>
     <string name="estate_saving_error_dialog_title">Error saving the estate</string>
     <string name="ok">OK</string>
+    <string name="description">Description</string>
+    <string name="features">Features</string>
+    <plurals name="roomsCount">
+        <item quantity="one">%d room</item>
+        <item quantity="other">%d rooms</item>
+    </plurals>
+    <string name="areaInSquareMeter">%d m²</string>
+    <string name="addedOn"><b>Added on:\u0020</b></string>
+    <string name="available">Available</string>
+    <string name="sold">Sold</string>
+    <string name="soldOn"><b>Sold on:\u0020</b></string>
+    <string name="estate_type">Estate type</string>
+    <string name="number_of_rooms">Number of rooms</string>
+    <string name="number_of_bathrooms">Number of bathrooms</string>
+    <string name="area">Area</string>
+    <string name="number_of_bedrooms">Number of bedrooms</string>
+    <string name="points_of_interest">Points of interest</string>
+    <string name="address">Address</string>
+    <string name="agent_in_charge">Agent in charge</string>
+    <string name="agent_image">Agent image</string>
+    <string name="delete_photo">Delete photo</string>
+    <string name="estate_photo">Estate photo</string>
+    <string name="save">Save</string>
+    <string name="dot">.</string>
+    <string name="price">Price</string>
 </resources>

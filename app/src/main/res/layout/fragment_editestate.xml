@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".features.editestate.EditEstateFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,12 +51,12 @@
 
                         <ImageButton
                             android:id="@+id/addPhotoButton"
-                            android:src="@drawable/ic_add_a_photo"
-                            android:textAllCaps="false"
                             android:layout_width="140dp"
                             android:layout_height="140dp"
                             android:layout_margin="4dp"
                             android:elevation="4dp"
+                            android:src="@drawable/ic_add_a_photo"
+                            android:textAllCaps="false"
                             app:cardCornerRadius="8dp"
                             app:tint="#F44336" />
 
@@ -115,9 +114,8 @@
                     android:id="@+id/typeLabelTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:layout_marginBottom="12dp"
-                    android:text="Type" />
+                    android:text="@string/estate_type" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/estateTypeRecyclerView"
@@ -138,8 +136,10 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="Area"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/area"
                 app:errorEnabled="true"
                 app:suffixText="m²">
 
@@ -155,8 +155,10 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="Number of rooms"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/number_of_rooms"
                 app:errorEnabled="true"
                 app:suffixText="room(s)">
 
@@ -168,12 +170,52 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bedroomsCountTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/number_of_bedrooms"
+                app:errorEnabled="true"
+                app:suffixText="room(s)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bedroomsCountTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bathroomsCountTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/number_of_bathrooms"
+                app:errorEnabled="true"
+                app:suffixText="room(s)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bathroomsCountTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/priceTextInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="Price"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/price"
                 app:errorEnabled="true"
                 app:suffixText="$">
 
@@ -189,8 +231,10 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="Description"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/description"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -350,9 +394,9 @@
                 android:padding="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/agentLabel"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
-                    android:id="@+id/agentLabel"
                     android:layout_height="wrap_content"
                     android:text="@string/agent_selection" />
 
@@ -364,21 +408,6 @@
                     tools:listitem="@layout/agent_item" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C3BBBB" />
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveEstateButton"
-                android:layout_width="wrap_content"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="Save" />
 
         </LinearLayout>
 

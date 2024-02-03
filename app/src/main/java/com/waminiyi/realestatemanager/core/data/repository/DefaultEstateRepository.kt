@@ -53,7 +53,7 @@ class DefaultEstateRepository @Inject constructor(
         }
     }
 
-    override fun getEstateWithDetails(estateId: String): DataResult<EstateWithDetails?> {
+    override suspend fun getEstateWithDetails(estateId: String): DataResult<EstateWithDetails?> {
         return try {
             val result = estateDao.getEstateWithDetailsById(UUID.fromString(estateId))?.asEstateWithDetails()
             result?.let {
