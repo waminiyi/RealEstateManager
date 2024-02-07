@@ -2,6 +2,7 @@ package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.waminiyi.realestatemanager.core.data.extension.toEstateEntity
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 
 /**
@@ -34,6 +35,8 @@ data class EstateWithDetailsEntity(
         price = this.estateEntity.price,
         area = this.estateEntity.area,
         roomsCount = this.estateEntity.roomsCount,
+        bedroomsCount = this.estateEntity.bedroomsCount,
+        bathroomsCount = this.estateEntity.bathroomsCount,
         fullDescription = this.estateEntity.description,
         photos = this.images.map { it.asPhoto() },
         address = this.estateEntity.addressEntity.asAddress(),

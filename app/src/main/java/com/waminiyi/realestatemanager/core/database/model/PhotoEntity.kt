@@ -50,6 +50,7 @@ data class PhotoEntity(
 fun Photo.asPhotoEntity(): PhotoEntity = PhotoEntity(
     photoUuid = UUID.fromString(this.uuid),
     estateUuid = UUID.fromString(this.estateUuid),
+    description = this.description,
     url = this.remoteUrl ?: "",
     localPath = this.localPath ?: "",
     isMainPhoto = this.isMain

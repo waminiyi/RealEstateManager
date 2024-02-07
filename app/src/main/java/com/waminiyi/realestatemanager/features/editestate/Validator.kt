@@ -2,22 +2,22 @@ package com.waminiyi.realestatemanager.features.editestate
 
 import com.waminiyi.realestatemanager.core.model.data.Address
 import com.waminiyi.realestatemanager.core.model.data.Agent
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.Photo
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import java.util.Date
 
 
 fun validate(uiState: EditEstateUiState): ValidationResult {
+    //TODO: move validation logic from viewmodel to here
     return ValidationResult(
         validatePrice(uiState.price).successful &&
                 validateArea(uiState.area).successful &&
                 validateAddress(uiState.address).successful &&
-                validateRoomsCount(uiState.roomsCount).successful &&
+                validateTotalRoomsCount(uiState.roomsCount).successful &&
                 validateAgent(uiState.agent).successful &&
                 validateFullDescription(uiState.fullDescription).successful &&
-                validateMainPhoto(uiState.photos).successful &&
-                validateMainPhotoDescription(uiState.mainPhotoDescription).successful &&
+                validatePhotos(uiState.photos).successful &&
                 validateEntryDate(uiState.entryDate).successful &&
                 validateStatus(uiState.estateStatus).successful &&
                 validateType(uiState.type).successful
@@ -36,7 +36,7 @@ fun validatePrice(price: Int?): ValidationResult {
     return if (price != null && price > 0) {
         ValidationResult(true)
     } else {
-        ValidationResult(false, "You must enter a price greater than 0")
+        ValidationResult(false, "Price must be greater than 0")
     }
 }
 
@@ -44,15 +44,41 @@ fun validateArea(area: Int?): ValidationResult {
     return if (area != null && area > 0) {
         ValidationResult(true)
     } else {
-        ValidationResult(false, "You must enter an area value greater than 0")
+        ValidationResult(false, "Area value must greater than 0")
     }
 }
 
-fun validateRoomsCount(roomsCount: Int?): ValidationResult {
+fun validateTotalRoomsCount(
+    totalRoomsCount: Int?,
+): ValidationResult {
+    return when (totalRoomsCount) {
+        null -> ValidationResult(false, "Enter the total number of rooms")
+        else -> ValidationResult(true)
+    }
+}
+
+fun validateAllRoomsCount(
+    totalRoomsCount: Int,
+    bedroomsCount: Int,
+    bathroomsCount: Int
+) = when {
+    totalRoomsCount >= (bedroomsCount + bathroomsCount) -> ValidationResult(true)
+    else -> ValidationResult(false, "Ensure consistency between number of rooms")
+}
+
+fun validateBedroomsCount(roomsCount: Int?): ValidationResult {
     return if (roomsCount != null && roomsCount > 0) {
         ValidationResult(true)
     } else {
-        ValidationResult(false, "You must enter a number of rooms greater than 0")
+        ValidationResult(false, "Enter the total number of bedrooms")
+    }
+}
+
+fun validateBathroomsCount(roomsCount: Int?): ValidationResult {
+    return if (roomsCount != null && roomsCount > 0) {
+        ValidationResult(true)
+    } else {
+        ValidationResult(false, "Enter the number of bathrooms")
     }
 }
 
@@ -72,11 +98,15 @@ fun validateMainPhotoDescription(description: String): ValidationResult {
     }
 }
 
-fun validateMainPhoto(photos: List<Photo>): ValidationResult {
-    return if (photos.isNotEmpty()) {
-        ValidationResult(true)
-    } else {
+fun validatePhotos(photos: List<Photo>): ValidationResult {
+    return if (photos.isEmpty()) {
         ValidationResult(false, "Please select at least one photo")
+    } else {
+        if (photos.any { it.description.isNullOrBlank() }) {
+            ValidationResult(false, "Please add description for each photo")
+        } else {
+            ValidationResult(true)
+        }
     }
 }
 
@@ -98,6 +128,31 @@ fun validateEntryDate(entryDate: Date?): ValidationResult {
         ValidationResult(true)
     } else {
         ValidationResult(false, "Please select the estate's entry date")
+    }
+}
+
+fun validateSaleDate(entryDate: Date?, saleDate: Date?): ValidationResult {
+    return when (saleDate) {
+        null -> ValidationResult(true)
+        else -> {
+            if (entryDate == null) {
+                ValidationResult(false, "Ensure consistency between dates")
+            } else {
+                if (entryDate.after(saleDate)) {
+                    ValidationResult(false, "Ensure consistency between dates")
+                } else {
+                    ValidationResult(true)
+                }
+            }
+        }
+    }
+}
+
+fun validateStatus(status: EstateStatus, saleDate: Date?): ValidationResult {
+    return when {
+        status == EstateStatus.AVAILABLE && saleDate == null -> ValidationResult(true)
+        status == EstateStatus.SOLD && saleDate != null -> ValidationResult(true)
+        else -> ValidationResult(false, "No consistency between status and sale date")
     }
 }
 

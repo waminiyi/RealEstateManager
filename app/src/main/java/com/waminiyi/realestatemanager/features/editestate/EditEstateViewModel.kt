@@ -31,14 +31,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditEstateViewModel @Inject constructor(
-    val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val addEstateUseCase: AddEstateUseCase,
     private val estateRepository: EstateRepository,
     private val photoRepository: PhotoRepository,
     private val mediaFileRepository: MediaFileRepository,
 ) : ViewModel() {
     private var estateId: String? = savedStateHandle[Constants.ARG_ESTATE_ID]
-    private val photosToDelete = mutableListOf<String>()
+    private val photosToDelete = mutableListOf<Photo>()
     private var initialEstate: EstateWithDetails? = null
 
     private val _uiState = MutableStateFlow(EditEstateUiState())
@@ -47,7 +47,6 @@ class EditEstateViewModel @Inject constructor(
     init {
         estateId?.let {
             loadEstate(it)
-            Log.d("estateid", it)
         }
         if (estateId == null) {
             estateId = UUID.randomUUID().toString()
@@ -70,12 +69,16 @@ class EditEstateViewModel @Inject constructor(
         _uiState.update { it.copy(roomsCount = roomsCount) }
     }
 
-    fun setFullDescription(fullDescription: String) {
-        _uiState.update { it.copy(fullDescription = fullDescription) }
+    fun setBedroomsCount(bedroomsCount: Int?) {
+        _uiState.update { it.copy(bedroomsCount = bedroomsCount) }
     }
 
-    fun setMainPhotoDescription(mainPhotoDescription: String) {
-        _uiState.update { it.copy(mainPhotoDescription = mainPhotoDescription) }
+    fun setBathroomsCount(bathroomsCount: Int?) {
+        _uiState.update { it.copy(bathroomsCount = bathroomsCount) }
+    }
+
+    fun setFullDescription(fullDescription: String) {
+        _uiState.update { it.copy(fullDescription = fullDescription) }
     }
 
     fun addPhotos(addedPhotosUri: List<Uri>) {
@@ -88,34 +91,43 @@ class EditEstateViewModel @Inject constructor(
                     uuid = uuid,
                     estateUuid = estateId,
                     localPath = savePhotoToInternalStorage(uri, uuid).toString()
-                        .also { Log.d("vmsaveduri", it) }
                 )
-                Log.d("uri", uri.toString())
                 photoMutableList.add(photo)
             }
             _uiState.update { it.copy(photos = photoMutableList) }
         }
     }
 
-    fun removePhoto(removedPhoto: Photo) {
-        photosToDelete.add(removedPhoto.estateUuid)
+    fun addPhotoToDeletionList(removedPhoto: Photo) {
+        photosToDelete.add(removedPhoto)
         _uiState.update {
             it.copy(photos = it.photos.minus(removedPhoto))
         }
         _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
-        viewModelScope.launch {
-            photoRepository.deletePhoto(removedPhoto)
-            removedPhoto.localPath?.let {
-                mediaFileRepository.deletePhotoFileFromInternalStorage(it)
-            }
-        }
     }
 
     fun swapPhotoItems(fromPosition: Int, toPosition: Int) {
         val photoMutableList = mutableListOf<Photo>()
         photoMutableList.addAll(uiState.value.photos)
         Collections.swap(photoMutableList, fromPosition, toPosition)
+        if (fromPosition == 0) {
+            photoMutableList[fromPosition] = photoMutableList[fromPosition].copy(isMain = true)
+            photoMutableList[toPosition] = photoMutableList[toPosition].copy(isMain = false)
+        } else if (toPosition == 0) {
+            photoMutableList[toPosition] = photoMutableList[toPosition].copy(isMain = true)
+            photoMutableList[fromPosition] = photoMutableList[fromPosition].copy(isMain = false)
+        }
         _uiState.update { it.copy(photos = photoMutableList) }
+    }
+
+    fun updatePhotoDescription(index: Int, newDescription: String?) {
+        val photoMutableList = mutableListOf<Photo>()
+        photoMutableList.addAll(uiState.value.photos)
+        photoMutableList[index] = photoMutableList[index].copy(description = newDescription)
+        _uiState.update {
+            it.copy(photos = photoMutableList)
+        }
+        _uiState.update { it.copy(hasChanges = hasChangesComparedToInitialEstate) }
     }
 
     fun setAddress(address: Address?) {
@@ -127,8 +139,6 @@ class EditEstateViewModel @Inject constructor(
     }
 
     fun setStatus(estateStatus: EstateStatus) {
-        //TODO: add a constraint so when this is set, the sale date
-        //should be set an vice versa
         _uiState.update { it.copy(estateStatus = estateStatus) }
     }
 
@@ -145,7 +155,11 @@ class EditEstateViewModel @Inject constructor(
     }
 
     fun resetError() {
-        _uiState.update { it.copy(hasSavingError = false, savingError = null) }
+        _uiState.update { it.copy(savingError = null) }
+    }
+
+    fun resetSavingStatus() {
+        _uiState.update { it.copy(isEstateSaved = false) }
     }
 
     fun saveEstate() {
@@ -160,8 +174,14 @@ class EditEstateViewModel @Inject constructor(
                 _uiState.update { it.copy(isEstateSaving = true) }
                 addEstateUseCase(
                     _uiState.value.asEstateWithDetails(estateId)
-                        .also { Log.d("EstateTosave", it.toString()) }
+                        .also { Log.d("EstateTo save", it.toString()) }
                 )
+                photosToDelete.forEach { photo ->
+                    photoRepository.deletePhoto(photo)
+                    photo.localPath?.let {
+                        mediaFileRepository.deletePhotoFileFromInternalStorage(it)
+                    }
+                }
                 _uiState.update { it.copy(isEstateSaved = true) }
 
             } catch (e: Exception) {
@@ -190,8 +210,9 @@ class EditEstateViewModel @Inject constructor(
                         price = estate.price,
                         area = estate.area,
                         roomsCount = estate.roomsCount,
+                        bedroomsCount = estate.bedroomsCount,
+                        bathroomsCount = estate.bathroomsCount,
                         fullDescription = estate.fullDescription,
-                        mainPhotoDescription = estate.photos.first { it.isMain }.description.orEmpty(),
                         photos = estate.photos,
                         address = estate.address,
                         nearbyPointsOfInterest = estate.nearbyPointsOfInterest,
@@ -199,7 +220,6 @@ class EditEstateViewModel @Inject constructor(
                         entryDate = estate.entryDate,
                         saleDate = estate.saleDate,
                         agent = estate.agent,
-                        isEstateSaved = true,
                     )
                 }
             }
@@ -208,7 +228,7 @@ class EditEstateViewModel @Inject constructor(
 
     private val hasChangesComparedToInitialEstate: Boolean
         get() {
-
+            if (uiState.value.photos.isNotEmpty()) return true
             return initialEstate?.let {
                 val currentEstate = uiState.value.asEstateWithDetails(estateId)
                 with(currentEstate) {
@@ -216,6 +236,8 @@ class EditEstateViewModel @Inject constructor(
                             price != it.price &&
                             area != it.area &&
                             roomsCount != it.roomsCount &&
+                            bedroomsCount != it.bedroomsCount &&
+                            bathroomsCount != it.bathroomsCount &&
                             fullDescription != it.fullDescription &&
                             photos != it.photos &&
                             address != it.address &&
@@ -232,25 +254,41 @@ class EditEstateViewModel @Inject constructor(
         val priceResult = validatePrice(uiState.value.price)
         val areaResult = validateArea(uiState.value.area)
         val addressResult = validateAddress(uiState.value.address)
-        val roomsCountResult = validateRoomsCount(uiState.value.roomsCount)
+        val roomsCountResult = validateTotalRoomsCount(uiState.value.roomsCount)
+        val bedroomsCountResult = validateBedroomsCount(uiState.value.bedroomsCount)
+        val bathroomsCountResult = validateBathroomsCount(uiState.value.bathroomsCount)
         val agentResult = validateAgent(uiState.value.agent)
         val fullDescriptionResult = validateFullDescription(uiState.value.fullDescription)
-        val photoResult = validateMainPhoto(uiState.value.photos)
-        val mainPhotoDescriptionResult =
-            validateMainPhotoDescription(uiState.value.mainPhotoDescription)
+        val photoResult = validatePhotos(uiState.value.photos)
         val entryDateResult = validateEntryDate(uiState.value.entryDate)
+        val saleDateResult = validateSaleDate(uiState.value.entryDate, uiState.value.saleDate)
+        val statusResult = validateStatus(uiState.value.estateStatus, uiState.value.saleDate)
         val typeResult = validateType(uiState.value.type)
+        val allRoomsCountResult =
+            uiState.value.roomsCount?.let {
+                uiState.value.bedroomsCount?.let { it1 ->
+                    uiState.value
+                        .bathroomsCount?.let { it2 ->
+                            validateAllRoomsCount(
+                                it, it1, it2
+                            )
+                        }
+                }
+            }
 
         val hasError = listOf(
             priceResult,
             areaResult,
             addressResult,
             roomsCountResult,
+            bedroomsCountResult,
+            bathroomsCountResult,
             agentResult,
             fullDescriptionResult,
-            mainPhotoDescriptionResult,
             photoResult,
             entryDateResult,
+            saleDateResult,
+            statusResult,
             typeResult
         ).any { !it.successful }
 
@@ -262,15 +300,27 @@ class EditEstateViewModel @Inject constructor(
                     areaError = areaResult.errorMessage,
                     addressError = addressResult.errorMessage,
                     roomsCountError = roomsCountResult.errorMessage,
+                    bedroomsCountError = bedroomsCountResult.errorMessage,
+                    bathroomsCountError = bathroomsCountResult.errorMessage,
                     agentError = agentResult.errorMessage,
                     fullDescriptionError = fullDescriptionResult.errorMessage,
-                    mainPhotoDescriptionError = mainPhotoDescriptionResult.errorMessage,
                     photosError = photoResult.errorMessage,
                     entryDateError = entryDateResult.errorMessage,
-                    hasSavingError = true,
+                    saleDateError = saleDateResult.errorMessage,
+                    statusError = statusResult.errorMessage,
                     savingError = "Some fields are missing"
                 )
             }
+            allRoomsCountResult?.let {
+                _uiState.update {
+                    it.copy(
+                        roomsCountError = allRoomsCountResult.errorMessage,
+                        bedroomsCountError = allRoomsCountResult.errorMessage,
+                        bathroomsCountError = allRoomsCountResult.errorMessage,
+                    )
+                }
+            }
+
             return false
         } else {
             _uiState.update {
@@ -280,12 +330,14 @@ class EditEstateViewModel @Inject constructor(
                     areaError = null,
                     addressError = null,
                     roomsCountError = null,
+                    bedroomsCountError = null,
+                    bathroomsCountError = null,
                     agentError = null,
                     fullDescriptionError = null,
-                    mainPhotoDescriptionError = null,
                     photosError = null,
                     entryDateError = null,
-                    hasSavingError = false,
+                    saleDateError = null,
+                    statusError = null,
                     savingError = null
                 )
             }
@@ -300,7 +352,6 @@ class EditEstateViewModel @Inject constructor(
                 temporaryCapturedImageUri,
                 outputName
             )
-            Log.d("finaluri", finalUri.toString())
         }
         return finalUri
     }

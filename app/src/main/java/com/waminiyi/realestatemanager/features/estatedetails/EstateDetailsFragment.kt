@@ -108,6 +108,11 @@ class EstateDetailsFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshEstateDetails()
+    }
+
     //region UI updates
     private fun updateUi(uiState: EstateDetailsUiState) {
         when {
@@ -176,8 +181,9 @@ class EstateDetailsFragment : Fragment() {
         binding.detailsAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area.toInt())
         binding.detailsDescriptionTextView.text = estate.fullDescription
         binding.featuresTypeTextView.text = estate.type.asUiEstateType(requireContext()).name
-        binding.featuresRoomsCountTextView.text =
-            resources.getQuantityString(R.plurals.roomsCount, estate.roomsCount, estate.roomsCount)
+        binding.featuresRoomsCountTextView.text = estate.roomsCount.toString()
+        binding.featuresBedroomsCountTextView.text = estate.bedroomsCount.toString()
+        binding.featuresBathroomsCountTextView.text = estate.bathroomsCount.toString()
         binding.featuresAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area.toInt())
         binding.addressTextView.text = estate.address.toRawString()
         binding.agentImageView.load(estate.agent.photoUrl) {
@@ -188,14 +194,20 @@ class EstateDetailsFragment : Fragment() {
         "${estate.agent.firstName}  ${estate.agent.lastName[0]}.".also {
             binding.agentNameTextView.text = it
         }
-
-
     }
 
     private fun openEditEstateFragment(estateUuid: String?) {
         estateUuid?.let {
             val bundle = Bundle().apply { putString(Constants.ARG_ESTATE_ID, it) }
             findNavController().navigate(R.id.navigation_add, bundle)
+        }
+    }
+
+    private fun updatePhotoCountView(recyclerView: RecyclerView) {
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+        layoutManager?.let {
+            val indexText = "${it.findFirstVisibleItemPosition() + 1} / ${it.itemCount}"
+            binding.photoItemCountTextView.text = indexText
         }
     }
 
@@ -206,14 +218,12 @@ class EstateDetailsFragment : Fragment() {
         recyclerView.adapter = photoAdapter
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        updatePhotoCountView(recyclerView)
+
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                layoutManager?.let {
-                    val indexText = "${it.findFirstVisibleItemPosition() + 1} / ${it.itemCount}"
-                    binding.photoItemCountTextView.text = indexText
-                }
+                updatePhotoCountView(recyclerView)
             }
         })
     }

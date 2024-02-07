@@ -6,6 +6,8 @@ data class RemoteEstate(
     val price: Int = 0,
     val area: Int = 0,
     val roomsCount: Int = 0,
+    val bedroomsCount: Int,
+    val bathroomsCount: Int,
     val description: String = "",
     val address: RemoteAddress = RemoteAddress(),
     val status: String = "",

@@ -24,9 +24,6 @@ class EstateDetailsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EstateDetailsUiState())
     val uiState: StateFlow<EstateDetailsUiState> = _uiState.asStateFlow()
 
-    init {
-        estateId?.let { loadEstate(it) } ?: _uiState.update { it.copy(loadingError = "Null estate id") }
-    }
 
     private fun loadEstate(estateId: String) {
         _uiState.update { it.copy(isLoading = true) }
@@ -44,5 +41,9 @@ class EstateDetailsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun refreshEstateDetails() {
+        estateId?.let { loadEstate(it) } ?: _uiState.update { it.copy(loadingError = "Null estate id") }
     }
 }

@@ -2,8 +2,8 @@ package com.waminiyi.realestatemanager.core.data.extension
 
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteEstate
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
-import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.EstateType
 import java.util.Date
 import java.util.UUID
 
@@ -11,8 +11,10 @@ fun RemoteEstate.toEstateEntity() = EstateEntity(
     estateUuid = UUID.fromString(this.estateUuid),
     type = EstateType.valueOf(this.type),
     price = this.price,
-    area =this.area,
+    area = this.area,
     roomsCount = this.roomsCount,
+    bedroomsCount = this.bedroomsCount,
+    bathroomsCount = this.bathroomsCount,
     description = this.description,
     addressEntity = this.address.toAddressEntity(),
     estateStatus = EstateStatus.valueOf(this.status),
@@ -27,6 +29,8 @@ fun EstateEntity.toRemoteEstate() = RemoteEstate(
     price = this.price,
     area = this.area,
     roomsCount = this.roomsCount,
+    bedroomsCount = this.bedroomsCount,
+    bathroomsCount = this.bathroomsCount,
     description = this.description,
     address = this.addressEntity.toRemoteAddress(),
     status = this.estateStatus.name,

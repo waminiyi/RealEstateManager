@@ -25,16 +25,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <HorizontalScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
+                    android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/photoRecyclerView"
@@ -42,65 +42,28 @@
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/photo_item" />
 
-                    <LinearLayout
+                    <Button
+                        android:id="@+id/addPhotoButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
+                        android:text="Add photos"
+                        android:textAllCaps="false"
+                        app:icon="@drawable/ic_add_a_photo" />
 
-                        <ImageButton
-                            android:id="@+id/addPhotoButton"
-                            android:layout_width="140dp"
-                            android:layout_height="140dp"
-                            android:layout_margin="4dp"
-                            android:elevation="4dp"
-                            android:src="@drawable/ic_add_a_photo"
-                            android:textAllCaps="false"
-                            app:cardCornerRadius="8dp"
-                            app:tint="#F44336" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/photoErrorTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="#6E0404" />
-
-                    </LinearLayout>
-
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/photoErrorTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/error_color"
+                        tools:text="@string/photo_error" />
                 </LinearLayout>
-            </HorizontalScrollView>
+            </androidx.core.widget.NestedScrollView>
 
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="#C3BBBB" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/aboutTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="About"
-                app:counterEnabled="true"
-                app:counterMaxLength="250"
-                app:errorEnabled="true"
-                app:helperText="Briefly describe the main photo"
-                app:helperTextEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/aboutTextInputEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="4dp"
                 android:background="#C3BBBB" />
 
             <LinearLayout
@@ -114,8 +77,16 @@
                     android:id="@+id/typeLabelTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/estate_type" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/typeErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/no_estate_type_error"
+                    android:textColor="@color/error_color" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/estateTypeRecyclerView"
@@ -261,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Address" />
+                    android:text="@string/address" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/addressTextView"
@@ -269,7 +240,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:drawableEnd="@drawable/ic_arrow_forward"
-                    android:text="20 Crispy road, Atlanta" />
+                    tools:text="20 Crispy road, Atlanta" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/addressErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/addressLabelTextView"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/error_color"
+                    tools:text="Address error" />
 
             </RelativeLayout>
 
@@ -312,10 +292,11 @@
                 android:padding="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/estateStatusLabelTextview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Status" />
+                    android:text="@string/estate_status" />
 
                 <Spinner
                     android:id="@+id/statusSpinner"
@@ -324,6 +305,16 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginBottom="16dp"
                     android:entries="@array/estate_status" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/statusErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/estateStatusLabelTextview"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/error_color"
+                    tools:text="Status error" />
+
 
             </RelativeLayout>
 
@@ -351,7 +342,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:drawableEnd="@drawable/ic_arrow_forward"
-                    android:text="01/01/2024" />
+                    tools:text="01/01/2024" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/entryDateErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/entryDateLabelTextView"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/error_color"
+                    tools:text="Entry date error" />
 
             </RelativeLayout>
 
@@ -367,10 +367,11 @@
                 android:padding="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/saleDateLabelTextview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Sale date" />
+                    android:text="@string/sale_date" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/saleDateTextView"
@@ -378,7 +379,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:drawableEnd="@drawable/ic_arrow_forward"
-                    android:text="05/01/2024" />
+                    tools:text="05/01/2024" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/saleDateErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/saleDateLabelTextview"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/error_color"
+                    tools:text="Sale date error" />
 
             </RelativeLayout>
 
@@ -394,11 +404,19 @@
                 android:padding="16dp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/agentLabel"
+                    android:id="@+id/agentLabelTextview"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/agent_selection" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/agentErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/error_color"
+                    tools:text="Agent error" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/agentRecyclerView"

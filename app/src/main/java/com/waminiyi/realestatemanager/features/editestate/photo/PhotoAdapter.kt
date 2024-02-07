@@ -1,24 +1,22 @@
 package com.waminiyi.realestatemanager.features.editestate.photo
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.waminiyi.realestatemanager.R
-import com.waminiyi.realestatemanager.core.model.data.Agent
 import com.waminiyi.realestatemanager.core.model.data.Photo
-import java.util.Collections
 
 class PhotoAdapter(
     private val onPhotoDeleted: (Photo) -> Unit,
+    private val onDescriptionEditionStarted: (Int, String?) -> Unit,
     private val onItemMove: (startPosition: Int, endPosition: Int) -> Unit
 ) : ListAdapter<Photo, PhotoAdapter.PhotoViewHolder>(PhotoComparator()) {
 
@@ -35,13 +33,18 @@ class PhotoAdapter(
         holder.deleteButton.setOnClickListener {
             onPhotoDeleted(photo)
         }
+        holder.descriptionTextView.setOnClickListener {
+            onDescriptionEditionStarted(position, photo.description)
+        }
     }
 
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val deleteButton: ImageButton = itemView.findViewById(R.id.deletePhotoButton)
-        val imageView: ImageView = itemView.findViewById(R.id.photoItemImageView)
+        private val imageView: ImageView = itemView.findViewById(R.id.photoItemImageView)
+        val descriptionTextView: TextView = itemView.findViewById(R.id.photoItemDescriptionEditText)
         fun bind(photo: Photo) {
-            if (photo.remoteUrl != null) {
+            descriptionTextView.text = photo.description
+            if (!photo.remoteUrl.isNullOrBlank()) {
                 imageView.load(photo.remoteUrl) {
                     placeholder(R.drawable.estate)
                     error(R.drawable.estate)
@@ -52,6 +55,7 @@ class PhotoAdapter(
                     error(R.drawable.estate)
                 }
             }
+
         }
     }
 

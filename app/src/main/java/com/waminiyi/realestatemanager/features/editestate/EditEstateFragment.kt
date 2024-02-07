@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -31,6 +32,7 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.Constants
@@ -78,8 +80,6 @@ class EditEstateFragment : Fragment() {
     //endregion
 
     companion object {
-        const val IMAGE = "image/*"
-
         fun newInstance(estateId: String?) = EditEstateFragment().apply {
             arguments = Bundle().apply {
                 putString(Constants.ARG_ESTATE_ID, estateId)
@@ -95,7 +95,6 @@ class EditEstateFragment : Fragment() {
         _binding = FragmentEditestateBinding.inflate(inflater, container, false)
         val root: View = binding.root
         estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
-        //viewModel.savedStateHandle[ARG_ESTATE_ID] = estateId
 
         val fragmentScope = CoroutineScope(Dispatchers.Main)
 
@@ -124,10 +123,8 @@ class EditEstateFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                Log.d("UISTATE", "menu item clicked")
                 when (menuItem.itemId) {
                     R.id.save_estate_menu_item -> {
-                        Log.d("UISTATE", "saving")
                         viewModel.saveEstate()
                         return true
                     }
@@ -153,79 +150,63 @@ class EditEstateFragment : Fragment() {
     //region UI updates
     private fun updateUi(uiState: EditEstateUiState) {
         when {
-            uiState.isLoading || uiState.isEstateSaving -> showProgressBar()
-            uiState.hasSavingError -> showSavingErrorDialog(uiState.savingError)
-            //TODO: avoid this raising multiple time
-            uiState.isEstateSaved -> showEstateSavedDialog()
+            uiState.isLoading || uiState.isEstateSaving -> {
+                binding.circularProgressBar.visibility = View.VISIBLE
+            }
+
+            !uiState.savingError.isNullOrEmpty() -> {
+                showSavingErrorDialog(uiState.savingError)
+            }
+
+            uiState.isEstateSaved -> {
+                showEstateSavedDialog()
+            }
 
             else -> {
-                showDetailsView()
+                binding.circularProgressBar.visibility = View.GONE
                 updateDetailsView(uiState)
             }
         }
     }
 
-
-    private fun showProgressBar() {
-        binding.circularProgressBar.visibility = View.VISIBLE
-        binding.rootLayout.visibility = View.GONE
-    }
-
-    private fun showDetailsView() {
-        binding.circularProgressBar.visibility = View.GONE
-        binding.rootLayout.visibility = View.VISIBLE
-    }
-
     private fun updateDetailsView(uiState: EditEstateUiState) {
-        with(binding.aboutTextInputEditText) {
-            setText(uiState.mainPhotoDescription)
-            setSelection(uiState.mainPhotoDescription.length)
-        }
-        binding.aboutTextInputLayout.error = uiState.mainPhotoDescriptionError
-
-        with(binding.areaTextInputEditText) {
-            setText(uiState.area?.toString().orEmpty())
-            setSelection(uiState.area?.toString().orEmpty().length)
-        }
+        binding.areaTextInputEditText.updateValue(uiState.area?.toString().orEmpty())
         binding.areaTextInputLayout.error = uiState.areaError
 
-        with(binding.roomsCountTextInputEditText) {
-            setText(uiState.roomsCount?.toString().orEmpty())
-            setSelection(uiState.roomsCount?.toString().orEmpty().length)
-        }
+        binding.roomsCountTextInputEditText.updateValue(uiState.roomsCount?.toString().orEmpty())
         binding.roomsCountTextInputLayout.error = uiState.roomsCountError
 
-        with(binding.priceTextInputEditText) {
-            setText(uiState.price?.toString().orEmpty())
-            setSelection(uiState.price?.toString().orEmpty().length)
-        }
+        binding.bedroomsCountTextInputEditText.updateValue(uiState.bedroomsCount?.toString().orEmpty())
+        binding.bedroomsCountTextInputLayout.error = uiState.bedroomsCountError
+
+        binding.bathroomsCountTextInputEditText.updateValue(uiState.bathroomsCount?.toString().orEmpty())
+        binding.bathroomsCountTextInputLayout.error = uiState.bathroomsCountError
+
+        binding.priceTextInputEditText.updateValue(uiState.price?.toString().orEmpty())
         //TODO:Change price type to long
         binding.priceTextInputLayout.error = uiState.priceError
 
-        with(binding.descriptionTextInputEditText) {
-            setText(uiState.fullDescription)
-            setSelection(uiState.fullDescription.length)
-        }
+        binding.descriptionTextInputEditText.updateValue(uiState.fullDescription)
         binding.descriptionTextInputLayout.error = uiState.fullDescriptionError
 
         binding.entryDateTextView.text = getFormattedDate(uiState.entryDate)
-        binding.entryDateLabelTextView.requestFocus()
-        binding.entryDateLabelTextView.error = uiState.entryDateError
+        binding.entryDateErrorTextView.text = uiState.entryDateError
 
         binding.saleDateTextView.text = getFormattedDate(uiState.saleDate)
+        binding.saleDateErrorTextView.text = uiState.saleDateError
 
         binding.addressTextView.text = uiState.address?.toRawString().orEmpty()
-        binding.addressLabelTextView.error = uiState.addressError
+        binding.addressErrorTextView.text = uiState.addressError
 
         agentAdapter.setCurrentAgent(uiState.agent)
-        binding.agentLabel.error = uiState.agentError
+        binding.agentErrorTextView.text = uiState.agentError
 
         estateTypeAdapter.setCurrentType(uiState.type)
-        binding.typeLabelTextView.error = uiState.typeError
+        binding.typeErrorTextView.text = uiState.typeError
 
         poiAdapter.setSelectedPoiList(uiState.nearbyPointsOfInterest)
         photoAdapter.submitList(uiState.photos)
-        binding.photoErrorTextView.error = uiState.photosError
+        binding.photoErrorTextView.text = uiState.photosError
 
         binding.statusSpinner.setSelection(
             when (uiState.estateStatus) {
@@ -233,9 +214,10 @@ class EditEstateFragment : Fragment() {
                 EstateStatus.SOLD -> 1
             }
         )
+        binding.statusErrorTextView.text = uiState.statusError
+
 
         Log.d("UISTATE", uiState.toString())
-
     }
     //endregion
 
@@ -259,7 +241,6 @@ class EditEstateFragment : Fragment() {
     }
 
     private fun setUpTextChangedListeners() {
-        binding.aboutTextInputEditText.afterTextChanged { viewModel.setMainPhotoDescription(it) }
         binding.areaTextInputEditText.afterTextChanged {
             viewModel.setArea(
                 if (it.isNotBlank()) {
@@ -271,6 +252,24 @@ class EditEstateFragment : Fragment() {
         }
         binding.roomsCountTextInputEditText.afterTextChanged {
             viewModel.setRoomsCount(
+                if (it.isNotBlank()) {
+                    it.toInt()
+                } else {
+                    null
+                }
+            )
+        }
+        binding.bedroomsCountTextInputEditText.afterTextChanged {
+            viewModel.setBedroomsCount(
+                if (it.isNotBlank()) {
+                    it.toInt()
+                } else {
+                    null
+                }
+            )
+        }
+        binding.bathroomsCountTextInputEditText.afterTextChanged {
+            viewModel.setBathroomsCount(
                 if (it.isNotBlank()) {
                     it.toInt()
                 } else {
@@ -293,12 +292,25 @@ class EditEstateFragment : Fragment() {
     }
 
     //endregion
+    private fun TextInputEditText.updateValue(newValue: String) {
+        with(this) {
+            setText(newValue)
+            setSelection(newValue.length)
+        }
+    }
 
     // region RecyclerViews
     private fun setUpPhotosRecyclerView() {
         val recyclerView = binding.photoRecyclerView
         photoAdapter = PhotoAdapter(
-            onPhotoDeleted = { viewModel.removePhoto(it) },
+            onPhotoDeleted = { viewModel.addPhotoToDeletionList(it) },
+            onDescriptionEditionStarted = { index, currentDescription ->
+                showPhotoDescriptionEditionDialog(
+                    currentDescription,
+                    onDescriptionUpdated = { newDescription ->
+                        viewModel.updatePhotoDescription(index, newDescription)
+                    })
+            },
             onItemMove = { fromPosition, toPosition ->
                 viewModel.swapPhotoItems(fromPosition, toPosition)
             }
@@ -371,8 +383,7 @@ class EditEstateFragment : Fragment() {
                     isInitialStatusSpinnerSelection = false
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             }
     }
@@ -441,6 +452,29 @@ class EditEstateFragment : Fragment() {
 
     //region Dialogs
 
+    private fun showPhotoDescriptionEditionDialog(
+        currentDescription: String?,
+        onDescriptionUpdated: (String?) -> Unit
+    ) {
+        val view = LayoutInflater.from(requireActivity())
+            .inflate(R.layout.photo_description_edition_layout, null, false)
+        val editText = view.findViewById<TextInputEditText>(R.id.descriptionDialogTextInputEditText)
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.update_description))
+            .setView(view)
+            .setCancelable(true)
+            .create()
+        editText.setText(currentDescription)
+        currentDescription?.let { editText.setSelection(it.length) }
+
+        view.findViewById<Button>(R.id.saveDescriptionButton).setOnClickListener {
+            dialog.dismiss()
+            onDescriptionUpdated(editText.text.toString())
+        }
+        dialog.show()
+    }
+
     private fun showPhotoInputOptionsDialog() {
         val view = LayoutInflater.from(requireActivity())
             .inflate(R.layout.photo_input_options_layout, null, false)
@@ -453,7 +487,7 @@ class EditEstateFragment : Fragment() {
 
         view.findViewById<MaterialTextView>(R.id.optionLibraryTextView).setOnClickListener {
             dialog.dismiss()
-            multiplePhotosLauncher.launch(Companion.IMAGE)
+            multiplePhotosLauncher.launch(Constants.IMAGE)
         }
 
         view.findViewById<MaterialTextView>(R.id.optionCameraTextView).setOnClickListener {
@@ -469,11 +503,12 @@ class EditEstateFragment : Fragment() {
     }
 
     private fun showSavingErrorDialog(errorMessage: String?) {
+        binding.circularProgressBar.visibility = View.GONE
         errorMessage.let {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.estate_saving_error_dialog_title))
                 .setMessage(it)
-                .setPositiveButton(getString(R.string.ok)) { dialog, which ->
+                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                     dialog.dismiss()
                 }
                 .show()
@@ -482,10 +517,12 @@ class EditEstateFragment : Fragment() {
     }
 
     private fun showEstateSavedDialog() {
+        binding.circularProgressBar.visibility = View.GONE
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Estate saved")
             .setMessage("Your estate has been save")
-            .setPositiveButton("OK") { dialog, which ->
+            .setPositiveButton("OK") { dialog, _ ->
+                viewModel.resetSavingStatus()
                 dialog.dismiss()
                 findNavController().navigateUp()
             }

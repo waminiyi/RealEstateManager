@@ -1,8 +1,19 @@
 package com.waminiyi.realestatemanager.core.database.model
 
-import androidx.room.*
-import com.waminiyi.realestatemanager.core.model.data.*
-import java.util.*
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import com.waminiyi.realestatemanager.core.model.data.Estate
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.EstateType
+import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.data.Photo
+import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import java.util.Date
+import java.util.UUID
 
 /**
  * Class representing a real estate property .
@@ -47,6 +58,12 @@ data class EstateEntity(
     @ColumnInfo(name = "rooms_count")
     val roomsCount: Int,
 
+    @ColumnInfo(name = "bedrooms_count")
+    val bedroomsCount: Int,
+
+    @ColumnInfo(name = "bathrooms_count")
+    val bathroomsCount: Int,
+
     @ColumnInfo(name = "description")
     val description: String,
 
@@ -86,6 +103,8 @@ fun EstateWithDetails.asEstateEntity() = EstateEntity(
     price = this.price,
     area = this.area,
     roomsCount = this.roomsCount,
+    bedroomsCount = this.bedroomsCount,
+    bathroomsCount = this.bathroomsCount,
     description = this.fullDescription,
     addressEntity = this.address.asAddressEntity(),
     estateStatus = this.estateStatus,

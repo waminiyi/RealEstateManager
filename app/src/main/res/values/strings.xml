@@ -39,4 +39,10 @@
     <string name="save">Save</string>
     <string name="dot">.</string>
     <string name="price">Price</string>
+    <string name="no_estate_type_error">Please specify the estate type</string>
+    <string name="photo_error">Add at least one photo. Each photo should have a description.</string>
+    <string name="add_image">Add image</string>
+    <string name="estate_status">Estate status</string>
+    <string name="sale_date">Sale date</string>
+    <string name="update_description">Update description</string>
 </resources>

@@ -64,6 +64,15 @@ class DefaultPhotoRepository @Inject constructor(
         }
     }
 
+    override suspend fun deletePhoto(photoId: String): DataResult<Unit> {
+        return try {
+            photoDao.deletePhoto(photoId)
+            DataResult.Success(Unit)
+        } catch (exception: IOException) {
+            DataResult.Error(exception)
+        }
+    }
+
     override suspend fun getPhotosToUpload(): List<PhotoEntity> = photoDao.getPhotosByIds(
         localChangeDao.getChangesByClassTag(ClassTag.Photo).map { change ->
             UUID.fromString(change.id)

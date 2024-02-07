@@ -9,6 +9,8 @@ data class EstateWithDetails(
     val price: Int, // Price of the property in dollars
     val area: Int,
     val roomsCount: Int,
+    val bedroomsCount: Int,
+    val bathroomsCount: Int,
     val fullDescription: String, // Full description of the property
     val photos: List<Photo> = emptyList(), // estate images
     val address: Address, // Address of the property

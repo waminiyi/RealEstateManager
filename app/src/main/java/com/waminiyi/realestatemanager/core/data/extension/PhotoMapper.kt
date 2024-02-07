@@ -19,5 +19,4 @@ fun PhotoEntity.toRemotePhoto() = RemotePhoto(
     url = this.url,
     isMainImage = this.isMainPhoto,
     description = this.description
-
 )
