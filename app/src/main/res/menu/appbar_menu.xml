@@ -40,7 +40,10 @@
     <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"
-        app:showAsAction="never" />
-
+        android:title="Settings" />
+    <item
+        android:id="@+id/navigation_agents"
+        android:icon="@drawable/ic_person_settings"
+        android:title="Agents"
+        app:showAsAction="always" />
 </menu>

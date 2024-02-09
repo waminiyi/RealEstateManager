@@ -1,8 +1,11 @@
 package com.waminiyi.realestatemanager.core.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Upsert
 import com.waminiyi.realestatemanager.core.database.model.AgentEntity
-import java.util.*
+import java.util.UUID
 
 @Dao
 interface AgentDao {
@@ -11,11 +14,11 @@ interface AgentDao {
 
     @Transaction
     @Query("SELECT * FROM agents WHERE agent_uuid = :agentUuid")
-    fun getAgent(agentUuid: UUID): AgentEntity?
+    suspend fun getAgent(agentUuid: UUID): AgentEntity?
 
     @Transaction
     @Query("SELECT * FROM agents")
-    fun getAllAgents(): List<AgentEntity>
+    suspend fun getAllAgents(): List<AgentEntity>
 
     @Transaction
     @Query("SELECT * FROM agents WHERE agent_uuid IN (:agentUuids)")

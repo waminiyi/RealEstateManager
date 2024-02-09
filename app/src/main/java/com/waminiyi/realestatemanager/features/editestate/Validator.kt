@@ -90,14 +90,6 @@ fun validateFullDescription(fullDescription: String): ValidationResult {
     }
 }
 
-fun validateMainPhotoDescription(description: String): ValidationResult {
-    return if (description.isNotBlank()) {
-        ValidationResult(true)
-    } else {
-        ValidationResult(false, "Please provide a description for the main photo")
-    }
-}
-
 fun validatePhotos(photos: List<Photo>): ValidationResult {
     return if (photos.isEmpty()) {
         ValidationResult(false, "Please select at least one photo")

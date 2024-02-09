@@ -45,4 +45,5 @@
     <string name="estate_status">Estate status</string>
     <string name="sale_date">Sale date</string>
     <string name="update_description">Update description</string>
+    <string name="new_agent">New agent</string>
 </resources>

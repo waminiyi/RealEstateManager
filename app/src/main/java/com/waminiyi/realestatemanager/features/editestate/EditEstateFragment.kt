@@ -129,7 +129,7 @@ class EditEstateFragment : Fragment() {
                         return true
                     }
                 }
-                return false
+                return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
@@ -183,7 +183,7 @@ class EditEstateFragment : Fragment() {
         binding.bathroomsCountTextInputLayout.error = uiState.bathroomsCountError
 
         binding.priceTextInputEditText.updateValue(uiState.price?.toString().orEmpty())
-        //TODO:Change price type to long
+        //TODO:Change price type to long or handle error
         binding.priceTextInputLayout.error = uiState.priceError
 
         binding.descriptionTextInputEditText.updateValue(uiState.fullDescription)

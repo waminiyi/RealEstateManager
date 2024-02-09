@@ -51,7 +51,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.navigation_add -> {
-                        navigateToAddFragment()
+                        navController.navigate(R.id.navigation_add)
                         return true
                     }
 
@@ -72,7 +72,12 @@ class HomeActivity : AppCompatActivity() {
 
                     R.id.navigation_settings -> {
                         navigateToSettingsFragment()
-                        return false
+                        return true
+                    }
+
+                    R.id.navigation_agents -> {
+                        navController.navigate(R.id.navigation_agents_list)
+                        return true
                     }
 
                     else -> return false

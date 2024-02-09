@@ -42,4 +42,35 @@
         android:name="com.waminiyi.realestatemanager.features.home.ui.notifications.NotificationsFragment"
         android:label="@string/title_filter"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_agents_list"
+        android:name="com.waminiyi.realestatemanager.features.agentList.AgentListFragment"
+        android:label="Agents"
+        tools:layout="@layout/fragment_agent_list" >
+        <action
+            android:id="@+id/action_agentListFragment_to_agentDetailsFragment"
+            app:destination="@id/agentDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_add_agent"
+        android:name="com.waminiyi.realestatemanager.features.addOrEditAgent.AddOrEditAgentFragment"
+        android:label="Edit agent data"
+        tools:layout="@layout/fragment_add_or_edit_agent" >
+        <argument
+            android:name="agent_id"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/agentDetailsFragment"
+        android:name="com.waminiyi.realestatemanager.features.agentDetails.AgentDetailsFragment"
+        android:label="Agent details"
+        tools:layout="@layout/fragment_agent_details" >
+        <action
+            android:id="@+id/action_agentDetailsFragment_to_addOrEditAgentFragment"
+            app:destination="@id/navigation_add_agent" />
+        <argument
+            android:name="agent_id"
+            app:argType="string" />
+    </fragment>
 </navigation>
