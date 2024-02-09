@@ -46,4 +46,9 @@
     <string name="sale_date">Sale date</string>
     <string name="update_description">Update description</string>
     <string name="new_agent">New agent</string>
+    <string name="agent_photo">Agent photo</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
 </resources>

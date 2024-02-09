@@ -101,7 +101,7 @@ class AgentListFragment : Fragment() {
                         return true
                     }
                 }
-                return true
+                return false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }

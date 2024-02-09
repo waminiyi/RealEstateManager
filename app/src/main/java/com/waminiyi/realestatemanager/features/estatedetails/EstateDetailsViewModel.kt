@@ -20,10 +20,8 @@ class EstateDetailsViewModel @Inject constructor(
     private val estateRepository: EstateRepository,
 ) : ViewModel() {
     private var estateId: String? = savedStateHandle[Constants.ARG_ESTATE_ID]
-
     private val _uiState = MutableStateFlow(EstateDetailsUiState())
     val uiState: StateFlow<EstateDetailsUiState> = _uiState.asStateFlow()
-
 
     private fun loadEstate(estateId: String) {
         _uiState.update { it.copy(isLoading = true) }
