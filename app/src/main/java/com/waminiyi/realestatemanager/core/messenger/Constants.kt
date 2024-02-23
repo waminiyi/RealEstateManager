@@ -9,11 +9,10 @@ import java.io.InputStream
 
 object Constants {
 
-    const val BASE_URL = "https://fcm.googleapis.com/v1/"
-    const val SERVER_KEY = "ENTER SERVER KEY HERE"
+    const val FIREBASE_MESSENGER_BASE_URL = "https://fcm.googleapis.com/v1/"
+    const val STATIC_MAP_BASE_URL = "https://maps.googleapis.com"
     const val CONTENT_TYPE = "application/json"
     const val SCOPE = "https://www.googleapis.com/auth/firebase.messaging"
-    const val  GOOGLE_PLACES_API_KEY="GOOGLE_PLACES_API_KEY"
 }
 
 @Throws(IOException::class)

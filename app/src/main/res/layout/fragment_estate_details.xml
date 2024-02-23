@@ -30,11 +30,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/detailsPhotosRecyclerView"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/details_photo_item" />
+                    android:orientation="horizontal">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="260dp" />
+
+                    <ImageButton
+                        android:id="@+id/backButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/back"
+                        android:src="@drawable/ic_back" />
+
+                    <ImageButton
+                        android:id="@+id/forwardButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/forward"
+                        android:src="@drawable/ic_forward" />
+                </RelativeLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/photoItemCountTextView"
@@ -382,6 +405,33 @@
                     android:drawableEnd="@drawable/ic_arrow_forward"
                     tools:text="20 Crispy road, Atlanta" />
             </RelativeLayout>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map_fragment_container"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:elevation="4dp"
+                android:src="@drawable/estate"
+                app:cardCornerRadius="4dp">
+
+                <ImageView
+                    android:id="@+id/mapImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/map"
+                    />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <View
                 android:layout_width="match_parent"

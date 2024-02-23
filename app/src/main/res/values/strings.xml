@@ -51,4 +51,7 @@
     <string name="first_name">First name</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone number</string>
+    <string name="forward">Forward</string>
+    <string name="back">Back</string>
+    <string name="map">Map</string>
 </resources>

@@ -1,28 +1,28 @@
 package com.waminiyi.realestatemanager.core.messenger.di
 
-import com.waminiyi.realestatemanager.core.messenger.Constants.BASE_URL
+import com.waminiyi.realestatemanager.core.messenger.Constants.FIREBASE_MESSENGER_BASE_URL
 import com.waminiyi.realestatemanager.core.messenger.network.FirebaseMessengerAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RetrofitModule {
+object FirebaseMessengerApiModule {
 
+    @Singleton
     @Provides
-    fun provideRetrofitInstance(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+    fun provideFirebaseMessengerAPI(okHttpClient: OkHttpClient): FirebaseMessengerAPI {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(FIREBASE_MESSENGER_BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    fun provideFirebaseMessengerAPI(retrofit: Retrofit): FirebaseMessengerAPI {
         return retrofit.create(FirebaseMessengerAPI::class.java)
     }
 }
