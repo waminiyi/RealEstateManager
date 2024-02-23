@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:text="@string/estate_type" />
+                    android:text="@string/estate_type_label" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/typeErrorTextView"
@@ -110,7 +110,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:hint="@string/area"
+                android:hint="@string/areaLabel"
                 app:errorEnabled="true"
                 app:suffixText="m²">
 
@@ -212,7 +212,7 @@
                     android:id="@+id/descriptionTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="textMultiLine" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View

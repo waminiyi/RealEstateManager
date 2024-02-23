@@ -25,11 +25,18 @@
     <string name="available">Available</string>
     <string name="sold">Sold</string>
     <string name="soldOn"><b>Sold on:\u0020</b></string>
-    <string name="estate_type">Estate type</string>
-    <string name="number_of_rooms">Number of rooms</string>
-    <string name="number_of_bathrooms">Number of bathrooms</string>
-    <string name="area">Area</string>
-    <string name="number_of_bedrooms">Number of bedrooms</string>
+    <string name="estate_type_label">Estate type</string>
+    <string name="areaLabel">Area</string>
+    <string name="number_of_rooms_label">Number of rooms</string>
+    <string name="number_of_bathrooms_label">Number of bathrooms</string>
+    <string name="number_of_bedrooms_label">Number of bedrooms</string>
+
+    <string name="estate_type">Estate type:\u0020 <b>%s</b></string>
+    <string name="areaWithValue">Area:\u0020 <b>%d m²</b></string>
+    <string name="number_of_rooms">Number of rooms:\u0020 <b>%s</b></string>
+    <string name="number_of_bathrooms">Number of bathrooms:\u0020 <b>%s</b></string>
+    <string name="number_of_bedrooms">Number of bedrooms:\u0020 <b>%s</b></string>
+
     <string name="points_of_interest">Points of interest</string>
     <string name="address">Address</string>
     <string name="agent_in_charge">Agent in charge</string>
@@ -54,4 +61,5 @@
     <string name="forward">Forward</string>
     <string name="back">Back</string>
     <string name="map">Map</string>
+    <string name="currency">Currency</string>
 </resources>

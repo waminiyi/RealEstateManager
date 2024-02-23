@@ -122,6 +122,7 @@ val addresses = listOf(
         "Roberts Street",
         "Granger",
         "Indiana",
+        "USA",
         46530,
         Location(41.7531, -86.1111)
     ),
@@ -130,6 +131,7 @@ val addresses = listOf(
         "North 8th Rd.",
         "Henrico",
         "Virginia",
+        "USA",
         23228,
         Location(37.6660, -77.5167)
     ),
@@ -138,6 +140,7 @@ val addresses = listOf(
         "Carriage St.",
         "Valparaiso",
         "Indiana",
+        "USA",
         46383,
         Location(41.4731, -87.0611)
     ),
@@ -146,6 +149,7 @@ val addresses = listOf(
         "Kent St.",
         "Birmingham",
         "Alabama",
+        "USA",
         35209,
         Location(33.4942, -86.8004)
     ),
@@ -154,6 +158,7 @@ val addresses = listOf(
         "Military Court",
         "Palm Coast",
         "Florida",
+        "USA",
         32137,
         Location(29.5844, -81.2078)
     ),
@@ -162,6 +167,7 @@ val addresses = listOf(
         "West Miles Rd.",
         "Chillicothe",
         "Ohio",
+        "USA",
         45601,
         Location(39.3331, -82.9826)
     ),
@@ -170,6 +176,7 @@ val addresses = listOf(
         "West Prince St.",
         "Georgetown",
         "South Carolina",
+        "USA",
         29440,
         Location(33.3696, -79.2927)
     ),
@@ -178,6 +185,7 @@ val addresses = listOf(
         "Homewood Lane",
         "Bronx",
         "New York",
+        "USA",
         10451,
         Location(40.8196, -73.9235)
     )

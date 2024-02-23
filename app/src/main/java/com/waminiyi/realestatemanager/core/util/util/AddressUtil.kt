@@ -12,10 +12,11 @@ fun createAddressFromPlace(place: Place): Address {
     val streetName = getAddressComponent(addressComponents, "route")
     val city = getAddressComponent(addressComponents, "locality")
     val state = getAddressComponent(addressComponents, "administrative_area_level_1")
+    val country = getAddressComponent(addressComponents, "country")
     val postalCode = getAddressComponent(addressComponents, "postal_code")
     val location = Location(place.latLng?.latitude ?: 0.0, place.latLng?.longitude ?: 0.0)
 
-    return Address(streetNumber.toInt(), streetName, city, state, postalCode.toInt(), location)
+    return Address(streetNumber.toInt(), streetName, city, state, country, postalCode.toInt(), location)
 }
 
 private fun getAddressComponent(addressComponents: AddressComponents?, type: String): String {

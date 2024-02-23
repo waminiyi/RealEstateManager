@@ -18,7 +18,7 @@ fun RemoteEstate.toEstateEntity() = EstateEntity(
     description = this.description,
     addressEntity = this.address.toAddressEntity(),
     estateStatus = EstateStatus.valueOf(this.status),
-    entryDate = Date(this.entryDate),
+    entryDate = this.entryDate?.let { Date(it) },
     saleDate = this.saleDate?.let { Date(it) },
     agentId = UUID.fromString(this.agentId),
 )
@@ -34,7 +34,7 @@ fun EstateEntity.toRemoteEstate() = RemoteEstate(
     description = this.description,
     address = this.addressEntity.toRemoteAddress(),
     status = this.estateStatus.name,
-    entryDate = this.entryDate.time,
+    entryDate = this.entryDate?.time,
     saleDate = this.saleDate?.time,
     agentId = this.agentId.toString(),
 )

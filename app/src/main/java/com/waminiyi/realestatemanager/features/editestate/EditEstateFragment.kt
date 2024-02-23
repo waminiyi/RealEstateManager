@@ -177,23 +177,21 @@ class EditEstateFragment : Fragment() {
         binding.roomsCountTextInputLayout.error = uiState.roomsCountError
 
         binding.bedroomsCountTextInputEditText.updateValue(uiState.bedroomsCount?.toString().orEmpty())
-        binding.bedroomsCountTextInputLayout.error = uiState.bedroomsCountError
+        binding.bedroomsCountTextInputLayout.error = uiState.roomsCountError
 
         binding.bathroomsCountTextInputEditText.updateValue(uiState.bathroomsCount?.toString().orEmpty())
-        binding.bathroomsCountTextInputLayout.error = uiState.bathroomsCountError
 
         binding.priceTextInputEditText.updateValue(uiState.price?.toString().orEmpty())
         //TODO:Change price type to long or handle error
         binding.priceTextInputLayout.error = uiState.priceError
 
-        binding.descriptionTextInputEditText.updateValue(uiState.fullDescription)
-        binding.descriptionTextInputLayout.error = uiState.fullDescriptionError
+        binding.descriptionTextInputEditText.updateValue(uiState.fullDescription.orEmpty())
 
         binding.entryDateTextView.text = getFormattedDate(uiState.entryDate)
-        binding.entryDateErrorTextView.text = uiState.entryDateError
+        binding.entryDateErrorTextView.text = uiState.dateError
 
         binding.saleDateTextView.text = getFormattedDate(uiState.saleDate)
-        binding.saleDateErrorTextView.text = uiState.saleDateError
+        binding.saleDateErrorTextView.text = uiState.dateError
 
         binding.addressTextView.text = uiState.address?.toRawString().orEmpty()
         binding.addressErrorTextView.text = uiState.addressError
@@ -532,18 +530,6 @@ class EditEstateFragment : Fragment() {
     private fun showDatePickerDialog(onDatePicked: (Date) -> Unit) {
         val builder = MaterialDatePicker.Builder.datePicker()
         val picker = builder.build()
-
-        //TODO : add a logic to ensure saleDate comes after entryDate
-        /* val minDate = Calendar.getInstance().apply {
-             set(Calendar.YEAR, 2022)
-             set(Calendar.MONTH, Calendar.JANUARY)
-             set(Calendar.DAY_OF_MONTH, 1)
-         }
-         builder.setCalendarConstraints(
-             CalendarConstraints.Builder()
-                 .setValidator(DateValidatorPointForward.from(minDate.timeInMillis))
-                 .build()
-         )*/
 
         picker.addOnPositiveButtonClickListener { selectedDate ->
             onDatePicked(Date(selectedDate))

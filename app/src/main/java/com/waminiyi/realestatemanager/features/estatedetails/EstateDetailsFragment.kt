@@ -1,8 +1,6 @@
 package com.waminiyi.realestatemanager.features.estatedetails
 
-import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -20,23 +18,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
 import com.waminiyi.realestatemanager.BuildConfig
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.Constants
+import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_BASE_URL
+import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_MARKER_COLOR
+import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_SCALE
+import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_ZOOM
 import com.waminiyi.realestatemanager.core.map.StaticMapApiService
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 import com.waminiyi.realestatemanager.core.model.data.Location
 import com.waminiyi.realestatemanager.core.model.data.toRawString
+import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
+import com.waminiyi.realestatemanager.core.util.util.formatAsEuro
 import com.waminiyi.realestatemanager.core.util.util.formatAsUSDollar
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
+import com.waminiyi.realestatemanager.core.util.util.toEuro
 import com.waminiyi.realestatemanager.databinding.FragmentEstateDetailsBinding
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PoiAdapter
@@ -49,7 +47,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
+class EstateDetailsFragment : Fragment() {
     //region Variables initialization
     private val viewModel: EstateDetailsViewModel by viewModels()
     private var _binding: FragmentEstateDetailsBinding? = null
@@ -57,8 +55,6 @@ class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
     private var estateId: String? = null
     private lateinit var poiAdapter: PoiAdapter
     private lateinit var photoAdapter: PhotoAdapter
-    private val estateLocation: LatLng? = null
-    private var map: GoogleMap? = null
     private val API_KEY = BuildConfig.MAPS_API_KEY
 
     @Inject
@@ -88,31 +84,10 @@ class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
         val root: View = binding.root
         estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
         val fragmentScope = CoroutineScope(Dispatchers.Main)
-        setupMapIfNeeded()
         fragmentScope.launch {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.uiState.collect { uiState ->
                     updateUi(uiState)
-
-
-//                    val call = staticMapApiService.getStaticMap("40.714728,-73.998672", 12, "400x400", apiKey)
-//
-//                    call.enqueue(object : Callback<ResponseBody> {
-//                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//                            if (response.isSuccessful) {
-//                                val inputStream = response.body()?.byteStream()
-//                                inputStream?.let {
-//                                    binding.mapImageView.load(staticMapUrl)
-//                                }
-//                            } else {
-//                                // Handle error response
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                            // Handle network errors
-//                        }
-//                    })
                 }
             }
         }
@@ -166,7 +141,7 @@ class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
 
             uiState.estateWithDetails != null -> {
                 showDetailsView()
-                updateDetailsView(uiState.estateWithDetails)
+                updateDetailsView(uiState.estateWithDetails, uiState.currencyCode)
             }
         }
     }
@@ -190,7 +165,7 @@ class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
         binding.detailsRootLayout.visibility = View.VISIBLE
     }
 
-    private fun updateDetailsView(estate: EstateWithDetails) {
+    private fun updateDetailsView(estate: EstateWithDetails, currencyCode: CurrencyCode) {
         photoAdapter.submitList(estate.photos)
         poiAdapter.submitList(estate.nearbyPointsOfInterest)
         when (estate.estateStatus) {
@@ -211,19 +186,33 @@ class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        binding.detailsPriceTextView.text = estate.price.formatAsUSDollar()
+        binding.detailsPriceTextView.text = priceToText(estate.price, currencyCode)
         binding.detailsCityTextView.text = estate.address.city
         binding.detailsEntryDateTextView.text = getFormattedDate(estate.entryDate)
         binding.detailsEstateTypeTextView.text = estate.type.asUiEstateType(requireContext()).name
         binding.detailsRoomsCountTextView.text =
-            resources.getQuantityString(R.plurals.roomsCount, estate.roomsCount, estate.roomsCount)
-        binding.detailsAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area.toInt())
+            estate.roomsCount?.let { resources.getQuantityString(R.plurals.roomsCount, it, estate.roomsCount) }
+        binding.detailsAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area)
         binding.detailsDescriptionTextView.text = estate.fullDescription
-        binding.featuresTypeTextView.text = estate.type.asUiEstateType(requireContext()).name
-        binding.featuresRoomsCountTextView.text = estate.roomsCount.toString()
-        binding.featuresBedroomsCountTextView.text = estate.bedroomsCount.toString()
-        binding.featuresBathroomsCountTextView.text = estate.bathroomsCount.toString()
-        binding.featuresAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area.toInt())
+
+        binding.featuresTypeTextView.text = getString(
+            R.string.estate_type,
+            estate.type.asUiEstateType(requireContext()).name
+        )
+        binding.featuresRoomsCountTextView.text = getString(
+            R.string.number_of_rooms,
+            estate.roomsCount?.toString() ?: "--"
+        )
+        binding.featuresBedroomsCountTextView.text = getString(
+            R.string.number_of_bedrooms,
+            estate.bedroomsCount?.toString() ?: "--"
+        )
+
+        binding.featuresBathroomsCountTextView.text = getString(
+            R.string.number_of_bathrooms,
+            estate.bathroomsCount?.toString() ?: "--"
+        )
+        binding.featuresAreaTextView.text = getString(R.string.areaWithValue, estate.area)
         binding.addressTextView.text = estate.address.toRawString()
         binding.agentImageView.load(estate.agent.photoUrl) {
             transformations(CircleCropTransformation())
@@ -233,7 +222,6 @@ class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
         "${estate.agent.firstName}  ${estate.agent.lastName[0]}.".also {
             binding.agentNameTextView.text = it
         }
-        showEstateOnMap(estate.address.location)
         showEstateLocationOnMap(estate.address.location)
     }
 
@@ -294,55 +282,22 @@ class EstateDetailsFragment : Fragment(), OnMapReadyCallback {
     //endregion
 
 
-    private fun setupMapIfNeeded() {
-        if (map == null) {
-            val mapFragment = childFragmentManager
-                .findFragmentById(R.id.map_fragment_container) as SupportMapFragment?
-            mapFragment?.getMapAsync(this)
-        }
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        Log.e("Map ready", map.toString())
-        try {
-            val success = map!!.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    requireContext(), R.raw.map_style
-                )
-            )
-            if (!success) {
-                Log.e("Map style", "Style parsing failed.")
-            }
-        } catch (e: Resources.NotFoundException) {
-            Log.e("Map style", "Can't find style. Error: ", e)
-        }
-
-    }
-
-    private fun showEstateOnMap(position: Location) {
-        map?.let {
-            it.clear()
-            val latLng = LatLng(position.latitude, position.longitude)
-            Log.d("latlng", latLng.toString())
-            val options = MarkerOptions()
-            options.position(latLng)
-            it.addMarker(options)
-            it.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16F));
-        }
-    }
-
     private fun showEstateLocationOnMap(location: Location) {
         val width = binding.root.width
         val height: Int = (width / 3.0).toInt()
-        val staticMapUrl = "https://maps.googleapis.com/maps/api/staticmap" +
+        val staticMapUrl = STATIC_MAP_BASE_URL +
                 "?center=${location.latitude},${location.longitude}" +
-                "&zoom=18" +
+                "&$STATIC_MAP_ZOOM" +
                 "&size=${width}x${height}" +
-                "&scale=2" +
-                "&markers=color:red%7C${location.latitude},${location.longitude}" +
+                "&$STATIC_MAP_SCALE" +
+                "&$STATIC_MAP_MARKER_COLOR${location.latitude},${location.longitude}" +
                 "&key=$API_KEY"
 
         binding.mapImageView.load(staticMapUrl)
+    }
+
+    private fun priceToText(priceInDollars: Int, currencyCode: CurrencyCode): String = when (currencyCode) {
+        CurrencyCode.USD -> priceInDollars.formatAsUSDollar()
+        CurrencyCode.EUR -> priceInDollars.toEuro().formatAsEuro()
     }
 }

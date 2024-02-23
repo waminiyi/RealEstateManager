@@ -123,51 +123,53 @@
                     tools:text="$ 250 000" />
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal">
+                android:layout_marginBottom="4dp">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/detailsRoomsCountTextView"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="3 rooms" />
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/dot"
-                    android:textStyle="bold" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/detailsRoomsCountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="3 rooms" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/detailsAreaTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="64 m²" />
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/dot"
+                        android:textStyle="bold" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/dot"
-                    android:textStyle="bold" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/detailsAreaTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="64 m²" />
+
+                </LinearLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/detailsCityTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    app:drawableStartCompat="@drawable/ic_location"
                     tools:text="Grenoble" />
-
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -254,120 +256,71 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/featuresTypeTextView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:drawablePadding="4dp"
-                        android:text="@string/estate_type"
-                        app:drawableStartCompat="@drawable/ic_home_black_24dp" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/featuresTypeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:textColor="@color/black"
-                        tools:text="Apartment" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="4dp"
-                        android:drawablePadding="4dp"
-                        android:text="@string/number_of_rooms"
-                        app:drawableStartCompat="@drawable/ic_home_black_24dp" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/featuresRoomsCountTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:textColor="@color/black"
-                        tools:text="3" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="4dp"
-                        android:drawablePadding="4dp"
-                        android:text="@string/number_of_bathrooms"
-                        app:drawableStartCompat="@drawable/bath" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/featuresBathroomsCountTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:textColor="@color/black"
-                        tools:text="2" />
-
-                </LinearLayout>
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="8dp"
+                    android:text="@string/estate_type_label"
+                    app:drawableStartCompat="@drawable/ic_estate_type"
+                    tools:text="Estate type: Apartment" />
 
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/featuresAreaTextView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="8dp"
+                    android:text="@string/areaLabel"
+                    app:drawableStartCompat="@drawable/ic_area"
+                    tools:text="Area: 81 m²" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:drawablePadding="4dp"
-                        android:text="@string/area"
-                        app:drawableStartCompat="@drawable/ic_home_black_24dp" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/featuresRoomsCountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="8dp"
+                    android:text="@string/number_of_rooms"
+                    app:drawableStartCompat="@drawable/ic_room"
+                    tools:text="Number of rooms: 6" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/featuresAreaTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:textColor="@color/black"
-                        tools:text="64 m²" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/featuresBedroomsCountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="8dp"
+                    android:text="@string/number_of_bedrooms"
+                    app:drawableStartCompat="@drawable/ic_bedroom"
+                    tools:text="Number of bedrooms: 3" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="4dp"
-                        android:drawablePadding="4dp"
-                        android:text="@string/number_of_bedrooms"
-                        app:drawableStartCompat="@drawable/bed" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/featuresBedroomsCountTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:textColor="@color/black"
-                        tools:text="2" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/featuresBathroomsCountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="8dp"
+                    android:text="@string/number_of_bathrooms"
+                    app:drawableStartCompat="@drawable/bath"
+                    tools:text="Number of bathrooms: 2" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/points_of_interest" />
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawablePadding="8dp"
+                    android:text="@string/points_of_interest"
+                    app:drawableStartCompat="@drawable/ic_poi" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/detailsPoiRecyclerView"
@@ -406,19 +359,13 @@
                     tools:text="20 Crispy road, Atlanta" />
             </RelativeLayout>
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/map_fragment_container"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="16dp"
                 android:elevation="4dp"
                 android:src="@drawable/estate"
                 app:cardCornerRadius="4dp">
@@ -428,8 +375,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:contentDescription="@string/map"
-                    />
+                    android:contentDescription="@string/map" />
 
             </com.google.android.material.card.MaterialCardView>
 

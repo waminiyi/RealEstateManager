@@ -14,22 +14,6 @@
         android:title="@string/title_filter"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_currency"
-        android:icon="@drawable/ic_currency"
-        android:title="Currency"
-        app:showAsAction="never">
-        <menu>
-            <item
-                android:id="@+id/currency_dollars"
-                android:icon="@drawable/ic_dollars"
-                android:title="Dollars" />
-            <item
-                android:id="@+id/currency_euro"
-                android:icon="@drawable/ic_euro"
-                android:title="Euro" />
-        </menu>
-    </item>
 
     <item
         android:id="@+id/navigation_settings"
@@ -39,6 +23,6 @@
         android:id="@+id/navigation_agents"
         android:icon="@drawable/ic_person_settings"
         android:title="Agents"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
 </menu>

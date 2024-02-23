@@ -254,71 +254,43 @@ class EditEstateViewModel @Inject constructor(
         val priceResult = validatePrice(uiState.value.price)
         val areaResult = validateArea(uiState.value.area)
         val addressResult = validateAddress(uiState.value.address)
-        val roomsCountResult = validateTotalRoomsCount(uiState.value.roomsCount)
-        val bedroomsCountResult = validateBedroomsCount(uiState.value.bedroomsCount)
-        val bathroomsCountResult = validateBathroomsCount(uiState.value.bathroomsCount)
         val agentResult = validateAgent(uiState.value.agent)
-        val fullDescriptionResult = validateFullDescription(uiState.value.fullDescription)
         val photoResult = validatePhotos(uiState.value.photos)
-        val entryDateResult = validateEntryDate(uiState.value.entryDate)
-        val saleDateResult = validateSaleDate(uiState.value.entryDate, uiState.value.saleDate)
+        val datesResult = validateDates(uiState.value.entryDate, uiState.value.saleDate)
         val statusResult = validateStatus(uiState.value.estateStatus, uiState.value.saleDate)
         val typeResult = validateType(uiState.value.type)
-        val allRoomsCountResult =
-            uiState.value.roomsCount?.let {
-                uiState.value.bedroomsCount?.let { it1 ->
-                    uiState.value
-                        .bathroomsCount?.let { it2 ->
-                            validateAllRoomsCount(
-                                it, it1, it2
-                            )
-                        }
-                }
+        val roomsCountResult = uiState.value.roomsCount?.let {
+            uiState.value.bedroomsCount?.let { it1 ->
+                validateRoomsCount(it, it1)
             }
-
+        }
+//TODO: handle empty rooms count in ui, handle address overlap on label, handle focus on edittext
         val hasError = listOf(
             priceResult,
             areaResult,
             addressResult,
-            roomsCountResult,
-            bedroomsCountResult,
-            bathroomsCountResult,
             agentResult,
-            fullDescriptionResult,
             photoResult,
-            entryDateResult,
-            saleDateResult,
+            datesResult,
             statusResult,
             typeResult
         ).any { !it.successful }
+        val hasRoomsCountError = roomsCountResult != null && !roomsCountResult.successful
 
-        if (hasError) {
+        if (hasError || hasRoomsCountError) {
             _uiState.update {
                 it.copy(
                     typeError = typeResult.errorMessage,
                     priceError = priceResult.errorMessage,
                     areaError = areaResult.errorMessage,
                     addressError = addressResult.errorMessage,
-                    roomsCountError = roomsCountResult.errorMessage,
-                    bedroomsCountError = bedroomsCountResult.errorMessage,
-                    bathroomsCountError = bathroomsCountResult.errorMessage,
                     agentError = agentResult.errorMessage,
-                    fullDescriptionError = fullDescriptionResult.errorMessage,
                     photosError = photoResult.errorMessage,
-                    entryDateError = entryDateResult.errorMessage,
-                    saleDateError = saleDateResult.errorMessage,
+                    dateError = datesResult.errorMessage,
                     statusError = statusResult.errorMessage,
+                    roomsCountError = roomsCountResult?.errorMessage,
                     savingError = "Some fields are missing"
                 )
-            }
-            allRoomsCountResult?.let {
-                _uiState.update {
-                    it.copy(
-                        roomsCountError = allRoomsCountResult.errorMessage,
-                        bedroomsCountError = allRoomsCountResult.errorMessage,
-                        bathroomsCountError = allRoomsCountResult.errorMessage,
-                    )
-                }
             }
 
             return false
@@ -330,13 +302,9 @@ class EditEstateViewModel @Inject constructor(
                     areaError = null,
                     addressError = null,
                     roomsCountError = null,
-                    bedroomsCountError = null,
-                    bathroomsCountError = null,
                     agentError = null,
-                    fullDescriptionError = null,
                     photosError = null,
-                    entryDateError = null,
-                    saleDateError = null,
+                    dateError = null,
                     statusError = null,
                     savingError = null
                 )

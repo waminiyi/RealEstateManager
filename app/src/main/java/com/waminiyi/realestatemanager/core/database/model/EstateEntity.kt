@@ -56,16 +56,16 @@ data class EstateEntity(
     val area: Int,
 
     @ColumnInfo(name = "rooms_count")
-    val roomsCount: Int,
+    val roomsCount: Int?,
 
     @ColumnInfo(name = "bedrooms_count")
-    val bedroomsCount: Int,
+    val bedroomsCount: Int?,
 
     @ColumnInfo(name = "bathrooms_count")
-    val bathroomsCount: Int,
+    val bathroomsCount: Int?,
 
     @ColumnInfo(name = "description")
-    val description: String,
+    val description: String?,
 
     @Embedded
     val addressEntity: AddressEntity,
@@ -74,8 +74,7 @@ data class EstateEntity(
     val estateStatus: EstateStatus,
 
     @ColumnInfo(name = "entry_date")
-    val entryDate: Date,
-    //TODO use LocalDate instead of Date ???
+    val entryDate: Date?,
 
     @ColumnInfo(name = "sale_date")
     val saleDate: Date? = null,

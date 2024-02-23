@@ -11,7 +11,7 @@ import java.util.Date
 import java.util.UUID
 
 data class EditEstateUiState(
-    val type: EstateType? = null,
+    val type: EstateType = EstateType.APARTMENT,
     val typeError: String? = null,
     val price: Int? = null,
     val priceError: String? = null,
@@ -20,11 +20,9 @@ data class EditEstateUiState(
     val roomsCount: Int? = null,
     val roomsCountError: String? = null,
     val bedroomsCount: Int? = null,
-    val bedroomsCountError: String? = null,
     val bathroomsCount: Int? = null,
-    val bathroomsCountError: String? = null,
-    val fullDescription: String = "",
-    val fullDescriptionError: String? = null,
+    val fullDescription: String? = null,
+//    val fullDescriptionError: String? = null,
     val photos: List<Photo> = emptyList(),
     val photosError: String? = null,
     val address: Address? = null,
@@ -33,9 +31,9 @@ data class EditEstateUiState(
     val estateStatus: EstateStatus = EstateStatus.AVAILABLE,
     val statusError: String? = null,
     val entryDate: Date? = null,
-    val entryDateError: String? = null,
+    val dateError: String? = null,
     val saleDate: Date? = null,
-    val saleDateError: String? = null,
+//    val saleDateError: String? = null,
     val agent: Agent? = null,
     val agentError: String? = null,
     val isLoading: Boolean = false,
@@ -46,23 +44,23 @@ data class EditEstateUiState(
 ) {
     fun asEstateWithDetails(estateId: String?): EstateWithDetails {
 
+        val tempPhotos = mutableListOf<Photo>()
+        tempPhotos.addAll(photos)
+        tempPhotos[0] = tempPhotos[0].copy(isMain = true)
         return EstateWithDetails(
             uuid = estateId ?: UUID.randomUUID().toString(),
-            type = type ?: throw NullPointerException("Estate type can not be null"),
+            type = type,
             price = price ?: throw NullPointerException("Estate price can not be null"),
             area = area ?: throw NullPointerException("Estate area can not be null"),
-            roomsCount = roomsCount
-                ?: throw NullPointerException("Estate rooms count can not be null"),
-            bedroomsCount = bedroomsCount
-                ?: throw NullPointerException("Estate bedrooms count can not be null"),
-            bathroomsCount = bathroomsCount
-                ?: throw NullPointerException("Estate bathrooms count can not be null"),
+            roomsCount = roomsCount,
+            bedroomsCount = bedroomsCount,
+            bathroomsCount = bathroomsCount,
             fullDescription = fullDescription,
-            photos = photos,
+            photos = tempPhotos,
             address = address ?: throw NullPointerException("Address can not be null"),
             nearbyPointsOfInterest = nearbyPointsOfInterest,
             estateStatus = estateStatus,
-            entryDate = entryDate ?: throw NullPointerException("Entry date can not be null"),
+            entryDate = entryDate,
             saleDate = saleDate,
             agent = agent ?: throw NullPointerException("Agent can not be null"),
         )

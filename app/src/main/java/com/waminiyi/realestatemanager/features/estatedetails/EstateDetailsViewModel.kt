@@ -4,8 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.Constants
+import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class EstateDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val estateRepository: EstateRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private var estateId: String? = savedStateHandle[Constants.ARG_ESTATE_ID]
     private val _uiState = MutableStateFlow(EstateDetailsUiState())
@@ -26,6 +29,7 @@ class EstateDetailsViewModel @Inject constructor(
     private fun loadEstate(estateId: String) {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
+
             val result = estateRepository.getEstateWithDetails(estateId)
             if (result !is DataResult.Success || result.data == null) {
                 _uiState.update { it.copy(isLoading = false, loadingError = "Estate with id $estateId not found") }
@@ -37,6 +41,9 @@ class EstateDetailsViewModel @Inject constructor(
                         estateWithDetails = result.data
                     )
                 }
+            }
+            userPreferencesRepository.getDefaultCurrency().collect { code ->
+                _uiState.update { it.copy(currencyCode = code, isLoading = false) }
             }
         }
     }

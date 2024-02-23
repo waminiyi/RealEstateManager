@@ -17,7 +17,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/appbar_menu"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/app_name" />
+        app:title="@string/app_name">
+        <ImageButton
+            android:id="@+id/currencyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/currency"
+            android:padding="8dp"
+            android:src="@drawable/ic_currency"
+            app:tint="@color/white" />
+    </androidx.appcompat.widget.Toolbar>
 
     <fragment
         android:id="@+id/nav_host_fragment_activity_home"
