@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -51,6 +52,23 @@ class HomeActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
         toolbar.setupWithNavController(navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_add -> {
+                    toolbar.visibility = View.GONE
+                }
+
+                R.id.navigation_estatedetails -> {
+                    toolbar.visibility = View.GONE
+                }
+
+                else -> {
+                    toolbar.visibility = View.VISIBLE
+                    binding.currencyButton.visibility = View.VISIBLE
+                }
+
+            }
+        }
 
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -66,16 +84,6 @@ class HomeActivity : AppCompatActivity() {
 
                     R.id.navigation_filter -> {
                         showDialog("Filter")
-                        return true
-                    }
-
-                    R.id.currency_dollars -> {
-                        setCurrencyToDollars()
-                        return true
-                    }
-
-                    R.id.currency_euro -> {
-                        setCurrencyToEuro()
                         return true
                     }
 

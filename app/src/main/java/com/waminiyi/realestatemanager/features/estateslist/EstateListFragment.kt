@@ -68,7 +68,9 @@ class EstateListFragment : Fragment() {
                             binding.estateListCircularProgressBar.visibility = View.GONE
                             binding.estateListErrorTextView.visibility = View.GONE
                             adapter.submitList(uiState.estates)
+                            adapter.updateCurrencyCode(uiState.currencyCode)
                         }
+
                         else -> {
                             Log.d("UISTATE", uiState.toString())
                         }

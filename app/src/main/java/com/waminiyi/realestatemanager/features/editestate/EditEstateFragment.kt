@@ -140,6 +140,12 @@ class EditEstateFragment : Fragment() {
         setUpPoiRecyclerView()
         setUpAgentsRecyclerView()
         setupEstateStatusSpinner()
+        binding.saveButton.setOnClickListener {
+            viewModel.saveEstate()
+        }
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

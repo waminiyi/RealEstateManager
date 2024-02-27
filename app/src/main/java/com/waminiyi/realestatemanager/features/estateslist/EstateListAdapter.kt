@@ -6,15 +6,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.Estate
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
+import com.waminiyi.realestatemanager.core.util.util.priceToText
+import com.waminiyi.realestatemanager.features.model.asUiEstateType
 
-class EstateListAdapter(private val onEstateSelected: (String) -> Unit) :
+class EstateListAdapter(
+    private val onEstateSelected: (String) -> Unit,
+    private var currencyCode: CurrencyCode = CurrencyCode.USD
+) :
     ListAdapter<Estate, EstateListAdapter.EstateViewHolder>(EstateComparator()) {
+
+    fun updateCurrencyCode(newCurrencyCode: CurrencyCode) {
+        currencyCode = newCurrencyCode
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EstateViewHolder {
         return EstateViewHolder.create(parent)
@@ -22,7 +35,7 @@ class EstateListAdapter(private val onEstateSelected: (String) -> Unit) :
 
     override fun onBindViewHolder(holder: EstateViewHolder, position: Int) {
         val estate = getItem(position)
-        holder.bind(estate)
+        holder.bind(estate, currencyCode)
         holder.itemView.setOnClickListener {
             onEstateSelected(estate.uuid)
         }
@@ -33,13 +46,15 @@ class EstateListAdapter(private val onEstateSelected: (String) -> Unit) :
         private val cityView: TextView = itemView.findViewById(R.id.estate_city_tv)
         private val areaView: TextView = itemView.findViewById(R.id.estate_area_tv)
         private val priceView: TextView = itemView.findViewById(R.id.estate_price_tv)
+        private val roomCountTextView: TextView = itemView.findViewById(R.id.itemRoomsCountTextView)
+        private val statusTextView: TextView = itemView.findViewById(R.id.itemEstateStatusTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.estateItemImageView)
 
-        fun bind(estate: Estate) {
-            typeView.text = estate.type.name
+        fun bind(estate: Estate, currencyCode: CurrencyCode) {
+            typeView.text = estate.type.asUiEstateType(itemView.context).name
             cityView.text = estate.addressCity
-            areaView.text = estate.area.toString()
-            priceView.text = estate.price.toString()
+            areaView.text = itemView.context.getString(R.string.areaInSquareMeter, estate.area)
+            priceView.text = priceToText(estate.price, currencyCode)
 
             if (!estate.mainPhoto.remoteUrl.isNullOrBlank()) {
                 imageView.load(estate.mainPhoto.remoteUrl) {
@@ -53,6 +68,24 @@ class EstateListAdapter(private val onEstateSelected: (String) -> Unit) :
                 }
             }
             Log.d("Item", estate.toString())
+
+            with(statusTextView) {
+                when (estate.status) {
+                    EstateStatus.AVAILABLE -> {
+                        text = this.context.getString(R.string.available)
+                        setTextColor(ContextCompat.getColor(context, R.color.green))
+                    }
+
+                    EstateStatus.SOLD -> {
+                        text = this.context.getString(R.string.sold)
+                        setTextColor(ContextCompat.getColor(context, R.color.red))
+                    }
+                }
+            }
+
+//            estate.roomsCount?.let {
+//                roomCountTextView.text=
+//            }
         }
 
         companion object {

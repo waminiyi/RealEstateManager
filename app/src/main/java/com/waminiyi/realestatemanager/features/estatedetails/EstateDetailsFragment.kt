@@ -34,6 +34,7 @@ import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.core.util.util.formatAsEuro
 import com.waminiyi.realestatemanager.core.util.util.formatAsUSDollar
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
+import com.waminiyi.realestatemanager.core.util.util.priceToText
 import com.waminiyi.realestatemanager.core.util.util.toEuro
 import com.waminiyi.realestatemanager.databinding.FragmentEstateDetailsBinding
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
@@ -115,6 +116,13 @@ class EstateDetailsFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         setUpPhotosRecyclerView()
         setUpPoiRecyclerView()
+        binding.editButton.setOnClickListener {
+            openEditEstateFragment(estateId)
+        }
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
     override fun onDestroyView() {
@@ -190,9 +198,6 @@ class EstateDetailsFragment : Fragment() {
         binding.detailsCityTextView.text = estate.address.city
         binding.detailsEntryDateTextView.text = getFormattedDate(estate.entryDate)
         binding.detailsEstateTypeTextView.text = estate.type.asUiEstateType(requireContext()).name
-        binding.detailsRoomsCountTextView.text =
-            estate.roomsCount?.let { resources.getQuantityString(R.plurals.roomsCount, it, estate.roomsCount) }
-        binding.detailsAreaTextView.text = getString(R.string.areaInSquareMeter, estate.area)
         binding.detailsDescriptionTextView.text = estate.fullDescription
 
         binding.featuresTypeTextView.text = getString(
@@ -255,21 +260,6 @@ class EstateDetailsFragment : Fragment() {
             }
         })
 
-        binding.backButton.setOnClickListener {
-            val currentItem = viewPager.currentItem
-            if (currentItem > 0) {
-                viewPager.setCurrentItem(currentItem - 1, true)
-            }
-        }
-
-        binding.forwardButton.setOnClickListener {
-            val currentItem = viewPager.currentItem
-            val total = (viewPager.adapter as PhotoAdapter).itemCount
-            if (currentItem < total - 1) {
-                viewPager.setCurrentItem(currentItem + 1, true)
-            }
-        }
-
     }
 
     private fun setUpPoiRecyclerView() {
@@ -296,8 +286,8 @@ class EstateDetailsFragment : Fragment() {
         binding.mapImageView.load(staticMapUrl)
     }
 
-    private fun priceToText(priceInDollars: Int, currencyCode: CurrencyCode): String = when (currencyCode) {
-        CurrencyCode.USD -> priceInDollars.formatAsUSDollar()
-        CurrencyCode.EUR -> priceInDollars.toEuro().formatAsEuro()
-    }
+//    private fun priceToText(priceInDollars: Int, currencyCode: CurrencyCode): String = when (currencyCode) {
+//        CurrencyCode.USD -> priceInDollars.formatAsUSDollar()
+//        CurrencyCode.EUR -> priceInDollars.toEuro().formatAsEuro()
+//    }
 }

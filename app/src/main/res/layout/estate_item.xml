@@ -1,84 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:orientation="vertical"
-    app:cardCornerRadius="8dp">
+    android:layout_margin="16dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="8dp">
+
+        <ImageView
+            android:id="@+id/estateItemImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/estate_photo"
+            android:scaleType="fitXY"
+            android:src="@drawable/estate" />
+
+        <TextView
+            android:id="@+id/itemEstateStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="8dp"
+            android:background="@drawable/round_rectangle_background"
+            android:fontFamily="@font/poppins_light"
+            android:padding="4dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            tools:text="Available" />
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:padding="4dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:elevation="4dp"
-            android:src="@drawable/estate"
-            app:cardCornerRadius="8dp">
+        <TextView
+            android:id="@+id/estate_price_tv"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textColor="@color/black"
+            tools:text="$400,000" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:id="@+id/estateItemImageView"
-                android:src="@drawable/estate" />
-        </com.google.android.material.card.MaterialCardView>
-
+        <TextView
+            android:id="@+id/estate_type_tv"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            tools:text="House" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_weight="5"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/estate_type_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="House"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/estate_city_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="Manhattan"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:drawableStartCompat="@drawable/location" />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp">
 
             <TextView
                 android:id="@+id/estate_area_tv"
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:drawablePadding="4dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="150 m2"
                 android:textColor="@color/black"
-                android:textSize="12sp"
-                app:drawableStartCompat="@drawable/bed" />
+                android:textStyle="bold"
+                tools:text="150 m²" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/dot"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/estate_price_tv"
+                android:id="@+id/itemRoomsCountTextView"
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="$400K"
-                android:textColor="#0466C8"
-                android:textSize="18sp" />
-
+                android:textStyle="bold"
+                tools:text="6 rooms" />
         </LinearLayout>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/estate_city_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            tools:text="Manhattan (36000)" />
 
-</com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</LinearLayout>
