@@ -9,10 +9,13 @@ import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
 import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.features.agentEntities
 import com.waminiyi.realestatemanager.features.estateEntities
 import com.waminiyi.realestatemanager.features.mainPhotoEntities
+import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -26,16 +29,26 @@ class EstateListViewModel @Inject constructor(
     private val photoDao: PhotoDao,
     private val estateDao: EstateDao,
     private val userPreferencesRepository: UserPreferencesRepository
+
 ) : ViewModel() {
+
+    private var currencyCode: CurrencyCode = CurrencyCode.USD
+    private val currentViewTypeFlow = MutableStateFlow(ListingViewType.LIST)
 
     init {
         addSampleEstates()
+//        viewModelScope.launch {
+//            userPreferencesRepository.getDefaultCurrency().collect { code ->
+//                currencyCode = code
+//            }
+//        }
     }
 
     private val combinedFlow = combine(
         estateRepository.getAllEstatesStream(),
-        userPreferencesRepository.getDefaultCurrency()
-    ) { estatesResult, currencyCode ->
+        userPreferencesRepository.getDefaultCurrency(),
+        currentViewTypeFlow
+    ) { estatesResult, currency, viewType ->
         val uiState = when (estatesResult) {
             is DataResult.Error -> EstateListUiState(
                 isError = true,
@@ -43,7 +56,11 @@ class EstateListViewModel @Inject constructor(
             )
 
             is DataResult.Loading -> EstateListUiState(isLoading = true)
-            is DataResult.Success -> EstateListUiState(estates = estatesResult.data, currencyCode = currencyCode)
+            is DataResult.Success -> EstateListUiState(
+                estates = estatesResult.data,
+                currencyCode = currency,
+                viewType = viewType
+            )
         }
         uiState
     }
@@ -52,6 +69,16 @@ class EstateListViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = EstateListUiState(isLoading = true)
     )
+
+    fun setCurrencyCode(code: CurrencyCode) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateDefaultCurrency(code)
+        }
+    }
+
+    fun setCurrentViewType(viewType: ListingViewType) {
+        currentViewTypeFlow.value = viewType
+    }
 
     private fun addSampleEstates() {
         viewModelScope.launch {

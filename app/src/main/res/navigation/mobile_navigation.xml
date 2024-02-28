@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/navigation_estateList"
         android:name="com.waminiyi.realestatemanager.features.estateslist.EstateListFragment"
-        android:label="Estates"
         tools:layout="@layout/fragment_estate_list">
 
         <action
@@ -19,7 +18,6 @@
     <fragment
         android:id="@+id/navigation_add"
         android:name="com.waminiyi.realestatemanager.features.editestate.EditEstateFragment"
-        android:label="@string/title_add"
         tools:layout="@layout/fragment_editestate">
         <argument
             android:name="estate_id"
@@ -30,8 +28,7 @@
     <fragment
         android:id="@+id/navigation_estatedetails"
         android:name="com.waminiyi.realestatemanager.features.estatedetails.EstateDetailsFragment"
-        android:label="Estate details"
-        tools:layout="@layout/fragment_estate_details" >
+        tools:layout="@layout/fragment_estate_details">
         <argument
             android:name="estate_id"
             app:argType="string" />
@@ -46,7 +43,7 @@
         android:id="@+id/navigation_agents_list"
         android:name="com.waminiyi.realestatemanager.features.agentList.AgentListFragment"
         android:label="Agents"
-        tools:layout="@layout/fragment_agent_list" >
+        tools:layout="@layout/fragment_agent_list">
         <action
             android:id="@+id/action_agentListFragment_to_agentDetailsFragment"
             app:destination="@id/agentDetailsFragment" />
@@ -55,7 +52,7 @@
         android:id="@+id/navigation_add_agent"
         android:name="com.waminiyi.realestatemanager.features.addOrEditAgent.AddOrEditAgentFragment"
         android:label="Edit agent data"
-        tools:layout="@layout/fragment_add_or_edit_agent" >
+        tools:layout="@layout/fragment_add_or_edit_agent">
         <argument
             android:name="agent_id"
             app:argType="string"
@@ -65,7 +62,7 @@
         android:id="@+id/agentDetailsFragment"
         android:name="com.waminiyi.realestatemanager.features.agentDetails.AgentDetailsFragment"
         android:label="Agent details"
-        tools:layout="@layout/fragment_agent_details" >
+        tools:layout="@layout/fragment_agent_details">
         <action
             android:id="@+id/action_agentDetailsFragment_to_addOrEditAgentFragment"
             app:destination="@id/navigation_add_agent" />
@@ -73,4 +70,20 @@
             android:name="agent_id"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/listAndMapContainerFragment"
+        android:name="com.waminiyi.realestatemanager.features.estateslist.ListAndMapContainerFragment"
+        android:label="fragment_list_and_map_container"
+        tools:layout="@layout/fragment_list_and_map_container">
+        <action
+            android:id="@+id/action_listAndMapContainerFragment_to_navigation_estateList"
+            app:destination="@id/navigation_estateList" />
+        <action
+            android:id="@+id/action_listAndMapContainerFragment_to_estateMapFragment"
+            app:destination="@id/estateMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/estateMapFragment"
+        android:name="com.waminiyi.realestatemanager.features.estateslist.EstateMapFragment"
+        tools:layout="@layout/fragment_estate_map" />
 </navigation>

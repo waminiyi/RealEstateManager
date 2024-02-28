@@ -62,4 +62,5 @@
     <string name="back">Back</string>
     <string name="map">Map</string>
     <string name="currency">Currency</string>
+    <string name="add_estate">Add estate</string>
 </resources>

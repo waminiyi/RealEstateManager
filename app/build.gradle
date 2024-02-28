@@ -69,6 +69,7 @@ dependencies {
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.navigation.fragment.ktx
     implementation libs.navigation.ui.ktx
+    implementation libs.legacy.support.v4
 
     //The important part
     def flipper_version = '0.191.1'

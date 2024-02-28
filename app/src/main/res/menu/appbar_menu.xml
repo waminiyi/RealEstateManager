@@ -8,25 +8,4 @@
         android:title="@string/title_add"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/navigation_edit"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/title_edit"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/navigation_filter"
-        android:icon="@drawable/ic_filter"
-        android:title="@string/title_filter"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Settings" />
-    <item
-        android:id="@+id/navigation_agents"
-        android:icon="@drawable/ic_person_settings"
-        android:title="Agents"
-        app:showAsAction="never" />
 </menu>

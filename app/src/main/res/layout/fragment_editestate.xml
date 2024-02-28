@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    tools:listitem="@layout/estate_type_item" />
+                    tools:listitem="@layout/estate_type_item_view" />
 
             </LinearLayout>
 
@@ -303,7 +303,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    tools:listitem="@layout/poi_item" />
+                    tools:listitem="@layout/poi_item_view" />
 
             </LinearLayout>
 
@@ -450,7 +450,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:listitem="@layout/agent_item" />
+                    tools:listitem="@layout/agent_item_view" />
 
             </LinearLayout>
 

@@ -31,11 +31,8 @@ import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 import com.waminiyi.realestatemanager.core.model.data.Location
 import com.waminiyi.realestatemanager.core.model.data.toRawString
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
-import com.waminiyi.realestatemanager.core.util.util.formatAsEuro
-import com.waminiyi.realestatemanager.core.util.util.formatAsUSDollar
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
 import com.waminiyi.realestatemanager.core.util.util.priceToText
-import com.waminiyi.realestatemanager.core.util.util.toEuro
 import com.waminiyi.realestatemanager.databinding.FragmentEstateDetailsBinding
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PoiAdapter
@@ -283,11 +280,9 @@ class EstateDetailsFragment : Fragment() {
                 "&$STATIC_MAP_MARKER_COLOR${location.latitude},${location.longitude}" +
                 "&key=$API_KEY"
 
-        binding.mapImageView.load(staticMapUrl)
+        binding.mapImageView.load(staticMapUrl) {
+            placeholder(R.drawable.map_placeholder)
+            error(R.drawable.ic_error)
+        }
     }
-
-//    private fun priceToText(priceInDollars: Int, currencyCode: CurrencyCode): String = when (currencyCode) {
-//        CurrencyCode.USD -> priceInDollars.formatAsUSDollar()
-//        CurrencyCode.EUR -> priceInDollars.toEuro().formatAsEuro()
-//    }
 }

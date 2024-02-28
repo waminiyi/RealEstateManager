@@ -1,20 +1,11 @@
 package com.waminiyi.realestatemanager.features.editestate.estatetype
 
-import android.graphics.Color
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.features.extensions.showAsEstateType
-import com.waminiyi.realestatemanager.features.extensions.showAsSelected
-import com.waminiyi.realestatemanager.features.model.asUiEstateType
 
 class EstateTypeAdapter(
     private val estateTypes: List<EstateType>,
@@ -37,9 +28,11 @@ class EstateTypeAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EstateTypeViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.estate_type_item, parent, false)
-        return EstateTypeViewHolder(view)
+//        val view = LayoutInflater.from(parent.context)
+//            .inflate(R.layout.estate_type_item_view, parent, false)
+//        return EstateTypeViewHolder(view)
+        val view = EstateTypeItemView(parent.context)
+        return EstateTypeAdapter.EstateTypeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: EstateTypeViewHolder, position: Int) {
@@ -59,14 +52,18 @@ class EstateTypeAdapter(
 
     override fun getItemCount(): Int = estateTypes.size
 
-    class EstateTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class EstateTypeViewHolder(
+        private val estateTypeItemView: EstateTypeItemView
+    ) : RecyclerView.ViewHolder(estateTypeItemView) {
         fun bind(estateType: EstateType, isSelected: Boolean) {
-            val imageView: ImageView = itemView.findViewById(R.id.itemEstateTypeImageView)
-            val textView: TextView = itemView.findViewById(R.id.itemEstateTypeNameTextView)
-            textView.text = estateType.asUiEstateType(itemView.context).name
-            imageView.setImageResource(estateType.asUiEstateType(itemView.context).iconResId)
-            textView.showAsSelected(isSelected)
-            imageView.showAsSelected(isSelected)
+            estateTypeItemView.setEstateType(estateType)
+            estateTypeItemView.showAsSelected(isSelected)
+//            val imageView: ImageView = itemView.findViewById(R.id.itemEstateTypeImageView)
+//            val textView: TextView = itemView.findViewById(R.id.itemEstateTypeNameTextView)
+//            textView.text = estateType.asUiEstateType(itemView.context).name
+//            imageView.setImageResource(estateType.asUiEstateType(itemView.context).iconResId)
+//            textView.showAsSelected(isSelected)
+//            imageView.showAsSelected(isSelected)
         }
     }
 

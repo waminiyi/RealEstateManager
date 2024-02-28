@@ -1,15 +1,15 @@
 package com.waminiyi.realestatemanager.features.home
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.MenuProvider
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,6 +20,8 @@ import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPrefere
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.databinding.ActivityHomeBinding
 import com.waminiyi.realestatemanager.features.editestate.EditEstateFragment
+import com.waminiyi.realestatemanager.features.estateslist.EstateListViewModel
+import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,9 +34,15 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var toolbar: Toolbar
+    private var currentViewType = ListingViewType.LIST
+    private var isInitialViewType = true
+
 
     @Inject
     lateinit var userPreferencesRepository: UserPreferencesRepository
+
+    private val viewModel: EstateListViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,57 +58,107 @@ class HomeActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_home) as NavHostFragment
         navController = navHostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_estateList, R.id.estateMapFragment))
         toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_add -> {
+                R.id.navigation_add, R.id.navigation_estatedetails -> {
                     toolbar.visibility = View.GONE
-                }
-
-                R.id.navigation_estatedetails -> {
-                    toolbar.visibility = View.GONE
+                    binding.listViewControlsLayout.visibility = View.GONE
+                    binding.newEstateButton.visibility = View.GONE
                 }
 
                 else -> {
                     toolbar.visibility = View.VISIBLE
-                    binding.currencyButton.visibility = View.VISIBLE
+                    if (destination.id == R.id.navigation_estateList || destination.id == R.id.estateMapFragment) {
+                        binding.newEstateButton.visibility = View.VISIBLE
+                        binding.listViewControlsLayout.visibility = View.VISIBLE
+                    } else {
+                        binding.newEstateButton.visibility = View.GONE
+                        binding.listViewControlsLayout.visibility = View.GONE
+                    }
                 }
-
             }
         }
+        binding.filterLabelLayout.setOnClickListener {
+            showDialog("Filter")
+        }
+        binding.newEstateButton.setOnClickListener {
+            navController.navigate(R.id.navigation_add)
+        }
+        binding.listViewLabelTextView.setOnClickListener {
+            viewModel.setCurrentViewType(ListingViewType.LIST)
+        }
+        binding.mapViewLabelTextView.setOnClickListener {
+            viewModel.setCurrentViewType(ListingViewType.MAP)
+        }
+        lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                updateCurrencyButtonIcon(uiState.currencyCode)
+                when (uiState.viewType) {
+                    ListingViewType.LIST -> showListView(uiState.estates.size)
 
-        addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.appbar_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.navigation_add -> {
-                        navController.navigate(R.id.navigation_add)
-                        return true
-                    }
-
-                    R.id.navigation_filter -> {
-                        showDialog("Filter")
-                        return true
-                    }
-
-                    R.id.navigation_settings -> {
-                        navigateToSettingsFragment()
-                        return true
-                    }
-
-                    R.id.navigation_agents -> {
-                        navController.navigate(R.id.navigation_agents_list)
-                        return true
-                    }
-
-                    else -> return false
+                    ListingViewType.MAP -> showMapView(uiState.estates.size)
                 }
             }
-        })
+        }
+    }
+
+    private fun TextView.showAsCurrentListingViewLabel(isCurrentView: Boolean) {
+        val regular = ResourcesCompat.getFont(context, R.font.source_sans_regular)
+        val bold = ResourcesCompat.getFont(context, R.font.source_sans_bold)
+        if (isCurrentView) {
+            with(this) {
+                setTextColor(ContextCompat.getColor(this.context, R.color.cinnabar))
+                typeface = bold
+            }
+        } else {
+            with(this) {
+                setTextColor(ContextCompat.getColor(this.context, R.color.black))
+                typeface = regular
+            }
+        }
+    }
+
+    private fun showListView(count: Int) {
+
+
+//        if (isInitialViewType) {
+//            showDialog("Initial List view")
+//            isInitialViewType = false
+//        } else {
+//            showDialog(" Not Initial List view")
+//            navController.navigate(R.id.navigation_estateList)
+//        }
+        if (currentViewType != ListingViewType.LIST) {
+            currentViewType = ListingViewType.LIST
+            showDialog("New List view")
+            navController.navigate(R.id.navigation_estateList)
+        } else {
+            showDialog(" Not new List view")
+        }
+        val listCountText = "List ($count)"
+        val mapCountText = "Map ($count)"
+        binding.listViewLabelTextView.text = listCountText
+        binding.mapViewLabelTextView.text = mapCountText
+        binding.listViewLabelTextView.showAsCurrentListingViewLabel(true)
+        binding.mapViewLabelTextView.showAsCurrentListingViewLabel(false)
+    }
+
+    private fun showMapView(count: Int) {
+        if (currentViewType != ListingViewType.MAP) {
+            currentViewType = ListingViewType.MAP
+            showDialog("New Map view")
+            navController.navigate(R.id.estateMapFragment)
+        } else {
+            showDialog(" Not new map view")
+        }
+        val listCountText = "List ($count)"
+        val mapCountText = "Map ($count)"
+        binding.listViewLabelTextView.text = listCountText
+        binding.mapViewLabelTextView.text = mapCountText
+        binding.listViewLabelTextView.showAsCurrentListingViewLabel(false)
+        binding.mapViewLabelTextView.showAsCurrentListingViewLabel(true)
     }
 
     private fun navigateToAddFragment() {
@@ -116,11 +174,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setUpCurrencyButton() {
-        lifecycleScope.launch {
-            userPreferencesRepository.getDefaultCurrency().collect { code ->
-                updateCurrencyButtonIcon(code)
-            }
-        }
+//        lifecycleScope.launch {
+//            userPreferencesRepository.getDefaultCurrency().collect { code ->
+//                updateCurrencyButtonIcon(code)
+//            }
+//        }
 
         binding.currencyButton.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
@@ -154,15 +212,17 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setCurrencyToDollars() {
-        this.lifecycleScope.launch {
-            userPreferencesRepository.updateDefaultCurrency(CurrencyCode.USD)
-        }
+        viewModel.setCurrencyCode(CurrencyCode.USD)
+//        this.lifecycleScope.launch {
+//            userPreferencesRepository.updateDefaultCurrency(CurrencyCode.USD)
+//        }
     }
 
     private fun setCurrencyToEuro() {
-        this.lifecycleScope.launch {
-            userPreferencesRepository.updateDefaultCurrency(CurrencyCode.EUR)
-        }
+        viewModel.setCurrencyCode(CurrencyCode.EUR)
+//        this.lifecycleScope.launch {
+//            userPreferencesRepository.updateDefaultCurrency(CurrencyCode.EUR)
+//        }
     }
 
     private fun navigateToSettingsFragment() {

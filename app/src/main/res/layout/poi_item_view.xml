@@ -9,21 +9,23 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/itemEstateTypeImageView"
+        android:id="@+id/itemPoiImageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/non_selected_rounded_border"
+        android:background="@drawable/circular_border_with_transparent_background"
         android:padding="8dp"
-        android:src="@drawable/ic_other_houses" />
+        android:src="@drawable/ic_poi" />
 
     <TextView
-        android:id="@+id/itemEstateTypeNameTextView"
+        android:id="@+id/itemPoiNameTextView"
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/estate_type_placeholder" />
+        android:layout_margin="4dp"
+        android:text="@string/point_of_interest_placeholder"
+        android:textSize="12sp" />
 
 </LinearLayout>
 
