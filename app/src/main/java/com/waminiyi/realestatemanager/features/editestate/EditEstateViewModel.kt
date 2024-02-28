@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.Constants
+import com.waminiyi.realestatemanager.core.data.repository.AgentRepository
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.data.repository.MediaFileRepository
 import com.waminiyi.realestatemanager.core.data.repository.PhotoRepository
@@ -34,6 +35,7 @@ class EditEstateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val addEstateUseCase: AddEstateUseCase,
     private val estateRepository: EstateRepository,
+    private val agentRepository: AgentRepository,
     private val photoRepository: PhotoRepository,
     private val mediaFileRepository: MediaFileRepository,
 ) : ViewModel() {
@@ -156,6 +158,16 @@ class EditEstateViewModel @Inject constructor(
 
     fun resetError() {
         _uiState.update { it.copy(savingError = null) }
+    }
+
+    suspend fun getAgents(): List<Agent> {
+        return when (val result = agentRepository.getAllAgents()) {
+            is DataResult.Success -> {
+                result.data
+            }
+
+            else -> emptyList()
+        }
     }
 
     fun resetSavingStatus() {

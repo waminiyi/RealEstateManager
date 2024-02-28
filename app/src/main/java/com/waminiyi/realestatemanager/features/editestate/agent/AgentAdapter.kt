@@ -7,17 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.waminiyi.realestatemanager.core.model.data.Agent
 
 class AgentAdapter(
-    private val agents: List<Agent>,
     private val onAgentSelected: (Agent) -> Unit
 ) : ListAdapter<Agent, AgentAdapter.AgentViewHolder>(AgentComparator()) {
 
     private var selectedItem: Agent? = null
 
     fun setCurrentAgent(agent: Agent?) {
-        val previousSelectedPosition = agents.indexOf(this.selectedItem)
+        val previousSelectedPosition = currentList.indexOf(this.selectedItem)
         this.selectedItem = agent
 
-        val newSelectedPosition = agents.indexOf(selectedItem)
+        val newSelectedPosition = currentList.indexOf(selectedItem)
         if (newSelectedPosition != -1) {
             notifyItemChanged(newSelectedPosition)
         }
@@ -32,7 +31,7 @@ class AgentAdapter(
     }
 
     override fun onBindViewHolder(holder: AgentViewHolder, position: Int) {
-        val agent = agents[position]
+        val agent = currentList[position]
         holder.bind(agent, agent == selectedItem)
 
         holder.itemView.setOnClickListener {
@@ -43,8 +42,6 @@ class AgentAdapter(
             }
         }
     }
-
-    override fun getItemCount(): Int = agents.size
 
     class AgentViewHolder(private val agentView: AgentItemView) : RecyclerView.ViewHolder(agentView) {
         fun bind(agent: Agent, isSelected: Boolean) {

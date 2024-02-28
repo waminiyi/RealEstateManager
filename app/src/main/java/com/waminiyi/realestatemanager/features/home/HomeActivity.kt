@@ -35,7 +35,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var toolbar: Toolbar
     private var currentViewType = ListingViewType.LIST
-    private var isInitialViewType = true
 
 
     @Inject
@@ -121,15 +120,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showListView(count: Int) {
-
-
-//        if (isInitialViewType) {
-//            showDialog("Initial List view")
-//            isInitialViewType = false
-//        } else {
-//            showDialog(" Not Initial List view")
-//            navController.navigate(R.id.navigation_estateList)
-//        }
         if (currentViewType != ListingViewType.LIST) {
             currentViewType = ListingViewType.LIST
             showDialog("New List view")
@@ -161,24 +151,7 @@ class HomeActivity : AppCompatActivity() {
         binding.mapViewLabelTextView.showAsCurrentListingViewLabel(true)
     }
 
-    private fun navigateToAddFragment() {
-        navController.navigate(R.id.navigation_add)
-    }
-
-    private fun navigateToEditFragment() {
-
-        val fragmentManager = supportFragmentManager
-        val fragment = EditEstateFragment.newInstance(null)
-        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_home, fragment)
-            .commit()
-    }
-
     private fun setUpCurrencyButton() {
-//        lifecycleScope.launch {
-//            userPreferencesRepository.getDefaultCurrency().collect { code ->
-//                updateCurrencyButtonIcon(code)
-//            }
-//        }
 
         binding.currencyButton.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
@@ -187,13 +160,13 @@ class HomeActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.currency_dollars -> {
-                        setCurrencyToDollars()
+                        viewModel.setCurrencyCode(CurrencyCode.USD)
                         updateCurrencyButtonIcon(CurrencyCode.USD)
                         true
                     }
 
                     R.id.currency_euro -> {
-                        setCurrencyToEuro()
+                        viewModel.setCurrencyCode(CurrencyCode.EUR)
                         updateCurrencyButtonIcon(CurrencyCode.EUR)
 
                         true
@@ -209,24 +182,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showDialog(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-    }
-
-    private fun setCurrencyToDollars() {
-        viewModel.setCurrencyCode(CurrencyCode.USD)
-//        this.lifecycleScope.launch {
-//            userPreferencesRepository.updateDefaultCurrency(CurrencyCode.USD)
-//        }
-    }
-
-    private fun setCurrencyToEuro() {
-        viewModel.setCurrencyCode(CurrencyCode.EUR)
-//        this.lifecycleScope.launch {
-//            userPreferencesRepository.updateDefaultCurrency(CurrencyCode.EUR)
-//        }
-    }
-
-    private fun navigateToSettingsFragment() {
-// Implement your navigation logic here
     }
 
     private fun updateCurrencyButtonIcon(currencyCode: CurrencyCode) {

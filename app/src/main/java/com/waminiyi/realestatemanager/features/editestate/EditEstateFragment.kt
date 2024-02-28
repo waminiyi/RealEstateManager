@@ -7,9 +7,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -18,11 +15,8 @@ import android.widget.Button
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -43,7 +37,6 @@ import com.waminiyi.realestatemanager.core.model.data.toRawString
 import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
 import com.waminiyi.realestatemanager.databinding.FragmentEditestateBinding
-import com.waminiyi.realestatemanager.features.agentEntities
 import com.waminiyi.realestatemanager.features.editestate.agent.AgentAdapter
 import com.waminiyi.realestatemanager.features.editestate.estatetype.EstateTypeAdapter
 import com.waminiyi.realestatemanager.features.editestate.photo.PhotoAdapter
@@ -114,24 +107,6 @@ class EditEstateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val menuHost: MenuHost = requireActivity()
-
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
-                menuInflater.inflate(R.menu.edit_fragment_appbar_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.save_estate_menu_item -> {
-                        viewModel.saveEstate()
-                        return true
-                    }
-                }
-                return true
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         setUpClickListeners()
         setUpTextChangedListeners()
@@ -145,6 +120,7 @@ class EditEstateFragment : Fragment() {
         }
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
+            //TODO: show dialog on click and handle phone back press too
         }
     }
 
@@ -351,17 +327,28 @@ class EditEstateFragment : Fragment() {
     }
 
     private fun setUpAgentsRecyclerView() {
-        //TODO: retrieve agents from database
         val recyclerView = binding.agentRecyclerView
         agentAdapter = AgentAdapter(
-            agents = agentEntities.map { it.asAgent() },
             onAgentSelected = { viewModel.setAgent(it) }
         )
 
         recyclerView.adapter = agentAdapter
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val agents = viewModel.getAgents()
+
+            agentAdapter.submitList(agents)
+            Log.d("agents", agentAdapter.itemCount.toString())
+
+
+        }
+        //TODO: retrieve agents from database
+
     }
+
+
 
 
     private fun setupEstateStatusSpinner() {
