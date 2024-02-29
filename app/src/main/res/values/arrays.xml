@@ -9,4 +9,67 @@
         <item>Available</item>
         <item>Sold</item>
     </string-array>
+
+    <string-array name="estate_type_names">
+        <item>Apartment</item>
+        <item>Bungalow</item>
+        <item>Castle</item>
+        <item>Cottage</item>
+        <item>Chalet</item>
+        <item>House</item>
+        <item>Villa</item>
+        <item>Other</item>
+    </string-array>
+
+    <integer-array name="estate_type_icons">
+        <item>@drawable/ic_apartment</item>
+        <item>@drawable/ic_bungalow</item>
+        <item>@drawable/ic_castle</item>
+        <item>@drawable/ic_cottage</item>
+        <item>@drawable/ic_chalet</item>
+        <item>@drawable/ic_house</item>
+        <item>@drawable/ic_villa</item>
+        <item>@drawable/ic_other_houses</item>
+    </integer-array>
+
+    <string-array name="poi_names">
+        <item>Airport</item>
+        <item>Attraction</item>
+        <item>Bank</item>
+        <item>Fire Department</item>
+        <item>Fitness Center</item>
+        <item>Hospital</item>
+        <item>Park</item>
+        <item>Pharmacy</item>
+        <item>Place of Worship</item>
+        <item>Police Station</item>
+        <item>Post Office</item>
+        <item>Restaurant</item>
+        <item>School</item>
+        <item>Shopping Center</item>
+        <item>Theater</item>
+        <item>Train Station</item>
+        <item>Tram Station</item>
+    </string-array>
+
+    <integer-array name="poi_icons">
+        <item>@drawable/ic_airport</item>
+        <item>@drawable/ic_attraction</item>
+        <item>@drawable/ic_bank</item>
+        <item>@drawable/ic_fire_department</item>
+        <item>@drawable/ic_fitness_center</item>
+        <item>@drawable/ic_hospital</item>
+        <item>@drawable/ic_park</item>
+        <item>@drawable/ic_pharmacy</item>
+        <item>@drawable/ic_place_of_worship</item>
+        <item>@drawable/ic_police_station</item>
+        <item>@drawable/ic_post_office</item>
+        <item>@drawable/ic_restaurant</item>
+        <item>@drawable/ic_school</item>
+        <item>@drawable/ic_shopping_center</item>
+        <item>@drawable/ic_theater</item>
+        <item>@drawable/ic_train_station</item>
+        <item>@drawable/ic_tram_station</item>
+    </integer-array>
+
 </resources>

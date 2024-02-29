@@ -36,7 +36,7 @@ class DefaultAgentRepository @Inject constructor(
         }
     }
 
-    override fun getAllAgents(): DataResult<List<Agent>> {
+    override suspend fun getAllAgents(): DataResult<List<Agent>> {
         return try {
             val result = agentDao.getAllAgents().map {
                 it.asAgent()
@@ -47,7 +47,7 @@ class DefaultAgentRepository @Inject constructor(
         }
     }
 
-    override fun getAgent(agentUuid: String): DataResult<Agent?> {
+    override suspend fun getAgent(agentUuid: String): DataResult<Agent?> {
         return try {
             val result = agentDao.getAgent(UUID.fromString(agentUuid))?.asAgent()
             result?.let {
@@ -74,7 +74,8 @@ class DefaultAgentRepository @Inject constructor(
                     remoteDataRepository.getAgent(id)?.let {
                         Log.d("SYNC-FROM-REMOTE", it.toString())
                         agentDao.upsertAgent(it.toAgentEntity())
-                        Log.d("SAVED-TO-LOCAL", it.toAgentEntity().toString())}
+                        Log.d("SAVED-TO-LOCAL", it.toAgentEntity().toString())
+                    }
                 }
             }
         )

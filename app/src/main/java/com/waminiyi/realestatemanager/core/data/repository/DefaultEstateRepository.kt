@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
+import android.util.Log
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.extension.toEstateEntity
 import com.waminiyi.realestatemanager.core.data.extension.toRemoteEstate
@@ -33,15 +34,17 @@ class DefaultEstateRepository @Inject constructor(
     override suspend fun saveEstate(estateWithDetails: EstateWithDetails): DataResult<Unit> {
         return try {
             estateDao.upsertEstate(estateWithDetails.asEstateEntity())
-            //localChangeDao.upsertChange(LocalChangeEntity(estateWithDetails.uuid, ClassTag.Estate, false))
             DataResult.Success(Unit)
         } catch (exception: IOException) {
+            exception.printStackTrace()
             DataResult.Error(exception)
+            throw exception
         }
     }
 
     override fun getAllEstatesStream(): Flow<DataResult<List<Estate>>> {
         return estateDao.getAllEstatesWithImages().map {
+            Log.d("ESTATELIST-REPOPSITORY", it.toString())
             DataResult.Success(it.map { estateWithImage ->
                 estateWithImage.asEstate()
             })
@@ -50,7 +53,7 @@ class DefaultEstateRepository @Inject constructor(
         }
     }
 
-    override fun getEstateWithDetails(estateId: String): DataResult<EstateWithDetails?> {
+    override suspend fun getEstateWithDetails(estateId: String): DataResult<EstateWithDetails?> {
         return try {
             val result = estateDao.getEstateWithDetailsById(UUID.fromString(estateId))?.asEstateWithDetails()
             result?.let {

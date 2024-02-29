@@ -3,14 +3,7 @@ package com.waminiyi.realestatemanager
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.facebook.flipper.android.AndroidFlipperClient
-import com.facebook.flipper.android.utils.FlipperUtils
-import com.facebook.flipper.plugins.inspector.DescriptorMapping
-import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
-import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
-import com.facebook.soloader.SoLoader
-import com.waminiyi.realestatemanager.core.sync.status.SyncSubscriber
-import com.waminiyi.realestatemanager.core.sync.initializers.Sync
+import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -22,6 +15,7 @@ class RemApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         //Sync.initialize(this)
+        Places.initialize(applicationContext, BuildConfig.GOOGLE_PLACES_API_KEY)
     }
 
     override val workManagerConfiguration: Configuration

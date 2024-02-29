@@ -8,39 +8,4 @@
         android:title="@string/title_add"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/navigation_edit"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/title_edit"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/navigation_filter"
-        android:icon="@drawable/ic_filter"
-        android:title="@string/title_filter"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/menu_currency"
-        android:icon="@drawable/ic_currency"
-        android:title="Currency"
-        app:showAsAction="never">
-        <menu>
-            <item
-                android:id="@+id/currency_dollars"
-                android:icon="@drawable/ic_dollars"
-                android:title="Dollars" />
-            <item
-                android:id="@+id/currency_euro"
-                android:icon="@drawable/ic_euro"
-                android:title="Euro" />
-        </menu>
-    </item>
-
-    <item
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Settings"
-        app:showAsAction="never" />
-
 </menu>

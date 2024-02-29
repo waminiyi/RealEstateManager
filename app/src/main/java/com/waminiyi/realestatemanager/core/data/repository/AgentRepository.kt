@@ -7,7 +7,7 @@ import com.waminiyi.realestatemanager.core.util.sync.Syncable
 
 interface AgentRepository : Syncable {
     suspend fun saveAgent(agent: Agent): DataResult<Unit>
-    fun getAllAgents(): DataResult<List<Agent>>
-    fun getAgent(agentUuid: String): DataResult<Agent?>
+    suspend fun getAllAgents(): DataResult<List<Agent>>
+    suspend fun getAgent(agentUuid: String): DataResult<Agent?>
     suspend  fun getAgentsToUpload(): List<AgentEntity>
 }

@@ -4,4 +4,63 @@
     <string name="title_add">Add</string>
     <string name="title_edit">Edit</string>
     <string name="title_filter">Filter</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="agent_selection">Select an agent</string>
+    <string name="agent_name_placeholder">John D.</string>
+    <string name="estate_saving_error_text_placeholder">Error saving the estate</string>
+    <string name="estate_type_placeholder">Estate Type</string>
+    <string name="point_of_interest_placeholder">Point of interest</string>
+    <string name="add_photos">Add photos</string>
+    <string name="estate_saving_error_dialog_title">Error saving the estate</string>
+    <string name="ok">OK</string>
+    <string name="description">Description</string>
+    <string name="features">Features</string>
+    <plurals name="roomsCount">
+        <item quantity="one">%d room</item>
+        <item quantity="other">%d rooms</item>
+    </plurals>
+    <string name="areaInSquareMeter">%d m²</string>
+    <string name="addedOn"><b>Added on:\u0020</b></string>
+    <string name="available">Available</string>
+    <string name="sold">Sold</string>
+    <string name="soldOn"><b>Sold on:\u0020</b></string>
+    <string name="estate_type_label">Estate type</string>
+    <string name="areaLabel">Area</string>
+    <string name="number_of_rooms_label">Number of rooms</string>
+    <string name="number_of_bathrooms_label">Number of bathrooms</string>
+    <string name="number_of_bedrooms_label">Number of bedrooms</string>
+
+    <string name="estate_type">Estate type:\u0020 <b>%s</b></string>
+    <string name="areaWithValue">Area:\u0020 <b>%d m²</b></string>
+    <string name="number_of_rooms">Number of rooms:\u0020 <b>%s</b></string>
+    <string name="number_of_bathrooms">Number of bathrooms:\u0020 <b>%s</b></string>
+    <string name="number_of_bedrooms">Number of bedrooms:\u0020 <b>%s</b></string>
+
+    <string name="points_of_interest">Points of interest</string>
+    <string name="address">Address</string>
+    <string name="agent_in_charge">Agent in charge</string>
+    <string name="agent_image">Agent image</string>
+    <string name="delete_photo">Delete photo</string>
+    <string name="estate_photo">Estate photo</string>
+    <string name="save">Save</string>
+    <string name="dot">.</string>
+    <string name="price">Price</string>
+    <string name="no_estate_type_error">Please specify the estate type</string>
+    <string name="photo_error">Add at least one photo. Each photo should have a description.</string>
+    <string name="add_image">Add image</string>
+    <string name="estate_status">Estate status</string>
+    <string name="sale_date">Sale date</string>
+    <string name="update_description">Update description</string>
+    <string name="new_agent">New agent</string>
+    <string name="agent_photo">Agent photo</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
+    <string name="forward">Forward</string>
+    <string name="back">Back</string>
+    <string name="map">Map</string>
+    <string name="currency">Currency</string>
+    <string name="add_estate">Add estate</string>
 </resources>

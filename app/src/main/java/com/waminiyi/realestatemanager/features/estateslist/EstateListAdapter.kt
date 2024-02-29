@@ -1,46 +1,39 @@
 package com.waminiyi.realestatemanager.features.estateslist
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.Estate
+import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 
-class EstateListAdapter :
+class EstateListAdapter(
+    private val onEstateSelected: (String) -> Unit,
+    private var currencyCode: CurrencyCode = CurrencyCode.USD
+) :
     ListAdapter<Estate, EstateListAdapter.EstateViewHolder>(EstateComparator()) {
 
+    fun updateCurrencyCode(newCurrencyCode: CurrencyCode) {
+        currencyCode = newCurrencyCode
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EstateViewHolder {
-        return EstateViewHolder.create(parent)
+        val view = EstateItemView(parent.context)
+        return EstateViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: EstateViewHolder, position: Int) {
-        val current = getItem(position)
-        holder.bind(current)
+        val estate = getItem(position)
+        holder.bind(estate, currencyCode)
+        holder.itemView.setOnClickListener {
+            onEstateSelected(estate.uuid)
+        }
     }
 
-    class EstateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val typeView: TextView = itemView.findViewById(R.id.estate_type_tv)
-        private val cityView: TextView = itemView.findViewById(R.id.estate_city_tv)
-        private val areaView: TextView = itemView.findViewById(R.id.estate_area_tv)
-        private val priceView: TextView = itemView.findViewById(R.id.estate_price_tv)
-
-        fun bind(estate: Estate) {
-            typeView.text = estate.type.name
-            cityView.text = estate.addressCity
-            areaView.text = estate.area.toString()
-            priceView.text = estate.price.toString()
-        }
-
-        companion object {
-            fun create(parent: ViewGroup): EstateViewHolder {
-                val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.estate_item, parent, false)
-                return EstateViewHolder(view)
-            }
+    class EstateViewHolder(private val estateItemView: EstateItemView) : RecyclerView.ViewHolder(estateItemView) {
+        fun bind(estate: Estate, currencyCode: CurrencyCode) {
+            estateItemView.bind(estate, currencyCode)
         }
     }
 

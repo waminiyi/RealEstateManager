@@ -10,7 +10,13 @@ import java.util.*
  */
 val currentDate: String
     @SuppressLint("SimpleDateFormat")
-    get()  {
+    get() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy")
         return dateFormat.format(Date())
     }
+
+fun getFormattedDate(date: Date?): String {
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return date?.let { dateFormat.format(date) }.orEmpty()
+}
+

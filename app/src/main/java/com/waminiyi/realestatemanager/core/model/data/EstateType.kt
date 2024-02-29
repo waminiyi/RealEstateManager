@@ -11,57 +11,24 @@ enum class EstateType {
     @SerialName("apartment")
     APARTMENT,
 
-    @SerialName("house")
-    HOUSE,
-
-    @SerialName("farmhouse")
-    FARMHOUSE,
-
-   /* @SerialName("condominium")
-    CONDOMINIUM,
-
-    @SerialName("townhouse")
-    TOWNHOUSE,
-
-    @SerialName("villa")
-    VILLA,
-
-    @SerialName("loft")
-    LOFT,
-
-    @SerialName("studio")
-    STUDIO,
-
-    @SerialName("duplex")
-    DUPLEX,
-
-    @SerialName("penthouse")
-    PENTHOUSE,
-
-    @SerialName("cottage")
-    COTTAGE,
-
-    @SerialName("ranch")
-    RANCH,
-
     @SerialName("bungalow")
     BUNGALOW,
-
-    @SerialName("chalet")
-    CHALET,
-
-    @SerialName("mobile_home")
-    MOBILE_HOME,
 
     @SerialName("castle")
     CASTLE,
 
-    @SerialName("mansion")
-    MANSION,
+    @SerialName("cottage")
+    COTTAGE,
 
-    @SerialName("beach_house")
-    BEACH_HOUSE,
+    @SerialName("chalet")
+    CHALET,
 
-    @SerialName("cabin")
-    CABIN*/
+    @SerialName("house")
+    HOUSE,
+
+    @SerialName("villa")
+    VILLA,
+
+    @SerialName("other")
+    OTHER,
 }

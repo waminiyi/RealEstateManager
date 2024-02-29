@@ -1,12 +1,17 @@
 package com.waminiyi.realestatemanager.core.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Upsert
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.database.model.EstateWithDetailsEntity
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import kotlinx.coroutines.flow.Flow
-import java.util.*
+import java.util.UUID
+import javax.inject.Singleton
 
+@Singleton
 @Dao
 interface EstateDao {
     @Upsert
@@ -14,7 +19,7 @@ interface EstateDao {
 
     @Transaction
     @Query("SELECT * FROM estates WHERE estate_uuid = :estateUuid")
-    fun getEstateWithDetailsById(estateUuid: UUID): EstateWithDetailsEntity?
+    suspend fun getEstateWithDetailsById(estateUuid: UUID): EstateWithDetailsEntity?
 
     @Transaction
     @Query(

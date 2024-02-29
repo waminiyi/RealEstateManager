@@ -5,38 +5,32 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class PointOfInterest {
-    SCHOOL,
+    @SerialName("airport")
+    AIRPORT,
 
-    PUBLIC_TRANSPORT,
-
-    GROCERY_STORE,
-
-  /*  @SerialName("park")
-    PARK,
-
-    @SerialName("medical_facility")
-    MEDICAL_FACILITY,
-
-    @SerialName("restaurant")
-    RESTAURANT,
-
-    @SerialName("shopping_center")
-    SHOPPING_CENTER,
-
-    @SerialName("fitness_center")
-    FITNESS_CENTER,
-
-    @SerialName("cultural_attraction")
-    CULTURAL_ATTRACTION,
-
-    @SerialName("place_of_worship")
-    PLACE_OF_WORSHIP,
+    @SerialName("attraction")
+    ATTRACTION,
 
     @SerialName("bank")
     BANK,
 
+    @SerialName("fire_department")
+    FIRE_DEPARTMENT,
+
+    @SerialName("fitness_center")
+    FITNESS_CENTER,
+
+    @SerialName("hospital")
+    HOSPITAL,
+
+    @SerialName("park")
+    PARK,
+
     @SerialName("pharmacy")
     PHARMACY,
+
+    @SerialName("place_of_worship")
+    PLACE_OF_WORSHIP,
 
     @SerialName("police_station")
     POLICE_STATION,
@@ -44,21 +38,21 @@ enum class PointOfInterest {
     @SerialName("post_office")
     POST_OFFICE,
 
-    @SerialName("gas_station")
-    GAS_STATION,
+    @SerialName("restaurant")
+    RESTAURANT,
 
-    @SerialName("library")
-    LIBRARY,
+    @SerialName("school")
+    SCHOOL,
 
-    @SerialName("movie_theater")
-    MOVIE_THEATER,
+    @SerialName("shopping_center")
+    SHOPPING_CENTER,
 
-    @SerialName("hospital")
-    HOSPITAL,
-
-    @SerialName("airport")
-    AIRPORT,
+    @SerialName("theater")
+    THEATER,
 
     @SerialName("train_station")
-    TRAIN_STATION*/
+    TRAIN_STATION,
+
+    @SerialName("tram_station")
+    TRAM_STATION
 }

@@ -30,7 +30,9 @@ class DefaultPhotoRepository @Inject constructor(
             photoDao.upsertPhoto(photo.asPhotoEntity())
             DataResult.Success(Unit)
         } catch (exception: IOException) {
+            exception.printStackTrace()
             DataResult.Error(exception)
+            throw exception
         }
     }
 
@@ -56,6 +58,15 @@ class DefaultPhotoRepository @Inject constructor(
     override suspend fun deletePhoto(photo: Photo): DataResult<Unit> {
         return try {
             photoDao.deletePhoto(photo.asPhotoEntity())
+            DataResult.Success(Unit)
+        } catch (exception: IOException) {
+            DataResult.Error(exception)
+        }
+    }
+
+    override suspend fun deletePhoto(photoId: String): DataResult<Unit> {
+        return try {
+            photoDao.deletePhoto(photoId)
             DataResult.Success(Unit)
         } catch (exception: IOException) {
             DataResult.Error(exception)

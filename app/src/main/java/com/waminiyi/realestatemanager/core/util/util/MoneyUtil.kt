@@ -3,7 +3,8 @@ package com.waminiyi.realestatemanager.core.util.util
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode.EUR
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode.USD
 import java.text.NumberFormat
-import java.util.*
+import java.util.Currency
+import java.util.Locale
 import kotlin.math.round
 
 /**
@@ -49,4 +50,9 @@ private fun Int.formatCurrency(currencyCode: CurrencyCode): String {
 enum class CurrencyCode(val rateToDollar: Float) {
     USD(1F),
     EUR(1.06F)
+}
+
+fun priceToText(priceInDollars: Int, currencyCode: CurrencyCode): String = when (currencyCode) {
+    CurrencyCode.USD -> priceInDollars.formatAsUSDollar()
+    CurrencyCode.EUR -> priceInDollars.toEuro().formatAsEuro()
 }

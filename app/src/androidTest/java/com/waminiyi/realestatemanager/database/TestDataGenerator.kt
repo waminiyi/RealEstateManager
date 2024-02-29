@@ -4,8 +4,12 @@ import com.waminiyi.realestatemanager.core.database.model.AddressEntity
 import com.waminiyi.realestatemanager.core.database.model.AgentEntity
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.*
-import java.util.*
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.EstateType
+import com.waminiyi.realestatemanager.core.model.data.Location
+import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import java.util.Date
+import java.util.UUID
 
 object TestDataGenerator {
 
@@ -27,18 +31,9 @@ object TestDataGenerator {
         return AgentEntity(uuid, firstName, lastName, email, phoneNumber, generateRandomURL())
     }
 
-    private fun getRandomFacilities(count: Int): List<Facility> {
-        return (1..count).map {
-            Facility(
-                type = FacilityType.entries.toTypedArray().random(),
-                count = (1..3).random()
-            )
-        }
-    }
-
     fun getRandomImage(ownerId: UUID, isMainPhoto: Boolean): PhotoEntity {
         val uuid = UUID.randomUUID()
-        return PhotoEntity(uuid, ownerId, generateRandomURL(), generateRandomLocalPath(), isMainPhoto,getRandomString(facilityAdjectives))
+        return PhotoEntity(uuid, ownerId, generateRandomURL(), generateRandomLocalPath(), isMainPhoto, getRandomString(facilityAdjectives))
     }
 
     private fun getRandomPoi(count: Int): List<PointOfInterest> {
@@ -47,19 +42,21 @@ object TestDataGenerator {
     }
 
     fun getRandomEstate(estateUuid: UUID = UUID.randomUUID(), agentUuId: UUID): EstateEntity {
-        val status = Status.entries.toTypedArray().random()
+        val estateStatus = EstateStatus.entries.toTypedArray().random()
 
         return EstateEntity(
             estateUuid = estateUuid,
             type = EstateType.entries.toTypedArray().random(),
             price = (500000..5000000).random(),
-            area = getRandomFloat(50f, 500f),
+            area = getRandomInt(50, 500),
             roomsCount = (2..10).random(),
+            bathroomsCount = 1,
+            bedroomsCount = 1,
             description = getRandomString(adjectives),
             addressEntity = getRandomAddress(),
-            status = status,
+            estateStatus = estateStatus,
             entryDate = getRandomDate(),
-            saleDate = if (status == Status.SOLD) getRandomDate() else null,
+            saleDate = if (estateStatus == EstateStatus.SOLD) getRandomDate() else null,
             agentId = agentUuId,
             poiList = getRandomPoi((0..8).random()),
         )
@@ -100,8 +97,8 @@ object TestDataGenerator {
         return "+1-${(1000000000..9999999999).random()}"
     }
 
-    private fun getRandomFloat(min: Float, max: Float): Float {
-        return min + (max - min) * Math.random().toFloat()
+    private fun getRandomInt(min: Int, max: Int): Int {
+        return min + (max - min) * Math.random().toInt()
     }
 
     private fun getRandomDate(): Date {

@@ -15,27 +15,31 @@ import com.waminiyi.realestatemanager.core.model.data.Location
  * @property location The geographic coordinates (latitude and longitude) of the property.
  */
 data class AddressEntity(
-    val streetNumber: Int,
-    val streetName: String,
+    val streetNumber: Int?,
+    val streetName: String?,
     val city: String,
     val state: String,
+    val country: String,
     val postalCode: Int,
     @Embedded val location: Location
-){
-    fun asAddress()= Address(
-        streetNumber=this.streetNumber,
-        streetName=this.streetName,
-        city=this.city,
-        state=this.state,
-        postalCode=this.postalCode,
-        location=this.location
+) {
+    fun asAddress() = Address(
+        streetNumber = this.streetNumber,
+        streetName = this.streetName,
+        city = this.city,
+        state = this.state,
+        country = this.country,
+        postalCode = this.postalCode,
+        location = this.location
     )
 }
-fun Address.asAddressEntity()= AddressEntity(
-    streetNumber=this.streetNumber,
-    streetName=this.streetName,
-    city=this.city,
-    state=this.state,
-    postalCode=this.postalCode,
-    location=this.location
+
+fun Address.asAddressEntity() = AddressEntity(
+    streetNumber = this.streetNumber,
+    streetName = this.streetName,
+    city = this.city,
+    state = this.state,
+    country = this.country,
+    postalCode = this.postalCode,
+    location = this.location
 )

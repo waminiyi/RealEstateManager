@@ -9,8 +9,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.waminiyi.realestatemanager.core.messenger.FirebaseService
-import com.waminiyi.realestatemanager.core.messenger.di.RetrofitInstance
 import com.waminiyi.realestatemanager.core.messenger.getServiceAccountAccessToken
+import com.waminiyi.realestatemanager.core.messenger.network.FirebaseMessengerAPI
 import com.waminiyi.realestatemanager.databinding.ActivityOrganizerBinding
 import com.waminiyi.realestatemanager.features.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +26,7 @@ class OrganizerActivity : AppCompatActivity() {
     val TAG = "MainActivity"
     private lateinit var binding: ActivityOrganizerBinding
     private lateinit var token: String
+    private lateinit var firebaseMessengerAPI: FirebaseMessengerAPI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOrganizerBinding.inflate(layoutInflater)
@@ -95,7 +96,7 @@ class OrganizerActivity : AppCompatActivity() {
 
     private fun sendNotification(notification: Any) = CoroutineScope(Dispatchers.IO).launch {
         try {
-            val response = RetrofitInstance.api.postMessage(
+            val response = firebaseMessengerAPI.postMessage(
                 "Bearer " + getServiceAccountAccessToken(this@OrganizerActivity), notification
             )
             if (response.isSuccessful) {

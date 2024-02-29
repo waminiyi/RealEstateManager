@@ -1,8 +1,19 @@
 package com.waminiyi.realestatemanager.core.database.model
 
-import androidx.room.*
-import com.waminiyi.realestatemanager.core.model.data.*
-import java.util.*
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import com.waminiyi.realestatemanager.core.model.data.Estate
+import com.waminiyi.realestatemanager.core.model.data.EstateStatus
+import com.waminiyi.realestatemanager.core.model.data.EstateType
+import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.data.Photo
+import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import java.util.Date
+import java.util.UUID
 
 /**
  * Class representing a real estate property .
@@ -13,7 +24,7 @@ import java.util.*
  * @property area The area of the estate in square meters.
  * @property description The description of the estate.
  * @property addressEntity The address details of the estate.
- * @property status The status of the estate (AVAILABLE, SOLD, etc.).
+ * @property estateStatus The status of the estate (AVAILABLE, SOLD, etc.).
  * @property entryDate The date when the estate was listed.
  * @property saleDate The date when the estate was sold (can be null if not sold yet).
  * @property agentId The unique identifier (UUID) of the agent associated with the estate.
@@ -42,22 +53,28 @@ data class EstateEntity(
     val price: Int,
 
     @ColumnInfo(name = "area")
-    val area: Float,
+    val area: Int,
 
     @ColumnInfo(name = "rooms_count")
-    val roomsCount: Int,
+    val roomsCount: Int?,
+
+    @ColumnInfo(name = "bedrooms_count")
+    val bedroomsCount: Int?,
+
+    @ColumnInfo(name = "bathrooms_count")
+    val bathroomsCount: Int?,
 
     @ColumnInfo(name = "description")
-    val description: String,
+    val description: String?,
 
     @Embedded
     val addressEntity: AddressEntity,
 
     @ColumnInfo(name = "status")
-    val status: Status,
+    val estateStatus: EstateStatus,
 
     @ColumnInfo(name = "entry_date")
-    val entryDate: Date,
+    val entryDate: Date?,
 
     @ColumnInfo(name = "sale_date")
     val saleDate: Date? = null,
@@ -76,6 +93,9 @@ data class EstateEntity(
         area = this.area,
         mainPhoto = photo,
         addressCity = this.addressEntity.city,
+        postalCode = this.addressEntity.postalCode,
+        status = this.estateStatus,
+        roomsCount = this.roomsCount
     )
 }
 
@@ -85,9 +105,11 @@ fun EstateWithDetails.asEstateEntity() = EstateEntity(
     price = this.price,
     area = this.area,
     roomsCount = this.roomsCount,
+    bedroomsCount = this.bedroomsCount,
+    bathroomsCount = this.bathroomsCount,
     description = this.fullDescription,
     addressEntity = this.address.asAddressEntity(),
-    status = this.status,
+    estateStatus = this.estateStatus,
     entryDate = this.entryDate,
     saleDate = this.saleDate,
     agentId = UUID.fromString(this.agent.uuid),
