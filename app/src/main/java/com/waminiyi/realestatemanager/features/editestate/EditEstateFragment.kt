@@ -186,6 +186,7 @@ class EditEstateFragment : Fragment() {
 
         poiAdapter.setSelectedPoiList(uiState.nearbyPointsOfInterest)
         photoAdapter.submitList(uiState.photos)
+        agentAdapter.submitList(uiState.agentsList)
         binding.photoErrorTextView.text = uiState.photosError
 
         binding.statusSpinner.setSelection(
@@ -336,19 +337,17 @@ class EditEstateFragment : Fragment() {
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            val agents = viewModel.getAgents()
-
-            agentAdapter.submitList(agents)
-            Log.d("agents", agentAdapter.itemCount.toString())
-
-
-        }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            val agents = viewModel.loadAgents()
+//
+//            agentAdapter.submitList(agents)
+//            Log.d("agents", agentAdapter.itemCount.toString())
+//
+//
+//        }
         //TODO: retrieve agents from database
 
     }
-
-
 
 
     private fun setupEstateStatusSpinner() {

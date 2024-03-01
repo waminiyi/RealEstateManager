@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.data.repository.AgentRepository
 import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.features.estateslist.EstateListUiState
+import com.waminiyi.realestatemanager.features.estatesListView.EstateListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

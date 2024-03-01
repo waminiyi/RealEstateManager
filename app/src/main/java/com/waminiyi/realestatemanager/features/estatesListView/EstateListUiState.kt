@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.features.estateslist
+package com.waminiyi.realestatemanager.features.estatesListView
 
 import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode

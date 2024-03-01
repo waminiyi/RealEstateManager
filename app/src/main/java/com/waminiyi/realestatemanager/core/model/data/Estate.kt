@@ -7,7 +7,7 @@ data class Estate(
     val area: Int,
     val mainPhoto: Photo,
     val addressCity: String,
-    val postalCode: Int,
+    val location: Location,
     val status: EstateStatus,
     val roomsCount: Int?
 )
