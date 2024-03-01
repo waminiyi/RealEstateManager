@@ -47,6 +47,8 @@ class EditEstateViewModel @Inject constructor(
     val uiState: StateFlow<EditEstateUiState> = _uiState.asStateFlow()
 
     init {
+        loadAgents()
+
         estateId?.let {
             loadEstate(it)
         }
@@ -160,13 +162,15 @@ class EditEstateViewModel @Inject constructor(
         _uiState.update { it.copy(savingError = null) }
     }
 
-    suspend fun getAgents(): List<Agent> {
-        return when (val result = agentRepository.getAllAgents()) {
-            is DataResult.Success -> {
-                result.data
-            }
+    fun loadAgents() {
+        viewModelScope.launch {
+            when (val result = agentRepository.getAllAgents()) {
+                is DataResult.Success -> {
+                    _uiState.update { it.copy(agentsList = result.data) }
+                }
 
-            else -> emptyList()
+                else -> _uiState.update { it.copy(agentsList = emptyList()) }
+            }
         }
     }
 

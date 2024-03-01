@@ -93,7 +93,7 @@ data class EstateEntity(
         area = this.area,
         mainPhoto = photo,
         addressCity = this.addressEntity.city,
-        postalCode = this.addressEntity.postalCode,
+        location = this.addressEntity.location,
         status = this.estateStatus,
         roomsCount = this.roomsCount
     )

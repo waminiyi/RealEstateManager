@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.features.estateslist
+package com.waminiyi.realestatemanager.features.estatesListView
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

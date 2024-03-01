@@ -16,11 +16,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.waminiyi.realestatemanager.R
+import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.databinding.ActivityHomeBinding
-import com.waminiyi.realestatemanager.features.editestate.EditEstateFragment
-import com.waminiyi.realestatemanager.features.estateslist.EstateListViewModel
+import com.waminiyi.realestatemanager.features.estateListing.EstateListingViewModel
 import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
     @Inject
     lateinit var userPreferencesRepository: UserPreferencesRepository
 
-    private val viewModel: EstateListViewModel by viewModels()
+    private val viewModel: EstateListingViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

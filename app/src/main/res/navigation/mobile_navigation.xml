@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_estateList"
-        android:name="com.waminiyi.realestatemanager.features.estateslist.EstateListFragment"
+        android:name="com.waminiyi.realestatemanager.features.estatesListView.EstateListFragment"
         tools:layout="@layout/fragment_estate_list">
 
         <action
@@ -71,19 +71,7 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/listAndMapContainerFragment"
-        android:name="com.waminiyi.realestatemanager.features.estateslist.ListAndMapContainerFragment"
-        android:label="fragment_list_and_map_container"
-        tools:layout="@layout/fragment_list_and_map_container">
-        <action
-            android:id="@+id/action_listAndMapContainerFragment_to_navigation_estateList"
-            app:destination="@id/navigation_estateList" />
-        <action
-            android:id="@+id/action_listAndMapContainerFragment_to_estateMapFragment"
-            app:destination="@id/estateMapFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/estateMapFragment"
-        android:name="com.waminiyi.realestatemanager.features.estateslist.EstateMapFragment"
+        android:name="com.waminiyi.realestatemanager.features.estateMapView.EstateMapFragment"
         tools:layout="@layout/fragment_estate_map" />
 </navigation>

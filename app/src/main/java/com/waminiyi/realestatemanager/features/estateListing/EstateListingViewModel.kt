@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.features.estateslist
+package com.waminiyi.realestatemanager.features.estateListing
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,6 +12,7 @@ import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.features.agentEntities
 import com.waminiyi.realestatemanager.features.estateEntities
+import com.waminiyi.realestatemanager.features.estatesListView.EstateListUiState
 import com.waminiyi.realestatemanager.features.mainPhotoEntities
 import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EstateListViewModel @Inject constructor(
+class EstateListingViewModel @Inject constructor(
     estateRepository: EstateRepository,
     private val agentDao: AgentDao,
     private val photoDao: PhotoDao,
@@ -37,11 +38,6 @@ class EstateListViewModel @Inject constructor(
 
     init {
         addSampleEstates()
-//        viewModelScope.launch {
-//            userPreferencesRepository.getDefaultCurrency().collect { code ->
-//                currencyCode = code
-//            }
-//        }
     }
 
     private val combinedFlow = combine(

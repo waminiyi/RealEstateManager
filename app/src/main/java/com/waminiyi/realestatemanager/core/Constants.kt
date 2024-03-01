@@ -8,5 +8,6 @@ object Constants {
     const val STATIC_MAP_ZOOM = "zoom=18"
     const val STATIC_MAP_SCALE = "scale=2"
     const val STATIC_MAP_MARKER_COLOR = "markers=color:red%7C"
+    const val MAP_VIEW_DEFAULT_ZOOM_LEVEL = 16F
 
 }
