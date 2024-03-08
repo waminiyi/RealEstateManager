@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import com.google.android.material.textfield.TextInputEditText
 import com.waminiyi.realestatemanager.R
 
 fun EditText.afterTextChanged(handleNewValue: (String) -> Unit) {
@@ -52,4 +53,10 @@ fun ImageView.showAsSelected(
     val tint = ContextCompat.getColor(context, color)
     drawable.setTint(tint)
     DrawableCompat.setTint(DrawableCompat.wrap(background), tint)
+}
+ fun TextInputEditText.updateValue(newValue: String) {
+    with(this) {
+        setText(newValue)
+        setSelection(newValue.length)
+    }
 }

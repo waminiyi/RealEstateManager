@@ -16,10 +16,22 @@ fun createAddressFromPlace(place: Place): Address {
     val postalCode = getAddressComponent(addressComponents, "postal_code")
     val location = Location(place.latLng?.latitude ?: 0.0, place.latLng?.longitude ?: 0.0)
 
-    return Address(streetNumber.toInt(), streetName, city, state, country, postalCode.toInt(), location)
+    return Address(
+        streetNumber = if (streetNumber.isEmpty()) {
+            null
+        } else streetNumber.toInt(),
+        streetName = streetName,
+        city = city,
+        state = state,
+        country = country,
+        postalCode = if (postalCode.isEmpty()) {
+            null
+        } else postalCode.toInt(),
+        location = location
+    )
 }
 
 private fun getAddressComponent(addressComponents: AddressComponents?, type: String): String {
     val component = addressComponents?.asList()?.find { it.types.contains(type) }
-    return component?.name ?: ""
+    return component?.name.orEmpty()
 }

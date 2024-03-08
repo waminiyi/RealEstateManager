@@ -6,10 +6,10 @@ data class Address(
     val city: String,
     val state: String,
     val country: String,
-    val postalCode: Int,
+    val postalCode: Int?,
     val location: Location
 )
 
 fun Address.toRawString(): String {
-    return "${streetNumber?.toString().orEmpty()} ${streetName?.let { "$it," }.orEmpty()} $postalCode $city"
+    return "${streetNumber?.toString().orEmpty()} ${streetName?.let { "$it," }.orEmpty()} ${postalCode?.toString().orEmpty()} $city"
 }

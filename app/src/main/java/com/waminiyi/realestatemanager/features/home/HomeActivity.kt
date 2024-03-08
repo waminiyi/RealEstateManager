@@ -1,6 +1,7 @@
 package com.waminiyi.realestatemanager.features.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -16,8 +17,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.waminiyi.realestatemanager.R
-import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
+import com.waminiyi.realestatemanager.core.model.data.Filter
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.databinding.ActivityHomeBinding
 import com.waminiyi.realestatemanager.features.estateListing.EstateListingViewModel
@@ -48,6 +49,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Log.d("viewmodel", viewModel.toString())
 
         toolbar = binding.toolbar
         setSupportActionBar(toolbar)
@@ -72,6 +74,9 @@ class HomeActivity : AppCompatActivity() {
                     if (destination.id == R.id.navigation_estateList || destination.id == R.id.estateMapFragment) {
                         binding.newEstateButton.visibility = View.VISIBLE
                         binding.listViewControlsLayout.visibility = View.VISIBLE
+                        if (destination.id == R.id.navigation_estateList) {
+                            viewModel.updateCurrentViewType(ListingViewType.LIST)
+                        } else viewModel.updateCurrentViewType(ListingViewType.MAP)
                     } else {
                         binding.newEstateButton.visibility = View.GONE
                         binding.listViewControlsLayout.visibility = View.GONE
@@ -79,28 +84,54 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
-        binding.filterLabelLayout.setOnClickListener {
-            showDialog("Filter")
+        binding.filterButton.setOnClickListener {
+            navController.navigate(R.id.estateFilterFragment)
         }
         binding.newEstateButton.setOnClickListener {
             navController.navigate(R.id.navigation_add)
         }
         binding.listViewLabelTextView.setOnClickListener {
-            viewModel.setCurrentViewType(ListingViewType.LIST)
+            viewModel.updateCurrentViewType(ListingViewType.LIST)
         }
         binding.mapViewLabelTextView.setOnClickListener {
-            viewModel.setCurrentViewType(ListingViewType.MAP)
+            viewModel.updateCurrentViewType(ListingViewType.MAP)
         }
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 updateCurrencyButtonIcon(uiState.currencyCode)
+                updateFilterButton(uiState.filter)
+
                 when (uiState.viewType) {
                     ListingViewType.LIST -> showListView(uiState.estates.size)
 
                     ListingViewType.MAP -> showMapView(uiState.estates.size)
                 }
+                Log.d("filter", uiState.filter.toString())
             }
         }
+    }
+
+    private fun updateFilterButton(filter: Filter) {
+        val color = when {
+            filter.isDefault() -> R.color.black
+            else -> R.color.cinnabar
+        }
+
+        val icon = when {
+            filter.isDefault() -> R.drawable.ic_filter_off
+            else -> R.drawable.ic_filter
+        }
+
+        val filterLabel = when {
+            filter.isDefault() -> "No filter"
+            else -> "Filtered"
+        }
+100
+        val tint = ContextCompat.getColor(this, color)
+        binding.filterButton.setImageDrawable(ContextCompat.getDrawable(this, icon))
+        binding.filterButton.setColorFilter(tint)
+        binding.filterLabelTextView.text = filterLabel
+        binding.filterLabelTextView.setTextColor(tint)
     }
 
     private fun TextView.showAsCurrentListingViewLabel(isCurrentView: Boolean) {
@@ -122,13 +153,10 @@ class HomeActivity : AppCompatActivity() {
     private fun showListView(count: Int) {
         if (currentViewType != ListingViewType.LIST) {
             currentViewType = ListingViewType.LIST
-            showDialog("New List view")
             navController.navigate(R.id.navigation_estateList)
-        } else {
-            showDialog(" Not new List view")
         }
-        val listCountText = "List ($count)"
-        val mapCountText = "Map ($count)"
+        val listCountText = getString(R.string.list_view_label, count)
+        val mapCountText = getString(R.string.map_view_label, count)
         binding.listViewLabelTextView.text = listCountText
         binding.mapViewLabelTextView.text = mapCountText
         binding.listViewLabelTextView.showAsCurrentListingViewLabel(true)
@@ -138,13 +166,10 @@ class HomeActivity : AppCompatActivity() {
     private fun showMapView(count: Int) {
         if (currentViewType != ListingViewType.MAP) {
             currentViewType = ListingViewType.MAP
-            showDialog("New Map view")
             navController.navigate(R.id.estateMapFragment)
-        } else {
-            showDialog(" Not new map view")
         }
-        val listCountText = "List ($count)"
-        val mapCountText = "Map ($count)"
+        val listCountText = getString(R.string.list_view_label, count)
+        val mapCountText = getString(R.string.map_view_label, count)
         binding.listViewLabelTextView.text = listCountText
         binding.mapViewLabelTextView.text = mapCountText
         binding.listViewLabelTextView.showAsCurrentListingViewLabel(false)
@@ -160,13 +185,13 @@ class HomeActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.currency_dollars -> {
-                        viewModel.setCurrencyCode(CurrencyCode.USD)
+                        viewModel.updateCurrencyCode(CurrencyCode.USD)
                         updateCurrencyButtonIcon(CurrencyCode.USD)
                         true
                     }
 
                     R.id.currency_euro -> {
-                        viewModel.setCurrencyCode(CurrencyCode.EUR)
+                        viewModel.updateCurrencyCode(CurrencyCode.EUR)
                         updateCurrencyButtonIcon(CurrencyCode.EUR)
 
                         true

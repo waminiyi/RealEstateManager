@@ -1,6 +1,5 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
-import android.util.Log
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.extension.toEstateEntity
 import com.waminiyi.realestatemanager.core.data.extension.toRemoteEstate
@@ -9,13 +8,13 @@ import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepo
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.LocalChangeDao
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
-import com.waminiyi.realestatemanager.core.database.model.LocalChangeEntity
 import com.waminiyi.realestatemanager.core.database.model.asEstate
 import com.waminiyi.realestatemanager.core.database.model.asEstateEntity
 import com.waminiyi.realestatemanager.core.model.data.ClassTag
 import com.waminiyi.realestatemanager.core.model.data.DataResult
 import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.data.Filter
 import com.waminiyi.realestatemanager.core.util.sync.Synchronizer
 import com.waminiyi.realestatemanager.core.util.sync.changeLocalListSync
 import com.waminiyi.realestatemanager.core.util.sync.changeRemoteListSync
@@ -42,10 +41,30 @@ class DefaultEstateRepository @Inject constructor(
         }
     }
 
-    override fun getAllEstatesStream(): Flow<DataResult<List<Estate>>> {
-        return estateDao.getAllEstatesWithImages().map {
-            Log.d("ESTATELIST-REPOPSITORY", it.toString())
-            DataResult.Success(it.map { estateWithImage ->
+    override fun getAllEstatesStream(filter: Filter): Flow<DataResult<List<Estate>>> {
+        val param = filter.asQueryParameter()
+        return estateDao.getAllEstatesWithImages(
+            minPrice = param.minPrice,
+            maxPrice = param.maxPrice,
+            minArea = param.minArea,
+            maxArea = param.maxArea,
+            typesIsEmpty = param.estateTypes.isNullOrEmpty(),
+            types = param.estateTypes ?: emptyList(),
+            citiesIsEmpty = param.cities.isNullOrEmpty(),
+            cities = param.cities,
+            roomsIsEmpty = param.roomsCounts.isNullOrEmpty(),
+            roomsCounts = param.roomsCounts ?: emptyList(),
+            roomsCountThreshold = param.roomsCountThreshold,
+            bedroomsIsEmpty = param.bedroomsCounts.isNullOrEmpty(),
+            bedroomsCounts = param.bedroomsCounts ?: emptyList(),
+            bedroomsCountThreshold = param.bedroomsCountThreshold,
+            photoMinimumCount = param.photosMinimalCount,
+            estateStatus = param.estateStatus,
+            addedAfter = param.addedAfter,
+            soldAfter = param.soldAfter,
+            poi = param.pointOfInterest?.toString()
+        ).map { estateListWithImages ->
+            DataResult.Success(estateListWithImages.map { estateWithImage ->
                 estateWithImage.asEstate()
             })
         }.catch<DataResult<List<Estate>>> {
@@ -55,7 +74,8 @@ class DefaultEstateRepository @Inject constructor(
 
     override suspend fun getEstateWithDetails(estateId: String): DataResult<EstateWithDetails?> {
         return try {
-            val result = estateDao.getEstateWithDetailsById(UUID.fromString(estateId))?.asEstateWithDetails()
+            val result =
+                estateDao.getEstateWithDetailsById(UUID.fromString(estateId))?.asEstateWithDetails()
             result?.let {
                 DataResult.Success(it)
             } ?: DataResult.Error(NullPointerException("Estate with ID $estateId not found"))
@@ -74,7 +94,11 @@ class DefaultEstateRepository @Inject constructor(
     override suspend fun syncFromRemoteWith(synchronizer: Synchronizer): Boolean {
         return synchronizer.changeLocalListSync(
             currentLocalVersionReader = VersionsList::estateVersion,
-            remoteChangeListFetcher = { currentVersion -> remoteDataRepository.getEstatesChangeList(currentVersion) },
+            remoteChangeListFetcher = { currentVersion ->
+                remoteDataRepository.getEstatesChangeList(
+                    currentVersion
+                )
+            },
             localVersionUpdater = { latestVersion -> copy(estateVersion = latestVersion) },
             localModelUpdater = { changedIds ->
                 changedIds.forEach { id ->
@@ -96,9 +120,10 @@ class DefaultEstateRepository @Inject constructor(
                 }
             },
             remoteModelUpdater = { changedIds ->
-                estateDao.getEstatesByIds(changedIds.map { UUID.fromString(it) }).forEach { estateEntity ->
-                    remoteDataRepository.uploadEstate(estateEntity.toRemoteEstate())
-                }
+                estateDao.getEstatesByIds(changedIds.map { UUID.fromString(it) })
+                    .forEach { estateEntity ->
+                        remoteDataRepository.uploadEstate(estateEntity.toRemoteEstate())
+                    }
             }
         )
     }

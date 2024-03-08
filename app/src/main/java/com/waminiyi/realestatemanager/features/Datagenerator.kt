@@ -215,14 +215,14 @@ fun generateDatePairs(): List<Pair<Date, Date?>> {
     val datePairs = mutableListOf<Pair<Date, Date?>>()
 
     val entryDates = listOf(
-        "2022-01-01",
-        "2022-02-01",
-        "2022-03-01",
-        "2022-04-01",
-        "2022-05-01",
-        "2022-06-01",
-        "2022-07-01",
-        "2022-08-01"
+        "2023-12-01",
+        "2024-01-01",
+        "2024-02-01",
+        "2024-03-01",
+        "2024-03-05",
+        "2024-03-07",
+        "2024-03-10",
+        "2024-03-14"
     )
 
     for (i in entryDates.indices) {

@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.core.util.remdispatchers.di
 
 import com.waminiyi.realestatemanager.core.util.remdispatchers.Dispatcher
-import com.waminiyi.realestatemanager.core.util.remdispatchers.RemDispatchers
 import com.waminiyi.realestatemanager.core.util.remdispatchers.RemDispatchers.*
 import dagger.Module
 import dagger.Provides
@@ -20,4 +19,10 @@ object DispatchersModule {
     @Provides
     @Dispatcher(Default)
     fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+
+
+    @Provides
+    @Dispatcher(Main)
+    fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+
 }
