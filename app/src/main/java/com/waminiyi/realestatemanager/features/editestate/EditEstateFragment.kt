@@ -37,6 +37,7 @@ import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.toRawString
 import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
+import com.waminiyi.realestatemanager.core.util.util.sendNotification
 import com.waminiyi.realestatemanager.databinding.FragmentEditestateBinding
 import com.waminiyi.realestatemanager.features.editestate.agent.AgentAdapter
 import com.waminiyi.realestatemanager.features.editestate.estatetype.EstateTypeAdapter
@@ -143,6 +144,10 @@ class EditEstateFragment : Fragment() {
             }
 
             uiState.isEstateSaved -> {
+                requireContext().sendNotification(title = requireContext().getString(R.string.app_name), message = getString(
+                    R.string.estate_saved_message
+                ))
+               // findNavController().navigateUp()
                 showEstateSavedDialog()
             }
 
