@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.core.database.dao
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
@@ -75,4 +76,13 @@ interface EstateDao {
     @Transaction
     @Query("SELECT * FROM estates WHERE estate_uuid IN (:estateUuids)")
     fun getEstatesByIds(estateUuids: List<UUID>): List<EstateEntity>
+
+    @Query("SELECT * FROM estates " +
+            "INNER JOIN agents ON estates.agent_id = agents.agent_uuid")
+    fun getAllEstatesWithDetailsCursor(): Cursor?
+
+    @Query("SELECT * FROM estates " +
+            "INNER JOIN agents ON estates.agent_id = agents.agent_uuid " +
+            "WHERE estates.estate_uuid = :estateUuid")
+    fun getEstateWithDetailsCursorById(estateUuid: String): Cursor?
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.waminiyi.realestatemanager.core.Constants.REM_DATABASE_NAME
 import com.waminiyi.realestatemanager.core.database.RemDatabase
 import dagger.Module
 import dagger.Provides
@@ -23,7 +24,7 @@ object DatabaseModule {
     ): RemDatabase = Room.databaseBuilder(
         context,
         RemDatabase::class.java,
-        "rem-database"
+        REM_DATABASE_NAME
     ).addCallback(object : RoomDatabase.Callback() {
         override fun onOpen(db: SupportSQLiteDatabase) {
             super.onOpen(db)

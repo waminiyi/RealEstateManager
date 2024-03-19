@@ -13,4 +13,8 @@ object Constants {
     const val FILTER_BEDROOM_COUNT_THRESHOLD = 5
     const val FILTER_KEY = "filter"
     const val FILTER_REQUEST_KEY = "filter_request"
+
+    const val ESTATES_TABLE_NAME = "estates"
+    const val REM_DATABASE_NAME = "rem-database"
+
 }
