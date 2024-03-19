@@ -10,12 +10,16 @@ class FilterRepository @Inject constructor() {
     private val defaultFilter = Filter()
     private val _filter = MutableStateFlow(defaultFilter)
     val filter: Flow<Filter> = _filter
+    private val _isDefaultFilter = MutableStateFlow(_filter.value.isDefault())
+    val isDefaultFilter: Flow<Boolean> = _isDefaultFilter
+
 
     fun updateFilter(filter: Filter) {
         _filter.value = filter
+        _isDefaultFilter.value = filter.isDefault()
     }
 
     fun resetFilter() {
-        _filter.value = defaultFilter
+        updateFilter(defaultFilter)
     }
 }

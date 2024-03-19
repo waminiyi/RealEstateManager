@@ -18,8 +18,10 @@ import com.waminiyi.realestatemanager.core.model.data.Filter
 import com.waminiyi.realestatemanager.core.util.sync.Synchronizer
 import com.waminiyi.realestatemanager.core.util.sync.changeLocalListSync
 import com.waminiyi.realestatemanager.core.util.sync.changeRemoteListSync
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import java.util.UUID
@@ -28,7 +30,8 @@ import javax.inject.Inject
 class DefaultEstateRepository @Inject constructor(
     private val estateDao: EstateDao,
     private val localChangeDao: LocalChangeDao,
-    private val remoteDataRepository: RemoteDataRepository
+    private val remoteDataRepository: RemoteDataRepository,
+    private val filterRepository: FilterRepository
 ) : EstateRepository {
     override suspend fun saveEstate(estateWithDetails: EstateWithDetails): DataResult<Unit> {
         return try {
@@ -41,35 +44,67 @@ class DefaultEstateRepository @Inject constructor(
         }
     }
 
-    override fun getAllEstatesStream(filter: Filter): Flow<DataResult<List<Estate>>> {
-        val param = filter.asQueryParameter()
-        return estateDao.getAllEstatesWithImages(
-            minPrice = param.minPrice,
-            maxPrice = param.maxPrice,
-            minArea = param.minArea,
-            maxArea = param.maxArea,
-            typesIsEmpty = param.estateTypes.isNullOrEmpty(),
-            types = param.estateTypes ?: emptyList(),
-            citiesIsEmpty = param.cities.isNullOrEmpty(),
-            cities = param.cities,
-            roomsIsEmpty = param.roomsCounts.isNullOrEmpty(),
-            roomsCounts = param.roomsCounts ?: emptyList(),
-            roomsCountThreshold = param.roomsCountThreshold,
-            bedroomsIsEmpty = param.bedroomsCounts.isNullOrEmpty(),
-            bedroomsCounts = param.bedroomsCounts ?: emptyList(),
-            bedroomsCountThreshold = param.bedroomsCountThreshold,
-            photoMinimumCount = param.photosMinimalCount,
-            estateStatus = param.estateStatus,
-            addedAfter = param.addedAfter,
-            soldAfter = param.soldAfter,
-            poi = param.pointOfInterest?.toString()
-        ).map { estateListWithImages ->
-            DataResult.Success(estateListWithImages.map { estateWithImage ->
-                estateWithImage.asEstate()
-            })
-        }.catch<DataResult<List<Estate>>> {
-            emit(DataResult.Error(it))
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getAllEstatesStream(): Flow<DataResult<List<Estate>>> {
+
+        return filterRepository.filter.flatMapLatest { filter ->
+            val param = filter.asQueryParameter()
+            estateDao.getAllEstatesWithImages(
+                minPrice = param.minPrice,
+                maxPrice = param.maxPrice,
+                minArea = param.minArea,
+                maxArea = param.maxArea,
+                typesIsEmpty = param.estateTypes.isNullOrEmpty(),
+                types = param.estateTypes ?: emptyList(),
+                citiesIsEmpty = param.cities.isNullOrEmpty(),
+                cities = param.cities,
+                roomsIsEmpty = param.roomsCounts.isNullOrEmpty(),
+                roomsCounts = param.roomsCounts ?: emptyList(),
+                roomsCountThreshold = param.roomsCountThreshold,
+                bedroomsIsEmpty = param.bedroomsCounts.isNullOrEmpty(),
+                bedroomsCounts = param.bedroomsCounts ?: emptyList(),
+                bedroomsCountThreshold = param.bedroomsCountThreshold,
+                photoMinimumCount = param.photosMinimalCount,
+                estateStatus = param.estateStatus,
+                addedAfter = param.addedAfter,
+                soldAfter = param.soldAfter,
+                poi = param.pointOfInterest?.toString()
+            ).map { estateListWithImages ->
+                DataResult.Success(estateListWithImages.map { estateWithImage ->
+                    estateWithImage.asEstate()
+                })
+            }.catch<DataResult<List<Estate>>> {
+                emit(DataResult.Error(it))
+            }
         }
+//        val param = filter.asQueryParameter()
+//        return estateDao.getAllEstatesWithImages(
+//            minPrice = param.minPrice,
+//            maxPrice = param.maxPrice,
+//            minArea = param.minArea,
+//            maxArea = param.maxArea,
+//            typesIsEmpty = param.estateTypes.isNullOrEmpty(),
+//            types = param.estateTypes ?: emptyList(),
+//            citiesIsEmpty = param.cities.isNullOrEmpty(),
+//            cities = param.cities,
+//            roomsIsEmpty = param.roomsCounts.isNullOrEmpty(),
+//            roomsCounts = param.roomsCounts ?: emptyList(),
+//            roomsCountThreshold = param.roomsCountThreshold,
+//            bedroomsIsEmpty = param.bedroomsCounts.isNullOrEmpty(),
+//            bedroomsCounts = param.bedroomsCounts ?: emptyList(),
+//            bedroomsCountThreshold = param.bedroomsCountThreshold,
+//            photoMinimumCount = param.photosMinimalCount,
+//            estateStatus = param.estateStatus,
+//            addedAfter = param.addedAfter,
+//            soldAfter = param.soldAfter,
+//            poi = param.pointOfInterest?.toString()
+//        ).map { estateListWithImages ->
+//            DataResult.Success(estateListWithImages.map { estateWithImage ->
+//                estateWithImage.asEstate()
+//            })
+//        }.catch<DataResult<List<Estate>>> {
+//            emit(DataResult.Error(it))
+//        }
     }
 
     override suspend fun getEstateWithDetails(estateId: String): DataResult<EstateWithDetails?> {

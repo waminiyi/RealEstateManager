@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.NumberOfItems
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Timeframe
 import com.waminiyi.realestatemanager.core.util.remdispatchers.Dispatcher
@@ -23,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EstateFilterViewModel @Inject constructor(
-    @Dispatcher(RemDispatchers.IO) val ioDispatcher: CoroutineDispatcher,
     private val citiesUtils: CitiesUtils,
     private val filterRepository: FilterRepository
 ) : ViewModel() {
@@ -38,22 +36,15 @@ class EstateFilterViewModel @Inject constructor(
             val cities = citiesUtils.getUsCities()
             _uiState.update { it.copy(usCities = cities, isLoadedUiState = false) }
         }
-
     }
 
-
-    fun addEstateType(type: EstateType) {
-        _uiState.update {
-            val updatedFilter = it.filter.copy(estateTypes = it.filter.estateTypes + type)
-            it.copy(filter = updatedFilter)
-        }
-    }
-
-    fun removeEstateType(type: EstateType) {
+    fun updateEstateTypesFilter(type: EstateType, isChecked: Boolean) {
         _uiState.update { uiState ->
-            val updatedFilter =
+            val updatedFilter = if (isChecked) {
+                uiState.filter.copy(estateTypes = uiState.filter.estateTypes + type)
+            } else {
                 uiState.filter.copy(estateTypes = uiState.filter.estateTypes.filter { it != type })
-
+            }
             uiState.copy(filter = updatedFilter)
         }
     }
@@ -86,38 +77,25 @@ class EstateFilterViewModel @Inject constructor(
         }
     }
 
-    fun addRoomsCount(count: Int) {
-        _uiState.update {
-            val updatedFilter = it.filter.copy(roomsCounts = it.filter.roomsCounts + count)
-
-            it.copy(filter = updatedFilter)
+    fun updateRoomCountFilter(count: Int, isChecked: Boolean) {
+        _uiState.update { uiState ->
+            val updatedFilter = if (isChecked) {
+                uiState.filter.copy(roomsCounts = uiState.filter.roomsCounts + count)
+            } else {
+                uiState.filter.copy(roomsCounts = uiState.filter.roomsCounts.filter { it != count })
+            }
+            uiState.copy(filter = updatedFilter)
         }
     }
 
-    fun removeRoomsCount(count: Int) {
-        _uiState.update { state ->
-            val updatedFilter =
-                state.filter.copy(roomsCounts = state.filter.roomsCounts.filter { it != count })
-
-            state.copy(filter = updatedFilter)
-        }
-    }
-
-    fun addBedroomsCount(count: Int) {
-        _uiState.update {
-            val updatedFilter = it.filter.copy(bedroomsCounts = it.filter.bedroomsCounts + count)
-
-            it.copy(filter = updatedFilter)
-        }
-    }
-
-    fun removeBedroomsCount(count: Int) {
-        _uiState.update { state ->
-
-            val updatedFilter =
-                state.filter.copy(bedroomsCounts = state.filter.bedroomsCounts.filter { it != count })
-
-            state.copy(filter = updatedFilter)
+    fun updateBedroomCountFilter(count: Int, isChecked: Boolean) {
+        _uiState.update { uiState ->
+            val updatedFilter = if (isChecked) {
+                uiState.filter.copy(bedroomsCounts = uiState.filter.bedroomsCounts + count)
+            } else {
+                uiState.filter.copy(bedroomsCounts = uiState.filter.bedroomsCounts.filter { it != count })
+            }
+            uiState.copy(filter = updatedFilter)
         }
     }
 
@@ -127,24 +105,17 @@ class EstateFilterViewModel @Inject constructor(
         }
     }
 
-
-    fun addCityToSelection(city: String) {
-        _uiState.update {
-            val updatedFilter = it.filter.copy(cities = it.filter.cities + city)
-
-            it.copy(filter = updatedFilter)
+    fun updateSelectedCities(city: String, isAdded: Boolean) {
+        _uiState.update { uiState ->
+            val updatedFilter = if (isAdded) {
+                if (uiState.filter.cities.contains(city)) return
+                uiState.filter.copy(cities = uiState.filter.cities + city)
+            } else {
+                uiState.filter.copy(cities = uiState.filter.cities.filter { it != city })
+            }
+            uiState.copy(filter = updatedFilter)
         }
     }
-
-    fun removeCityFromSelection(city: String) {
-        _uiState.update { state ->
-            val updatedFilter =
-                state.filter.copy(cities = state.filter.cities.filter { it != city })
-
-            state.copy(filter = updatedFilter)
-        }
-    }
-
 
     fun updateEstateStatus(status: EstateStatus?) {
         _uiState.update {

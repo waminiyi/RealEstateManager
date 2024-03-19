@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.features.estatesFilter
 
 import android.os.Bundle
-import com.waminiyi.realestatemanager.core.Constants.FILTER_ROOM_COUNT_THRESHOLD
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -15,21 +14,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.waminiyi.realestatemanager.R
+import com.waminiyi.realestatemanager.core.Constants.FILTER_ROOM_COUNT_THRESHOLD
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Timeframe
-import com.waminiyi.realestatemanager.core.util.remdispatchers.Dispatcher
-import com.waminiyi.realestatemanager.core.util.remdispatchers.RemDispatchers
 import com.waminiyi.realestatemanager.databinding.FragmentEstateFilterBinding
 import com.waminiyi.realestatemanager.features.extensions.afterTextChanged
 import com.waminiyi.realestatemanager.features.extensions.updateValue
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import com.waminiyi.realestatemanager.features.model.asUiPointOfInterest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 private const val MIN_PHOTO_COUNT_MAX_VALUE = 6
 
@@ -39,10 +35,6 @@ class EstateFilterFragment : Fragment() {
     private var _binding: FragmentEstateFilterBinding? = null
     private val binding get() = _binding!!
     private val filterViewModel: EstateFilterViewModel by viewModels()
-
-    @Dispatcher(RemDispatchers.IO)
-    @Inject
-    lateinit var ioDispatcher: CoroutineDispatcher
     private lateinit var availableStatesAdapter: ArrayAdapter<String>
 
     override fun onCreateView(
@@ -66,33 +58,17 @@ class EstateFilterFragment : Fragment() {
             filterViewModel.clearFilter()
         }
 
-        binding.minPriceTextInputEditText.afterTextChanged { price ->
-            if (price.isBlank()) {
-                filterViewModel.updateMinPrice(null)
-            } else {
-                filterViewModel.updateMinPrice(price.toInt())
-            }
+        binding.minPriceTextInputEditText.afterTextChanged {
+            filterViewModel.updateMinPrice(it.toIntOrNull())
         }
-        binding.maxPriceTextInputEditText.afterTextChanged { price ->
-            if (price.isBlank()) {
-                filterViewModel.updateMaxPrice(null)
-            } else {
-                filterViewModel.updateMaxPrice(price.toInt())
-            }
+        binding.maxPriceTextInputEditText.afterTextChanged {
+            filterViewModel.updateMaxPrice(it.toIntOrNull())
         }
-        binding.minAreaTextInputEditText.afterTextChanged { area ->
-            if (area.isBlank()) {
-                filterViewModel.updateMinArea(null)
-            } else {
-                filterViewModel.updateMinArea(area.toInt())
-            }
+        binding.minAreaTextInputEditText.afterTextChanged {
+            filterViewModel.updateMinArea(it.toIntOrNull())
         }
-        binding.maxAreaTextInputEditText.afterTextChanged { area ->
-            if (area.isBlank()) {
-                filterViewModel.updateMaxArea(null)
-            } else {
-                filterViewModel.updateMaxArea(area.toInt())
-            }
+        binding.maxAreaTextInputEditText.afterTextChanged {
+            filterViewModel.updateMaxArea(it.toIntOrNull())
         }
 
         return binding.root
@@ -142,11 +118,7 @@ class EstateFilterFragment : Fragment() {
             )
             chip.isChecked = estateType in selectedTypes
             chip.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    filterViewModel.addEstateType(estateType)
-                } else {
-                    filterViewModel.removeEstateType(estateType)
-                }
+                filterViewModel.updateEstateTypesFilter(estateType, isChecked)
             }
             binding.estateTypeChipGroup.addView(chip)
         }
@@ -161,11 +133,7 @@ class EstateFilterFragment : Fragment() {
             )
             chip.isChecked = count in selectedNumbers
             chip.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    filterViewModel.addRoomsCount(count)
-                } else {
-                    filterViewModel.removeRoomsCount(count)
-                }
+                filterViewModel.updateRoomCountFilter(count, isChecked)
             }
             binding.roomChipGroup.addView(chip)
         }
@@ -180,11 +148,7 @@ class EstateFilterFragment : Fragment() {
             )
             chip.isChecked = count in selectedNumbers
             chip.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    filterViewModel.addBedroomsCount(count)
-                } else {
-                    filterViewModel.removeBedroomsCount(count)
-                }
+                filterViewModel.updateBedroomCountFilter(count, isChecked)
             }
             binding.bedroomChipGroup.addView(chip)
         }
@@ -311,20 +275,20 @@ class EstateFilterFragment : Fragment() {
 
         binding.citiesAutoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
             val city = availableStatesAdapter.getItem(position)
-            city?.let { filterViewModel.addCityToSelection(it) }
+            city?.let { filterViewModel.updateSelectedCities(it, true) }
             binding.citiesAutoCompleteTextView.setText(getString(R.string.empty_string))
         }
     }
 
-    private fun updateSelectedCitiesChipGroup(selectedStates: List<String>) {
+    private fun updateSelectedCitiesChipGroup(selectedCities: List<String>) {
         binding.selectedCitiesChipGroup.removeAllViews()
-        for (state in selectedStates) {
-            val chip = createChip(chipText = state, isFilterChip = false)
+        for (city in selectedCities) {
+            val chip = createChip(chipText = city, isFilterChip = false)
             chip.isChecked = true
             chip.isCloseIconVisible = true
 
             chip.setOnCloseIconClickListener {
-                filterViewModel.removeCityFromSelection(state)
+                filterViewModel.updateSelectedCities(city, false)
             }
 
             binding.selectedCitiesChipGroup.addView(chip)

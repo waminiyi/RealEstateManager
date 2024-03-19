@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.features.estateListing
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
@@ -9,7 +10,6 @@ import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
 import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.core.model.data.Filter
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.features.agentEntities
 import com.waminiyi.realestatemanager.features.estateEntities
@@ -46,9 +46,10 @@ class EstateListingViewModel @Inject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val combinedFlow = filterRepository.filter.flatMapLatest { filter ->
+    private val combinedFlow = filterRepository.isDefaultFilter.flatMapLatest { isDefaultFilter ->
+        Log.d("has filter", isDefaultFilter.toString())
         combine(
-            estateRepository.getAllEstatesStream(filter),
+            estateRepository.getAllEstatesStream(),
             userPreferencesRepository.getDefaultCurrency(),
             currentViewTypeFlow
         ) { estatesResult, currency, viewType ->
@@ -63,7 +64,7 @@ class EstateListingViewModel @Inject constructor(
                     estates = estatesResult.data,
                     currencyCode = currency,
                     viewType = viewType,
-                    filter = filter
+                    hasFilter = !isDefaultFilter
                 )
             }
             uiState

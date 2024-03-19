@@ -42,9 +42,10 @@ object RepositoryModule {
     fun provideEstateRepository(
         estateDao: EstateDao,
         localChangeDao: LocalChangeDao,
-        remoteDataRepository: RemoteDataRepository
+        remoteDataRepository: RemoteDataRepository,
+        filterRepository: FilterRepository
     ): EstateRepository {
-        return DefaultEstateRepository(estateDao, localChangeDao, remoteDataRepository)
+        return DefaultEstateRepository(estateDao, localChangeDao, remoteDataRepository, filterRepository)
     }
 
     @Provides

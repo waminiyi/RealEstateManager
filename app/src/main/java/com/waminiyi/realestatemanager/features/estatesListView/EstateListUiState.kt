@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.features.estatesListView
 
 import com.waminiyi.realestatemanager.core.model.data.Estate
-import com.waminiyi.realestatemanager.core.model.data.Filter
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.features.model.ListingViewType
 
@@ -12,5 +11,5 @@ data class EstateListUiState(
     val errorMessage: String = "",
     val currencyCode: CurrencyCode = CurrencyCode.USD,
     val viewType: ListingViewType = ListingViewType.LIST,
-    val filter: Filter = Filter()
+    val hasFilter: Boolean = false
 )

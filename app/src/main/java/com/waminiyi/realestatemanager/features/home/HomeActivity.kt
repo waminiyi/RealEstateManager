@@ -18,7 +18,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
-import com.waminiyi.realestatemanager.core.model.data.Filter
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.databinding.ActivityHomeBinding
 import com.waminiyi.realestatemanager.features.estateListing.EstateListingViewModel
@@ -99,35 +98,24 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 updateCurrencyButtonIcon(uiState.currencyCode)
-                updateFilterButton(uiState.filter)
+                updateFilterButton(uiState.hasFilter)
 
                 when (uiState.viewType) {
                     ListingViewType.LIST -> showListView(uiState.estates.size)
 
                     ListingViewType.MAP -> showMapView(uiState.estates.size)
                 }
-                Log.d("filter", uiState.filter.toString())
+                Log.d("filter", uiState.hasFilter.toString())
             }
         }
     }
 
-    private fun updateFilterButton(filter: Filter) {
-        val color = when {
-            filter.isDefault() -> R.color.black
-            else -> R.color.cinnabar
-        }
-
-        val icon = when {
-            filter.isDefault() -> R.drawable.ic_filter_off
-            else -> R.drawable.ic_filter
-        }
-
-        val filterLabel = when {
-            filter.isDefault() -> "No filter"
-            else -> "Filtered"
-        }
-100
+    private fun updateFilterButton(hasFilter: Boolean) {
+        val color = if (hasFilter) R.color.cinnabar else R.color.black
+        val icon = if (hasFilter) R.drawable.ic_filter else R.drawable.ic_filter_off
+        val filterLabel = if (hasFilter) "Filtered" else "No filter"
         val tint = ContextCompat.getColor(this, color)
+
         binding.filterButton.setImageDrawable(ContextCompat.getDrawable(this, icon))
         binding.filterButton.setColorFilter(tint)
         binding.filterLabelTextView.text = filterLabel

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface EstateRepository : Syncable {
     suspend fun saveEstate(estateWithDetails: EstateWithDetails): DataResult<Unit>
-    fun getAllEstatesStream(filter: Filter): Flow<DataResult<List<Estate>>>
+    fun getAllEstatesStream(): Flow<DataResult<List<Estate>>>
     suspend fun getEstateWithDetails(estateId: String): DataResult<EstateWithDetails?>
     suspend  fun getEstatesToUpload():List<EstateEntity>
 }

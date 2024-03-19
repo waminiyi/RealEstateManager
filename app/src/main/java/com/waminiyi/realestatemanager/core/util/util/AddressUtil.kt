@@ -17,16 +17,12 @@ fun createAddressFromPlace(place: Place): Address {
     val location = Location(place.latLng?.latitude ?: 0.0, place.latLng?.longitude ?: 0.0)
 
     return Address(
-        streetNumber = if (streetNumber.isEmpty()) {
-            null
-        } else streetNumber.toInt(),
+        streetNumber = streetNumber.toIntOrNull(),
         streetName = streetName,
         city = city,
         state = state,
         country = country,
-        postalCode = if (postalCode.isEmpty()) {
-            null
-        } else postalCode.toInt(),
+        postalCode = postalCode.toIntOrNull(),
         location = location
     )
 }
