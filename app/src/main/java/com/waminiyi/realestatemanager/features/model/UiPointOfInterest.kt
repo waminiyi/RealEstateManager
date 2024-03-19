@@ -6,8 +6,7 @@ import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 
-data class UiPointOfInterest(val name: String, val iconResId: Int) {
-}
+data class UiPointOfInterest(val name: String, val iconResId: Int)
 
 fun PointOfInterest.asUiPointOfInterest(context: Context): UiPointOfInterest {
 
@@ -19,7 +18,6 @@ fun PointOfInterest.asUiPointOfInterest(context: Context): UiPointOfInterest {
     val name = namesArray.getOrNull(this.ordinal) ?: "Unknown"
     val iconResId = iconResIdsArray.getResourceId(this.ordinal, R.drawable.ic_poi)
 
-    // Recycle the TypedArray to avoid memory leaks
     iconResIdsArray.recycle()
 
     return UiPointOfInterest(name, iconResId)

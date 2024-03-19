@@ -20,7 +20,7 @@ data class AddressEntity(
     val city: String,
     val state: String,
     val country: String,
-    val postalCode: Int,
+    val postalCode: Int?,
     @Embedded val location: Location
 ) {
     fun asAddress() = Address(

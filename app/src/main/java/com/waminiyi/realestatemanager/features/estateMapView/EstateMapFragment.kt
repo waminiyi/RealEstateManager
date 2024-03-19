@@ -12,7 +12,7 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -44,13 +44,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class EstateMapFragment : Fragment(), OnMapReadyCallback {
 
-    private val listingViewModel: EstateListingViewModel by viewModels()
+    private val listingViewModel: EstateListingViewModel by activityViewModels()
     private var _binding: FragmentEstateMapBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     lateinit var networkMonitor: NetworkMonitor
-    private var isOnline = true
     private var map: GoogleMap? = null
 
 
@@ -58,8 +57,12 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //TODO: The estates are not added to the map when we navigate from another fragment, maybe due to viewmodel sharing, Inject the dispatcher
+        // also
         _binding = FragmentEstateMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        Log.d("viewmodel", listingViewModel.toString())
+
         val fragmentScope = CoroutineScope(Dispatchers.Main)
         setupMapIfNeeded()
         fragmentScope.launch {

@@ -10,5 +10,6 @@ data class EstateListUiState(
     val isError: Boolean = false,
     val errorMessage: String = "",
     val currencyCode: CurrencyCode = CurrencyCode.USD,
-    val viewType: ListingViewType = ListingViewType.LIST
+    val viewType: ListingViewType = ListingViewType.LIST,
+    val hasFilter: Boolean = false
 )

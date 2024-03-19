@@ -1,12 +1,12 @@
 package com.waminiyi.realestatemanager.core.util.remdispatchers
 
 import javax.inject.Qualifier
-import kotlin.annotation.AnnotationRetention.RUNTIME
 
 @Qualifier
-@Retention(RUNTIME)
+@Retention(AnnotationRetention.BINARY)
 annotation class Dispatcher(val remDispatchers: RemDispatchers)
 enum class RemDispatchers {
+    Main,
     Default,
     IO,
 }

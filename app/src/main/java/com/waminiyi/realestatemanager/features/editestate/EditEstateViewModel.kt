@@ -162,7 +162,7 @@ class EditEstateViewModel @Inject constructor(
         _uiState.update { it.copy(savingError = null) }
     }
 
-    fun loadAgents() {
+    private fun loadAgents() {
         viewModelScope.launch {
             when (val result = agentRepository.getAllAgents()) {
                 is DataResult.Success -> {

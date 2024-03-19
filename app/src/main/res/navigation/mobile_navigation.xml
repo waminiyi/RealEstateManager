@@ -74,4 +74,8 @@
         android:id="@+id/estateMapFragment"
         android:name="com.waminiyi.realestatemanager.features.estateMapView.EstateMapFragment"
         tools:layout="@layout/fragment_estate_map" />
+    <fragment
+        android:id="@+id/estateFilterFragment"
+        android:name="com.waminiyi.realestatemanager.features.estatesFilter.EstateFilterFragment"
+        tools:layout="@layout/fragment_estate_filter" />
 </navigation>

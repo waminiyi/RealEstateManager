@@ -105,6 +105,7 @@
                 <TextView
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
+                    android:id="@+id/filterLabelTextView"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="Filter"

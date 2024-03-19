@@ -9,6 +9,7 @@ import com.waminiyi.realestatemanager.core.data.repository.DefaultEstateReposito
 import com.waminiyi.realestatemanager.core.data.repository.DefaultMediaFileRepository
 import com.waminiyi.realestatemanager.core.data.repository.DefaultPhotoRepository
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
+import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
 import com.waminiyi.realestatemanager.core.data.repository.MediaFileRepository
 import com.waminiyi.realestatemanager.core.data.repository.PhotoRepository
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
@@ -41,9 +42,10 @@ object RepositoryModule {
     fun provideEstateRepository(
         estateDao: EstateDao,
         localChangeDao: LocalChangeDao,
-        remoteDataRepository: RemoteDataRepository
+        remoteDataRepository: RemoteDataRepository,
+        filterRepository: FilterRepository
     ): EstateRepository {
-        return DefaultEstateRepository(estateDao, localChangeDao, remoteDataRepository)
+        return DefaultEstateRepository(estateDao, localChangeDao, remoteDataRepository, filterRepository)
     }
 
     @Provides
@@ -71,5 +73,11 @@ object RepositoryModule {
         @ApplicationContext context: Context
     ): MediaFileRepository {
         return DefaultMediaFileRepository(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFilterRepository(): FilterRepository {
+        return FilterRepository()
     }
 }

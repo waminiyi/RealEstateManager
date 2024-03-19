@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -42,6 +43,7 @@ import com.waminiyi.realestatemanager.features.editestate.estatetype.EstateTypeA
 import com.waminiyi.realestatemanager.features.editestate.photo.PhotoAdapter
 import com.waminiyi.realestatemanager.features.editestate.poi.PoiAdapter
 import com.waminiyi.realestatemanager.features.extensions.afterTextChanged
+import com.waminiyi.realestatemanager.features.extensions.updateValue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -273,12 +275,7 @@ class EditEstateFragment : Fragment() {
     }
 
     //endregion
-    private fun TextInputEditText.updateValue(newValue: String) {
-        with(this) {
-            setText(newValue)
-            setSelection(newValue.length)
-        }
-    }
+
 
     // region RecyclerViews
     private fun setUpPhotosRecyclerView() {
@@ -336,17 +333,6 @@ class EditEstateFragment : Fragment() {
         recyclerView.adapter = agentAdapter
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            val agents = viewModel.loadAgents()
-//
-//            agentAdapter.submitList(agents)
-//            Log.d("agents", agentAdapter.itemCount.toString())
-//
-//
-//        }
-        //TODO: retrieve agents from database
-
     }
 
 
@@ -384,12 +370,14 @@ class EditEstateFragment : Fragment() {
     private fun launchPlaceAutocompleteActivity() {
         val fields = listOf(
             Place.Field.ID,
-            Place.Field.NAME,
+//            Place.Field.NAME,
             Place.Field.ADDRESS_COMPONENTS,
             Place.Field.LAT_LNG
         )
 
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+            .setCountry("US")
+            .setTypeFilter(TypeFilter.ADDRESS)
             .build(requireContext())
         startAutocomplete.launch(intent)
     }

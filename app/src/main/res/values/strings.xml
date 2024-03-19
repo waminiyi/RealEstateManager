@@ -4,7 +4,6 @@
     <string name="title_add">Add</string>
     <string name="title_edit">Edit</string>
     <string name="title_filter">Filter</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="agent_selection">Select an agent</string>
     <string name="agent_name_placeholder">John D.</string>
@@ -63,4 +62,8 @@
     <string name="map">Map</string>
     <string name="currency">Currency</string>
     <string name="add_estate">Add estate</string>
+    <string name="location_autocomplete_hint">Enter a city name</string>
+    <string name="empty_string" />
+    <string name="list_view_label">List (%d)</string>
+    <string name="map_view_label">Map (%d)</string>
 </resources>
