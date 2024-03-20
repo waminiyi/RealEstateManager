@@ -68,4 +68,14 @@
     <string name="estate_saved_message">The estate has been saved</string>
     <string name="filter_label">Filter</string>
     <string name="entry_date">Entry date</string>
+    <string name="map_loading_default_error">Can\'t load map. Check your network</string>
+    <string name="select_from_library">Select from library</string>
+    <string name="take_a_photo">Take a photo</string>
+    <string name="point_of_interest_icon">Point of interest icon</string>
+    <string name="apply_filters">Apply filters</string>
+    <string name="clear_filters">Clear filters</string>
+    <string name="location">Location</string>
+    <string name="minimum">Minimum</string>
+    <string name="maximum">Maximum</string>
+    <string name="minimum_number_of_photos">Minimum number of photos</string>
 </resources>

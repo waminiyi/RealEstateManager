@@ -15,8 +15,8 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
         android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -32,6 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         style="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Can't load map. Check your network" />
+        android:text="@string/map_loading_default_error" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

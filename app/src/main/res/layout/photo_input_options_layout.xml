@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/spacing_medium">
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -11,11 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/spacing_medium"
         android:drawableStart="@drawable/ic_photo_library"
-        android:drawablePadding="8dp"
-        android:paddingStart="16dp"
-        android:text="Select from library"
+        android:drawablePadding="@dimen/spacing_small"
+        android:padding="@dimen/spacing_small"
+        android:text="@string/select_from_library"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:drawableStart="@drawable/ic_photo_camera"
-        android:drawablePadding="8dp"
-        android:paddingStart="16dp"
-        android:text="Take a photo"
+        android:drawablePadding="@dimen/spacing_small"
+        android:padding="@dimen/spacing_small"
+        android:text="@string/take_a_photo"
         android:textAppearance="?attr/textAppearanceListItem" />
 </LinearLayout>

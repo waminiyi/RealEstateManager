@@ -11,27 +11,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:elevation="4dp"
+        android:layout_margin="@dimen/spacing_medium"
+        android:elevation="@dimen/elevation"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/buttonApplyFilters"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="@dimen/spacing_large"
             android:backgroundTint="@color/green"
-            android:text="Apply Filters"
+            android:text="@string/apply_filters"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/buttonClearFilter"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:text="Clear Filters"
+            android:text="@string/clear_filters"
             android:textAllCaps="false"
             android:textColor="@color/green"
             app:strokeColor="@color/green"
@@ -47,14 +49,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_medium">
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="@dimen/spacing_small"
                 android:text="@string/estate_type_label" />
 
             <com.google.android.material.chip.ChipGroup
@@ -68,9 +69,8 @@
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Location" />
+                android:layout_marginVertical="@dimen/spacing_small"
+                android:text="@string/location" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
@@ -84,14 +84,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:completionThreshold="3"
-                    android:padding="12dp" />
+                    android:padding="@dimen/spacing_medium" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/selectedCitiesChipGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:labelFor="@id/citiesAutoCompleteTextView">
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -99,96 +100,112 @@
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="@dimen/spacing_small"
                 android:text="@string/areaLabel" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/minAreaTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="Minimum area"
-                app:errorEnabled="true"
-                app:suffixText="m²">
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/minAreaTextInputEditText"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/minAreaTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    tools:text="200" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginEnd="@dimen/spacing_medium"
+                    android:layout_weight="1"
+                    android:hint="@string/minimum"
+                    app:errorEnabled="true"
+                    app:suffixText="m²">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/maxAreaTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="Maximum area"
-                app:errorEnabled="true"
-                app:suffixText="m²">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/minAreaTextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        tools:text="200" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/maxAreaTextInputEditText"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/maxAreaTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    tools:text="2000" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="1"
+                    android:hint="@string/maximum"
+                    app:errorEnabled="true"
+                    app:suffixText="m²">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/maxAreaTextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        tools:text="2000" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="@dimen/spacing_small"
                 android:text="@string/price" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/minPriceTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="Minimum price"
-                app:errorEnabled="true"
-                app:suffixText="$">
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/minPriceTextInputEditText"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/minPriceTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    tools:text="20000" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:layout_weight="1"
+                    android:hint="@string/minimum"
+                    app:errorEnabled="true"
+                    app:suffixText="$">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/maxPriceTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="Maximum price"
-                app:errorEnabled="true"
-                app:suffixText="$">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/minPriceTextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        tools:text="20000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/maxPriceTextInputEditText"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/maxPriceTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    tools:text="20000000" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="1"
+                    android:hint="@string/maximum"
+                    app:errorEnabled="true"
+                    app:suffixText="$">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/maxPriceTextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        tools:text="20000000" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="@dimen/spacing_small"
                 android:text="@string/number_of_rooms_label" />
 
             <com.google.android.material.chip.ChipGroup
@@ -202,8 +219,7 @@
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="@dimen/spacing_small"
                 android:text="@string/number_of_bedrooms_label" />
 
             <com.google.android.material.chip.ChipGroup
@@ -217,9 +233,8 @@
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Minimum number of photos" />
+                android:layout_marginVertical="@dimen/spacing_small"
+                android:text="@string/minimum_number_of_photos" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/minPhotosCountChipGroup"
@@ -233,8 +248,7 @@
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="@dimen/spacing_small"
                 android:text="@string/points_of_interest" />
 
             <com.google.android.material.chip.ChipGroup
@@ -248,9 +262,8 @@
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
-                android:layout_height="26dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/spacing_small"
                 android:text="@string/estate_status" />
 
             <com.google.android.material.chip.ChipGroup
@@ -264,10 +277,9 @@
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
-                android:layout_height="26dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Entry date" />
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/spacing_small"
+                android:text="@string/entry_date" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/entryDateChipGroup"
@@ -280,10 +292,9 @@
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
-                android:layout_height="26dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Sale date" />
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/spacing_small"
+                android:text="@string/sale_date" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/saleDateChipGroup"

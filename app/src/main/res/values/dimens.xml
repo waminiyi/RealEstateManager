@@ -10,11 +10,13 @@
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="agent_item_view_min_width">72dp</dimen>
+    <dimen name="poi_item_view_min_width">72dp</dimen>
     <dimen name="agent_photo_size">60dp</dimen>
     <dimen name="estate_item_cardView_height">160dp</dimen>
     <dimen name="progress_bar_size">160dp</dimen>
     <dimen name="edit_estate_photos_recycler_view_min_height">200dp</dimen>
     <dimen name="estate_details_photos_layout_height">260dp</dimen>
+    <dimen name="poi_size">40dp</dimen>
 
 
 </resources>

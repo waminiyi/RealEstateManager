@@ -155,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:hint="@string/number_of_rooms"
+                android:hint="@string/number_of_rooms_label"
                 app:errorEnabled="true"
                 app:suffixText="room(s)">
 
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:hint="@string/number_of_bedrooms"
+                android:hint="@string/number_of_bedrooms_label"
                 app:errorEnabled="true"
                 app:suffixText="room(s)">
 
@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:hint="@string/number_of_bathrooms"
+                android:hint="@string/number_of_bathrooms_label"
                 app:errorEnabled="true"
                 app:suffixText="room(s)">
 
