@@ -67,4 +67,5 @@
     <string name="list_view_label">List (%d)</string>
     <string name="map_view_label">Map (%d)</string>
     <string name="estate_saved_message">The estate has been saved</string>
+    <string name="filter_label">Filter</string>
 </resources>

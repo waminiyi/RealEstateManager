@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/cinnabar"
-            android:elevation="4dp"
+            android:elevation="@dimen/elevation"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -33,10 +34,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/spacing_small"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/currency"
-                android:padding="8dp"
+                android:padding="@dimen/spacing_small"
                 android:src="@drawable/ic_currency"
                 app:tint="@color/white" />
         </androidx.appcompat.widget.Toolbar>
@@ -45,7 +46,7 @@
             android:id="@+id/listViewControlsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/spacing_small"
             android:background="@android:color/transparent">
 
             <LinearLayout
@@ -54,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/spacing_small"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -62,22 +63,22 @@
                     android:id="@+id/listViewLabelTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="List (1215)"
+                    android:padding="@dimen/spacing_small"
+                    tools:text="List (1215)"
                     android:textColor="@color/black" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="4dp"
+                    android:layout_margin="@dimen/spacing_extra_small"
                     android:background="#969494" />
 
                 <TextView
                     android:id="@+id/mapViewLabelTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="Map (1215)"
+                    android:padding="@dimen/spacing_small"
+                    tools:text="Map (1215)"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -98,17 +99,17 @@
                     android:layout_gravity="end"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/currency"
-                    android:padding="8dp"
+                    android:padding="@dimen/spacing_small"
                     android:src="@drawable/ic_filter"
                     app:tint="@color/black" />
 
                 <TextView
+                    android:id="@+id/filterLabelTextView"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
-                    android:id="@+id/filterLabelTextView"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="Filter"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@string/filter_label"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -116,8 +117,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_activity_home"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
@@ -133,7 +133,7 @@
         android:id="@+id/newEstateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/spacing_medium"
         android:contentDescription="@string/add_estate"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/cinnabar"
