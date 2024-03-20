@@ -12,4 +12,5 @@
     <color name="green">#009688</color>
     <color name="red">#FF0040</color>
     <color name="error_color">#ffb00020</color>
+    <color name="semi_transparent_dark_shade">#94000000</color>
 </resources>

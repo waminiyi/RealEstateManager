@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="4dp"
+    android:elevation="@dimen/spacing_extra_small"
     android:src="@drawable/estate"
     app:cardCornerRadius="0dp">
 
@@ -13,8 +13,8 @@
         android:id="@+id/detailsPhotoItemImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
         android:contentDescription="@string/estate_photo"
+        android:scaleType="centerCrop"
         android:src="@drawable/estate" />
 
     <TextView
@@ -22,9 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#94000000"
+        android:background="@color/semi_transparent_dark_shade"
         android:gravity="center"
-        android:padding="4dp"
+        android:padding="@dimen/spacing_extra_small"
         android:textColor="@color/white"
         tools:text="Kitchen" />
 </com.google.android.material.card.MaterialCardView>
