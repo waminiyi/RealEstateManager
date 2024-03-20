@@ -90,7 +90,7 @@ object TestDataGenerator {
         val postalCode = (10000..99999).random()
         val location = Location(Math.random() * 180 - 90, Math.random() * 360 - 180)
 
-        return AddressEntity(streetNumber, streetName, city, state, postalCode, location)
+        return AddressEntity(streetNumber, streetName, city, state, "USA", postalCode, location)
     }
 
     private fun getRandomPhoneNumber(): String {

@@ -3,6 +3,7 @@ package com.waminiyi.realestatemanager.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.waminiyi.realestatemanager.core.Constants.PHOTOS_TABLE_NAME
 import com.waminiyi.realestatemanager.core.model.data.Photo
 import java.util.UUID
 
@@ -15,7 +16,7 @@ import java.util.UUID
  * @property isMainPhoto Indicate whether it's the main image or not
  * @property localPath image local path
  */
-@Entity(tableName = "photos")
+@Entity(tableName = PHOTOS_TABLE_NAME)
 data class PhotoEntity(
     @PrimaryKey
     @ColumnInfo(name = "photo_uuid")
