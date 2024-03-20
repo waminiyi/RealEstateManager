@@ -9,7 +9,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import com.waminiyi.realestatemanager.core.sync.status.SyncSubscriber
-import com.waminiyi.realestatemanager.analytics.AnalyticsHelper
 import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
 import com.waminiyi.realestatemanager.core.data.remote.model.RemoteChange
@@ -43,7 +42,6 @@ class SyncWorker @AssistedInject constructor(
     private val agentRepository: AgentRepository,
     private val photoRepository: PhotoRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
-    private val analyticsHelper: AnalyticsHelper,
     private val syncSubscriber: SyncSubscriber,
     private val remoteDataRepository: RemoteDataRepository
 ) : CoroutineWorker(appContext, workerParams), Synchronizer {
@@ -53,7 +51,6 @@ class SyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
 
-        analyticsHelper.logSyncStarted()
         syncSubscriber.subscribe()
         Log.d("SYNC", "suscribed")
 
@@ -75,7 +72,6 @@ class SyncWorker @AssistedInject constructor(
 
         val syncedSuccessfully = syncedSuccessfullyToRemote && syncedSuccessfullyFromRemote
 
-        analyticsHelper.logSyncFinished(syncedSuccessfully)
 
         if (syncedSuccessfully) {
             Result.success()
