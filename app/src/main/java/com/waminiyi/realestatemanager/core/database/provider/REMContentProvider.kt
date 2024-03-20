@@ -127,13 +127,15 @@ class REMContentProvider : ContentProvider() {
                 }
 
                 else -> {
-                    throw IllegalArgumentException("Unknown URI: $uri")
+                    require(false) { "Unknown URI: $uri" }
+                    null
                 }
             }
             cursor?.setNotificationUri(context.contentResolver, uri)
             cursor
         } else {
-            throw IllegalArgumentException("Unknown URI: $uri")
+            require(false) { "Unknown URI: $uri" }
+            null
         }
     }
 
