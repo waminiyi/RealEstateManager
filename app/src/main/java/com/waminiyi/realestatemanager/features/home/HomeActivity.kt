@@ -102,12 +102,10 @@ class HomeActivity : AppCompatActivity(), EventListener {
             }
         }
         binding.filterButton.setOnClickListener {
-//            mainNavController.navigate(R.id.estateFilterFragment)
             navigateToFilterFragment()
         }
         binding.newEstateButton.setOnClickListener {
             navigateToEditFragment(null)
-//            mainNavController.navigate(R.id.navigation_add)
         }
         binding.listViewLabelTextView.setOnClickListener {
             viewModel.updateCurrentViewType(ListingViewType.LIST)
@@ -315,22 +313,11 @@ class HomeActivity : AppCompatActivity(), EventListener {
 
     private fun updateMainView(isSplit: Boolean = false) {
         if (isSplit) {
-            binding.fragmentContainerRight?.visibility = View.VISIBLE
+            binding.tabLandscapeModeRightContainer?.visibility = View.VISIBLE
             splitListener?.onScreenSplittingChanged(true)
         } else {
-            binding.fragmentContainerRight?.visibility = View.GONE
+            binding.tabLandscapeModeRightContainer?.visibility = View.GONE
             splitListener?.onScreenSplittingChanged(false)
         }
     }
-
-//    private fun goToFragment(fragment: Fragment, byReplacing: Boolean = true) {
-//        val fragmentManager = supportFragmentManager
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//        if (byReplacing) {
-//            fragmentTransaction.replace(R.id.fragment_container_right, fragment)
-//        } else {
-//            fragmentTransaction.add(R.id.fragment_container_right, fragment)
-//        }
-//        fragmentTransaction.commit()
-//    }
 }

@@ -101,7 +101,7 @@ class EstateDetailsFragment : Fragment() {
             eventListener?.onEvent(Event.OpenEditFragment(estateId))
 //            openEditEstateFragment(estateId)
         }
-        binding.backButton.setOnClickListener {
+        binding.closeButton.setOnClickListener {
 //            eventListener?.onEvent(Event.CloseButtonClicked)
             findNavController().navigateUp()
         }

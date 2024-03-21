@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,21 @@
     android:orientation="vertical"
     tools:context=".features.estatesFilter.EstateFilterFragment">
 
+    <ImageButton
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/spacing_small"
+        android:background="@drawable/circular_background"
+        android:contentDescription="@string/back"
+        android:elevation="@dimen/elevation"
+        android:padding="@dimen/spacing_small"
+        android:src="@drawable/ic_close"
+        app:tint="@color/red" />
     <LinearLayout
+        android:id="@+id/actionsButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_medium"
@@ -43,7 +57,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_below="@id/actionsButtonLayout"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -306,4 +321,4 @@
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

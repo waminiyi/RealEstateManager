@@ -126,11 +126,8 @@ class EditEstateFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             viewModel.saveEstate()
         }
-        binding.backButton.setOnClickListener {
-//            eventListener?.onEvent(Event.CloseButtonClicked)
-
+        binding.closeButton.setOnClickListener {
             findNavController().navigateUp()
-            //TODO: show dialog on click and handle phone back press too
         }
     }
 

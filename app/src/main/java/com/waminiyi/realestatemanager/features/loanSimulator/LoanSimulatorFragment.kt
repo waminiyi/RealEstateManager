@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.waminiyi.realestatemanager.R
@@ -29,11 +28,9 @@ class LoanSimulatorFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_loan_simulator, container, false)
         eventListener = (requireActivity() as EventListener)
 
-        view.findViewById<ImageButton>(R.id.backButton).setOnClickListener {
-            Toast.makeText(requireContext(), "Try to close", Toast.LENGTH_LONG).show()
+        view.findViewById<ImageButton>(R.id.closeButton).setOnClickListener {
             eventListener?.onEvent(Event.HideRightFragment)
         }
-
 
         return view
     }
