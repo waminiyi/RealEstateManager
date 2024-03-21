@@ -16,5 +16,4 @@
     <dimen name="edit_estate_photos_recycler_view_min_height">320dp</dimen>
     <dimen name="estate_details_photos_layout_height">400dp</dimen>
     <dimen name="poi_size">48dp</dimen>
-
 </resources>

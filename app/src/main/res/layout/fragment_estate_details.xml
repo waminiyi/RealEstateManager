@@ -122,7 +122,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:textStyle="bold"
-                    tools:text="$ 250 000" />
+                    tools:text="$ 250 000"
+                    tools:ignore="RelativeOverlap" />
             </RelativeLayout>
 
 
@@ -321,17 +322,16 @@
                 tools:text="20 Crispy road, Atlanta" />
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/spacing_medium"
                 android:elevation="@dimen/spacing_extra_small"
-                android:src="@drawable/estate"
                 app:cardCornerRadius="4dp">
 
                 <ImageView
                     android:id="@+id/mapImageView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/map" />
