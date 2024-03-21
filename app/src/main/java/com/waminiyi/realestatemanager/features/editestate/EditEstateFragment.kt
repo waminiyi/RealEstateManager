@@ -43,6 +43,8 @@ import com.waminiyi.realestatemanager.features.editestate.agent.AgentAdapter
 import com.waminiyi.realestatemanager.features.editestate.estatetype.EstateTypeAdapter
 import com.waminiyi.realestatemanager.features.editestate.photo.PhotoAdapter
 import com.waminiyi.realestatemanager.features.editestate.poi.PoiAdapter
+import com.waminiyi.realestatemanager.features.events.Event
+import com.waminiyi.realestatemanager.features.events.EventListener
 import com.waminiyi.realestatemanager.features.extensions.afterTextChanged
 import com.waminiyi.realestatemanager.features.extensions.updateValue
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,6 +74,8 @@ class EditEstateFragment : Fragment() {
     private var temporaryCapturedImageUri: Uri? = null
     private val multiplePhotosLauncher = registerForPhotosPickingResult()
     private val cameraLauncher = registerForCameraResult()
+    private var eventListener: EventListener? = null
+
 
     //endregion
 
@@ -91,6 +95,7 @@ class EditEstateFragment : Fragment() {
         _binding = FragmentEditestateBinding.inflate(inflater, container, false)
         val root: View = binding.root
         estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
+        eventListener = (requireActivity() as EventListener)
 
         val fragmentScope = CoroutineScope(Dispatchers.Main)
 
@@ -122,6 +127,8 @@ class EditEstateFragment : Fragment() {
             viewModel.saveEstate()
         }
         binding.backButton.setOnClickListener {
+//            eventListener?.onEvent(Event.CloseButtonClicked)
+
             findNavController().navigateUp()
             //TODO: show dialog on click and handle phone back press too
         }
@@ -507,6 +514,8 @@ class EditEstateFragment : Fragment() {
             .setPositiveButton("OK") { dialog, _ ->
                 viewModel.resetSavingStatus()
                 dialog.dismiss()
+//                eventListener?.onEvent(Event.CloseButtonClicked)
+
                 findNavController().navigateUp()
             }
             .show()
