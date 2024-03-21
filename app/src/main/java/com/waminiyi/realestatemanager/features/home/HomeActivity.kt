@@ -48,7 +48,6 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Log.d("viewmodel", viewModel.toString())
 
         toolbar = binding.toolbar
         setSupportActionBar(toolbar)

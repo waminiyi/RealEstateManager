@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.databinding.FragmentEstateListBinding
@@ -39,7 +39,7 @@ class EstateListFragment : Fragment() {
             navigateToDetailsFragment(it)
         })
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.column_count))
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->

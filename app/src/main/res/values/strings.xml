@@ -78,4 +78,5 @@
     <string name="minimum">Minimum</string>
     <string name="maximum">Maximum</string>
     <string name="minimum_number_of_photos">Minimum number of photos</string>
+    <string name="estate_type_icon">Estate type icon</string>
 </resources>

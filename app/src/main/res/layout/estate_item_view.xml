@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:strokeColor="@color/light_grayish_blue"
+    app:strokeWidth="1dp"
     android:layout_margin="@dimen/spacing_medium"
     app:cardCornerRadius="@dimen/spacing_extra_small">
 

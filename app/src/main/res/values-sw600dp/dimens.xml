@@ -1,0 +1,21 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="corner_radius_8dp">8dp</dimen>
+    <dimen name="elevation">4dp</dimen>
+    <dimen name="spacing_extra_small">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="agent_item_view_min_width">96dp</dimen>
+    <dimen name="poi_item_view_min_width">80dp</dimen>
+    <dimen name="agent_photo_size">80dp</dimen>
+    <dimen name="estate_item_cardView_height">160dp</dimen>
+    <dimen name="progress_bar_size">160dp</dimen>
+    <dimen name="edit_estate_photos_recycler_view_min_height">320dp</dimen>
+    <dimen name="estate_details_photos_layout_height">400dp</dimen>
+    <dimen name="poi_size">48dp</dimen>
+
+</resources>
