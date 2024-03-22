@@ -2,10 +2,19 @@ package com.waminiyi.realestatemanager
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.waminiyi.realestatemanager.core.messenger.FirebaseService
@@ -20,13 +29,18 @@ import kotlinx.coroutines.launch
 
 
 const val TOPIC = "NEWS"
+private const val PERMISSION_REQUEST_CODE = 123
 
 @AndroidEntryPoint
 class OrganizerActivity : AppCompatActivity() {
-    val TAG = "MainActivity"
+    val TAG = "OrganizerActivity"
     private lateinit var binding: ActivityOrganizerBinding
     private lateinit var token: String
     private lateinit var firebaseMessengerAPI: FirebaseMessengerAPI
+
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    var permissionGranted = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOrganizerBinding.inflate(layoutInflater)
@@ -54,8 +68,27 @@ class OrganizerActivity : AppCompatActivity() {
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
         Log.d("<TOPIC>", "suscribed")
 
+        requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                permissionGranted = true
+            } else {
+                // Permission denied
+                showNotificationDeniedDialog()
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !isNotificationPermissionGranted()) {
+            requestPermission()
+        }else{
+            permissionGranted = true
+
+        }
+
+
         binding.btnSend.setOnClickListener {
-            navigateToHome()
+            if (permissionGranted) navigateToHome()
             /*val remoteChanges = mutableListOf<RemoteChange>()
             for (i in 1..20) {
                 remoteChanges.add(
@@ -92,6 +125,21 @@ class OrganizerActivity : AppCompatActivity() {
             }
         }*/
         }
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    fun requestPermission() {
+        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    fun isNotificationPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun sendNotification(notification: Any) = CoroutineScope(Dispatchers.IO).launch {
@@ -131,5 +179,16 @@ class OrganizerActivity : AppCompatActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish() // Finish the current activity to prevent going back to it
+    }
+
+    private fun showNotificationDeniedDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Notification permission")
+            .setMessage("You need to enable notification to use this app. Go to app settings if needed")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .show()
     }
 }

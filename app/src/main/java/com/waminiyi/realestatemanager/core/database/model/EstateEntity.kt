@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.waminiyi.realestatemanager.core.Constants.ESTATES_TABLE_NAME
 import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
@@ -30,7 +31,7 @@ import java.util.UUID
  * @property agentId The unique identifier (UUID) of the agent associated with the estate.
  */
 @Entity(
-    tableName = "estates",
+    tableName = ESTATES_TABLE_NAME,
     foreignKeys = [
         ForeignKey(
             entity = AgentEntity::class,

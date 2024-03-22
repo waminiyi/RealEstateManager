@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.core.database.dao
 
+import android.database.Cursor
 import androidx.annotation.VisibleForTesting
 import androidx.room.*
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
@@ -29,4 +30,10 @@ interface PhotoDao {
     @Transaction
     @Query("SELECT * FROM photos WHERE photo_uuid IN (:photoUuids)")
     fun getPhotosByIds(photoUuids: List<UUID>): List<PhotoEntity>
+
+    @Query("SELECT * FROM photos")
+    fun getAllPhotosWithCursor(): Cursor?
+
+    @Query("SELECT * FROM photos WHERE photo_uuid = :photoUuid")
+    fun getPhotoWithCursorById(photoUuid: UUID): Cursor?
 }

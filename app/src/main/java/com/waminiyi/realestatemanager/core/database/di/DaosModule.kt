@@ -40,7 +40,7 @@ object DaosModule {
     @Singleton
     @Provides
     fun provideImageDao(database: RemDatabase): PhotoDao {
-        return database.imageDao()
+        return database.photoDao()
     }
 
     @Singleton

@@ -3,6 +3,7 @@ package com.waminiyi.realestatemanager.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.waminiyi.realestatemanager.core.Constants.AGENTS_TABLE_NAME
 import com.waminiyi.realestatemanager.core.model.data.Agent
 import com.waminiyi.realestatemanager.core.model.data.UploadStatus
 import java.util.*
@@ -16,7 +17,7 @@ import java.util.*
  * @property email The email address of the agent.
  * @property phoneNumber The phone number of the agent.
  */
-@Entity(tableName = "agents")
+@Entity(tableName = AGENTS_TABLE_NAME)
 data class AgentEntity(
     @PrimaryKey
     @ColumnInfo(name = "agent_uuid")

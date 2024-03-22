@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.core.database.dao
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -23,4 +24,10 @@ interface AgentDao {
     @Transaction
     @Query("SELECT * FROM agents WHERE agent_uuid IN (:agentUuids)")
     fun getAgentsByIds(agentUuids: List<UUID>): List<AgentEntity>
+
+    @Query("SELECT * FROM agents")
+    fun getAllAgentsWithCursor(): Cursor?
+
+    @Query("SELECT * FROM agents WHERE agent_uuid = :agentUuid")
+    fun getAgentWithCursorById(agentUuid: UUID): Cursor?
 }

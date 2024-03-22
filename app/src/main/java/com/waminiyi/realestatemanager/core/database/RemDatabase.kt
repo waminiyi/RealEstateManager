@@ -20,6 +20,6 @@ abstract class RemDatabase : RoomDatabase() {
 
     abstract fun estateDao(): EstateDao
     abstract fun agentDao(): AgentDao
-    abstract fun imageDao(): PhotoDao
+    abstract fun photoDao(): PhotoDao
     abstract fun localChangeDao(): LocalChangeDao
 }

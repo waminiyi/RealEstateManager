@@ -1,19 +1,15 @@
 package com.waminiyi.realestatemanager.core.database.dao
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Upsert
-import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.database.model.EstateWithDetailsEntity
-import com.waminiyi.realestatemanager.core.database.model.FilterQueryParameter
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.Filter
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 import java.util.UUID
@@ -75,4 +71,11 @@ interface EstateDao {
     @Transaction
     @Query("SELECT * FROM estates WHERE estate_uuid IN (:estateUuids)")
     fun getEstatesByIds(estateUuids: List<UUID>): List<EstateEntity>
+
+    @Query("SELECT * FROM estates ")
+    fun getAllEstatesWithCursor(): Cursor?
+
+    @Transaction
+    @Query("SELECT * FROM estates WHERE estate_uuid = :estateUuid")
+    fun getEstateWithDetailsCursorById(estateUuid: UUID): Cursor?
 }
