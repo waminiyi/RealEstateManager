@@ -14,8 +14,9 @@ object Constants {
     const val AGENTS_TABLE_NAME = "agents"
     const val PHOTOS_TABLE_NAME = "photos"
     const val REM_DATABASE_NAME = "rem-database"
-    const val PHONE_LAYOUT_MODE = 1
     const val TAB_LAYOUT_MODE = 2
     const val TAB_LANDSCAPE_LAYOUT_MODE = 3
+    const val MONTH_IN_YEAR = 12
+    const val HUNDRED=100
 
 }
