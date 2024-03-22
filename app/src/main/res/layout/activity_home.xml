@@ -64,8 +64,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
-                    tools:text="List (1215)"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    tools:text="List (1215)" />
 
                 <View
                     android:layout_width="1dp"
@@ -78,8 +78,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
-                    tools:text="Map (1215)"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    tools:text="Map (1215)" />
             </LinearLayout>
 
             <LinearLayout

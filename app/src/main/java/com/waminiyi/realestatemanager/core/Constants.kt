@@ -3,7 +3,6 @@ package com.waminiyi.realestatemanager.core
 object Constants {
     const val IMAGE = "image/*"
     const val ARG_ESTATE_ID = "estate_id"
-    const val ARG_AGENT_ID = "agent_id"
     const val STATIC_MAP_BASE_URL = "https://maps.googleapis.com/maps/api/staticmap"
     const val STATIC_MAP_ZOOM = "zoom=18"
     const val STATIC_MAP_SCALE = "scale=2"
@@ -17,6 +16,6 @@ object Constants {
     const val TAB_LAYOUT_MODE = 2
     const val TAB_LANDSCAPE_LAYOUT_MODE = 3
     const val MONTH_IN_YEAR = 12
-    const val HUNDRED=100
-
+    const val HUNDRED = 100
+    const val ARG_AMOUNT = "amount"
 }

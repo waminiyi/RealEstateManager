@@ -247,7 +247,6 @@ class HomeActivity : AppCompatActivity(), EventListener {
 
         if (isSplittable) {
             val previousDestinationId = rightNavController?.currentDestination?.id ?: -1
-            updateMainView(true)
 
             if (previousDestinationId == R.id.right_navigation_estate_details) {
                 rightNavController?.navigate(
@@ -258,6 +257,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
             } else {
                 rightNavController?.navigate(R.id.right_navigation_estate_details, bundle)
             }
+            updateMainView(true)
 
         } else {
             mainNavController.navigate(R.id.navigation_estatedetails, bundle)
@@ -267,7 +267,6 @@ class HomeActivity : AppCompatActivity(), EventListener {
     private fun navigateToFilterFragment() {
         if (isSplittable) {
             val previousDestinationId = rightNavController?.currentDestination?.id ?: -1
-            updateMainView(true)
 
             if (previousDestinationId == R.id.right_estate_filter_fragment) {
                 rightNavController?.navigate(
@@ -278,6 +277,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
             } else {
                 rightNavController?.navigate(R.id.right_estate_filter_fragment)
             }
+            updateMainView(true)
 
         } else {
             mainNavController.navigate(R.id.estateFilterFragment)
@@ -290,7 +290,6 @@ class HomeActivity : AppCompatActivity(), EventListener {
 
         if (isSplittable) {
             val previousDestinationId = rightNavController?.currentDestination?.id ?: -1
-            updateMainView(true)
 
             if (previousDestinationId == R.id.right_navigation_add) {
                 rightNavController?.navigate(
@@ -301,7 +300,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
             } else {
                 rightNavController?.navigate(R.id.right_navigation_add, bundle)
             }
-
+            updateMainView(true)
         } else {
             mainNavController.navigate(R.id.navigation_add, bundle)
         }
