@@ -7,7 +7,6 @@ data class LoanSimulatorUiState(
         initialPayment = 20000F,
         monthlyIncome = 3000F,
         otherOngoingLoanMonthlyPayment = 0F,
-        isForNewEstate = true,
         warrantyCostsRate = 0.10F,
         notaryFeesRate = 3.5F,
         loanInterestRate = 4.0F

@@ -47,10 +47,6 @@ class LoanSimulatorViewModel @Inject constructor(
         }
     }
 
-    fun updateIsForNewEstate(isForNewEstate: Boolean) {
-        _uiState.update { it.copy(loan = it.loan.copy(isForNewEstate = isForNewEstate)) }
-    }
-
     fun updateEstimatedWarrantyCostsRate(estimatedWarrantyCostsRate: Float) {
         _uiState.update { it.copy(loan = it.loan.copy(warrantyCostsRate = estimatedWarrantyCostsRate)) }
     }

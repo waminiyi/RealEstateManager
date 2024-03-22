@@ -20,4 +20,27 @@
         <item name="android:paddingRight">16dp</item>
     </style>
 
+    <style name="NoBackgroundEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:background">#00FFFFFF</item>
+    </style>
+
+    <style name="LoanTextInputEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:gravity">end</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:padding">@dimen/spacing_small</item>
+        <item name="android:textColor">@color/cinnabar</item>
+    </style>
+
+    <style name="LoanTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="boxBackgroundColor">@color/white</item>
+    </style>
+
 </resources>

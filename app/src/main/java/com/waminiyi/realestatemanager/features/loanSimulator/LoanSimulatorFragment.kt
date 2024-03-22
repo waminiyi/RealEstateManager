@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.waminiyi.realestatemanager.R
+import com.waminiyi.realestatemanager.core.util.util.roundToTwoDigits
 import com.waminiyi.realestatemanager.databinding.FragmentLoanSimulatorBinding
 import com.waminiyi.realestatemanager.features.events.Event
 import com.waminiyi.realestatemanager.features.events.EventListener
@@ -93,12 +94,30 @@ class LoanSimulatorFragment : Fragment() {
     }
 
     private fun updateUi(uiState: LoanSimulatorUiState) {
-        binding.debtRateTextView.text = uiState.loan.debtRate.toString()
-        binding.monthlyPaymentTextView.text = uiState.loan.monthlyLoanPayment.toString()
-        binding.monthlyWarrantyTextView.text = uiState.loan.monthlyWarrantyCosts.toString()
-        binding.notaryFeesTextView.text = uiState.loan.totalNotaryFees.toString()
-        binding.warrantyCostsTextView.text = uiState.loan.totalWarrantyCosts.toString()
-        binding.totalLoanInterestTextView.text = uiState.loan.totalLoanInterest.toString()
+        binding.debtRateTextView.text = getString(
+            R.string.rate,
+            uiState.loan.debtRate.roundToTwoDigits().toString()
+        )
+        binding.monthlyPaymentTextView.text = getString(
+            R.string.amount,
+            uiState.loan.monthlyLoanPayment.roundToTwoDigits().toString()
+        )
+        binding.monthlyWarrantyTextView.text = getString(
+            R.string.amount,
+            uiState.loan.monthlyWarrantyCosts.roundToTwoDigits().toString()
+        )
+        binding.notaryFeesTextView.text = getString(
+            R.string.amount,
+            uiState.loan.totalNotaryFees.roundToTwoDigits().toString()
+        )
+        binding.warrantyCostsTextView.text = getString(
+            R.string.amount,
+            uiState.loan.totalWarrantyCosts.roundToTwoDigits().toString()
+        )
+        binding.totalLoanInterestTextView.text = getString(
+            R.string.amount,
+            uiState.loan.totalLoanInterest.roundToTwoDigits().toString()
+        )
     }
 
     private fun setInitialValues(uiState: LoanSimulatorUiState) {

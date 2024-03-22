@@ -90,4 +90,15 @@
     <string name="warranty_costs_rate">Warranty costs rate</string>
     <string name="net_monthly_income">Net monthly income</string>
     <string name="other_loan_payment">Other loan payment</string>
+    <string name="initial_payment">Initial payment</string>
+    <string name="rate">%s \u0020%%</string>
+    <string name="amount">%s \u0020$</string>
+    <string name="loan_summary">Loan summary</string>
+    <string name="debt_rate">Debt rate</string>
+    <string name="monthly_loan_payment">Monthly loan payment</string>
+    <string name="total_notary_fees">Total notary fees</string>
+    <string name="monthly_warranty_payment">Monthly warranty payment</string>
+    <string name="total_warranty_costs">Total warranty costs</string>
+    <string name="total_interest">Total interest</string>
+
 </resources>

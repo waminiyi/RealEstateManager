@@ -10,7 +10,6 @@ data class Loan(
     val initialPayment: Float,
     val monthlyIncome: Float,
     val otherOngoingLoanMonthlyPayment: Float,
-    val isForNewEstate: Boolean = true,
     val warrantyCostsRate: Float = 0.10F,
     val notaryFeesRate: Float = 3.5F,
     val loanInterestRate: Float = 4.0F,
@@ -19,8 +18,8 @@ data class Loan(
     val totalNotaryFees: Float = (amount * notaryFeesRate / HUNDRED.toFloat())
     private val totalLoanAmount: Float = amount - initialPayment + totalNotaryFees
 
-    val monthlyLoanPayment: Float = (totalLoanAmount * loanInterestRate * 0.01F / MONTH_IN_YEAR.toFloat()) /
-            (1.toFloat() - (1.toFloat() + loanInterestRate * 0.01F / MONTH_IN_YEAR.toFloat()).pow(-MONTH_IN_YEAR * tenureInYears))
+    val monthlyLoanPayment: Float = (totalLoanAmount * loanInterestRate / (MONTH_IN_YEAR * HUNDRED)) /
+            (1 - (1 + loanInterestRate / (MONTH_IN_YEAR * HUNDRED)).pow(-MONTH_IN_YEAR * tenureInYears))
 
     val totalWarrantyCosts: Float = (totalLoanAmount * warrantyCostsRate * 0.01F * tenureInYears)
 

@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="@string/loan_simulator_label" />
+        android:text="@string/loan_simulator_label"
+        tools:ignore="RelativeOverlap" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -67,25 +68,16 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/priceTextInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    app:suffixText="$"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" $"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/priceTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
+                        style="@style/LoanTextInputEditText"
                         tools:text="200 000" />
                 </com.google.android.material.textfield.TextInputLayout>
+
 
             </RelativeLayout>
 
@@ -117,23 +109,13 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tenureInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    style="@style/LoanTextInputLayout"
                     app:suffixText=" years"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tenureTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
+                        style="@style/LoanTextInputEditText"
                         tools:text="20" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,27 +136,18 @@
                     android:drawableEnd="@drawable/ic_info"
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/light_grayish_blue"
-                    android:text="Initial payment " />
+                    android:text="@string/initial_payment" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/initialPaymentInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    style="@style/LoanTextInputLayout"
                     app:suffixText=" $"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/initialPaymentTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
+                        style="@style/LoanTextInputEditText"
+
                         tools:text="20000" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -200,23 +173,13 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/interestRateInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    style="@style/LoanTextInputLayout"
                     app:suffixText=" %"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/interestRateTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
+                        style="@style/LoanTextInputEditText"
                         tools:text="4.0" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -240,25 +203,15 @@
                     android:text="@string/notary_fees_rate" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/notaryFeesRatenputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    android:id="@+id/notaryFeesRateInputLayout"
+                    style="@style/LoanTextInputLayout"
                     app:suffixText=" %"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/notaryFeesRateTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
-                        tools:text="4.0" />
+                        style="@style/LoanTextInputEditText"
+                        tools:text="3.5" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </RelativeLayout>
@@ -282,23 +235,13 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/warrantyCostsRateInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    style="@style/LoanTextInputLayout"
                     app:suffixText=" %"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/warrantyCostsRateTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
+                        style="@style/LoanTextInputEditText"
                         tools:text="0.10" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -332,23 +275,13 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/monthlyIncomeInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    style="@style/LoanTextInputLayout"
                     app:suffixText=" $"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/monthlyIncomeTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
+                        style="@style/LoanTextInputEditText"
                         tools:text="3000" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -373,23 +306,13 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/otherLoanPaymentInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    style="@style/LoanTextInputLayout"
                     app:suffixText=" $"
                     tools:ignore="RelativeOverlap">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/otherLoanPaymentTextInputEditText"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:inputType="numberDecimal"
-                        android:padding="0dp"
-                        android:textColor="@color/cinnabar"
+                        style="@style/LoanTextInputEditText"
                         tools:text="0" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -401,8 +324,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:drawablePadding="@dimen/spacing_small"
-                android:text="Loan summary"
+                android:text="@string/loan_summary"
                 app:drawableStartCompat="@drawable/ic_loan" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -417,7 +341,7 @@
                     android:drawableEnd="@drawable/ic_info"
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/light_grayish_blue"
-                    android:text="Debt rate" />
+                    android:text="@string/debt_rate" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/debtRateTextView"
@@ -426,6 +350,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
                     tools:text="35 %" />
 
             </RelativeLayout>
@@ -445,7 +371,7 @@
                     android:drawableEnd="@drawable/ic_info"
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/light_grayish_blue"
-                    android:text="Monthly loan payment" />
+                    android:text="@string/monthly_loan_payment" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/monthlyPaymentTextView"
@@ -454,6 +380,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
                     tools:text="1000 $" />
 
             </RelativeLayout>
@@ -473,7 +401,7 @@
                     android:drawableEnd="@drawable/ic_info"
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/light_grayish_blue"
-                    android:text="Monthly warranty payment" />
+                    android:text="@string/monthly_warranty_payment" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/monthlyWarrantyTextView"
@@ -482,7 +410,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:text="30 $" />
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="30 $" />
 
             </RelativeLayout>
 
@@ -501,7 +431,7 @@
                     android:drawableEnd="@drawable/ic_info"
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/light_grayish_blue"
-                    android:text="Total notary fees" />
+                    android:text="@string/total_notary_fees" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/notaryFeesTextView"
@@ -510,6 +440,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
                     tools:text="6000 $" />
 
             </RelativeLayout>
@@ -529,7 +461,7 @@
                     android:drawableEnd="@drawable/ic_info"
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/light_grayish_blue"
-                    android:text="Total warranty costs" />
+                    android:text="@string/total_warranty_costs" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/warrantyCostsTextView"
@@ -538,6 +470,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
                     tools:text="6000 $" />
 
             </RelativeLayout>
@@ -557,7 +491,7 @@
                     android:drawableEnd="@drawable/ic_info"
                     android:drawablePadding="4dp"
                     android:drawableTint="@color/light_grayish_blue"
-                    android:text="Total interest" />
+                    android:text="@string/total_interest" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/totalLoanInterestTextView"
@@ -566,7 +500,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:text="20000 $" />
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="20000 $" />
 
             </RelativeLayout>
 
