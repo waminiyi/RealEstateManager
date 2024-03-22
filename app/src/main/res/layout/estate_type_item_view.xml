@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:layout_marginEnd="4dp"
-    android:layout_marginStart="4dp"
-    android:minWidth="68dp"
-    android:orientation="vertical">
+    android:layout_marginHorizontal="@dimen/spacing_extra_small"
+    android:minWidth="@dimen/poi_item_view_min_width"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/itemEstateTypeImageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/poi_size"
+        android:layout_height="@dimen/poi_size"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/circular_border_with_transparent_background"
-        android:padding="8dp"
-        android:src="@drawable/ic_other_houses" />
+        android:padding="@dimen/spacing_small"
+        android:src="@drawable/ic_other_houses"
+        android:contentDescription="@string/estate_type_icon" />
 
     <TextView
         android:id="@+id/itemEstateTypeNameTextView"

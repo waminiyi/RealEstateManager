@@ -5,8 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    app:cardCornerRadius="8dp">
+    app:strokeColor="@color/light_grayish_blue"
+    app:strokeWidth="1dp"
+    android:layout_margin="@dimen/spacing_medium"
+    app:cardCornerRadius="@dimen/spacing_extra_small">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,10 +17,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="160dp"
+            android:layout_height="@dimen/estate_item_cardView_height"
             android:layout_weight="1"
             android:orientation="vertical"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="@dimen/elevation">
 
             <ImageView
                 android:id="@+id/estateItemImageView"
@@ -33,10 +35,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/spacing_small"
                 android:background="@drawable/round_rectangle_background"
                 android:fontFamily="@font/poppins_light"
-                android:padding="4dp"
+                android:padding="@dimen/spacing_extra_small"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:text="Available" />
@@ -45,7 +47,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="@dimen/spacing_medium"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -54,8 +56,8 @@
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="@dimen/spacing_extra_small"
+                android:layout_marginBottom="@dimen/spacing_medium"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:text="$400,000" />
@@ -65,7 +67,7 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="@dimen/spacing_extra_small"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:text="House" />
@@ -73,7 +75,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/spacing_small"
                 android:orientation="horizontal">
 
                 <TextView
@@ -86,12 +88,13 @@
                     tools:text="150 m²" />
 
                 <ImageView
+                    android:id="@+id/dot"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:id="@+id/dot"
+                    android:layout_marginStart="@dimen/spacing_extra_small"
+                    android:layout_marginEnd="@dimen/spacing_extra_small"
+                    android:contentDescription="@string/dot"
                     android:src="@drawable/dot"
                     android:textStyle="bold" />
 
@@ -110,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 app:drawableTint="@color/black"
-                tools:text="Manhattan (36000)" />
+                tools:text="Manhattan" />
 
         </LinearLayout>
     </LinearLayout>

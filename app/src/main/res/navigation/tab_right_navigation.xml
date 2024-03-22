@@ -2,21 +2,21 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_estateList">
+    android:id="@+id/tab_right_navigation"
+    app:startDestination="@+id/right_navigation_loan_simulator">
 
     <fragment
-        android:id="@+id/navigation_estateList"
-        android:name="com.waminiyi.realestatemanager.features.estatesListView.EstateListFragment"
-        tools:layout="@layout/fragment_estate_list">
+        android:id="@+id/right_navigation_loan_simulator"
+        android:name="com.waminiyi.realestatemanager.features.loanSimulator.LoanSimulatorFragment"
+        tools:layout="@layout/fragment_loan_simulator">
 
-        <action
-            android:id="@+id/action_navigation_estateList_to_navigation_estatedetails"
-            app:destination="@id/navigation_estatedetails" />
+        <argument
+            android:name="initialAmount"
+            app:argType="integer" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_add"
+        android:id="@+id/right_navigation_add"
         android:name="com.waminiyi.realestatemanager.features.editestate.EditEstateFragment"
         tools:layout="@layout/fragment_editestate">
         <argument
@@ -26,7 +26,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_estatedetails"
+        android:id="@+id/right_navigation_estate_details"
         android:name="com.waminiyi.realestatemanager.features.estatedetails.EstateDetailsFragment"
         tools:layout="@layout/fragment_estate_details">
         <argument
@@ -35,11 +35,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/estateMapFragment"
-        android:name="com.waminiyi.realestatemanager.features.estateMapView.EstateMapFragment"
-        tools:layout="@layout/fragment_estate_map" />
-    <fragment
-        android:id="@+id/estateFilterFragment"
+        android:id="@+id/right_estate_filter_fragment"
         android:name="com.waminiyi.realestatemanager.features.estatesFilter.EstateFilterFragment"
         tools:layout="@layout/fragment_estate_filter" />
 </navigation>

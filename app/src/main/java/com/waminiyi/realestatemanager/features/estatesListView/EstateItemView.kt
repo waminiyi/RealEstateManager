@@ -39,6 +39,7 @@ class EstateItemView @JvmOverloads constructor(
         roomCountTextView = this.findViewById(R.id.itemRoomsCountTextView)
         statusTextView = this.findViewById(R.id.itemEstateStatusTextView)
         imageView = this.findViewById(R.id.estateItemImageView)
+        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 
     fun bind(estate: Estate, currencyCode: CurrencyCode) {

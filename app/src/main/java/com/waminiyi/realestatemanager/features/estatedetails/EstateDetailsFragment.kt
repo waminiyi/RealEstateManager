@@ -2,16 +2,11 @@ package com.waminiyi.realestatemanager.features.estatedetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +31,8 @@ import com.waminiyi.realestatemanager.core.util.util.priceToText
 import com.waminiyi.realestatemanager.databinding.FragmentEstateDetailsBinding
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PoiAdapter
+import com.waminiyi.realestatemanager.features.events.Event
+import com.waminiyi.realestatemanager.features.events.EventListener
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -54,6 +51,8 @@ class EstateDetailsFragment : Fragment() {
     private lateinit var poiAdapter: PoiAdapter
     private lateinit var photoAdapter: PhotoAdapter
     private val API_KEY = BuildConfig.MAPS_API_KEY
+    private var eventListener: EventListener? = null
+
 
     @Inject
     lateinit var staticMapApiService: StaticMapApiService
@@ -80,6 +79,7 @@ class EstateDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentEstateDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        eventListener = (requireActivity() as EventListener)
         estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
         val fragmentScope = CoroutineScope(Dispatchers.Main)
         fragmentScope.launch {
@@ -95,28 +95,14 @@ class EstateDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
-                menuInflater.inflate(R.menu.details_fragment_appbar_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.navigation_edit -> {
-                        openEditEstateFragment(estateId)
-                        return true
-                    }
-                }
-                return false
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         setUpPhotosRecyclerView()
         setUpPoiRecyclerView()
         binding.editButton.setOnClickListener {
-            openEditEstateFragment(estateId)
+            eventListener?.onEvent(Event.OpenEditFragment(estateId))
+//            openEditEstateFragment(estateId)
         }
-        binding.backButton.setOnClickListener {
+        binding.closeButton.setOnClickListener {
+//            eventListener?.onEvent(Event.CloseButtonClicked)
             findNavController().navigateUp()
         }
 

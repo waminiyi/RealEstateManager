@@ -3,19 +3,19 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:layout_margin="4dp"
-    android:elevation="4dp"
+    android:layout_width="@dimen/edit_estate_photos_recycler_view_min_height"
+    android:layout_height="@dimen/edit_estate_photos_recycler_view_min_height"
+    android:layout_margin="@dimen/spacing_extra_small"
+    android:elevation="@dimen/elevation"
     android:src="@drawable/estate"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="4dp">
 
     <ImageView
         android:id="@+id/photoItemImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/estate_photo"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:src="@drawable/estate" />
 
     <ImageButton
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/spacing_extra_small"
         android:background="@drawable/circular_background"
         android:contentDescription="@string/delete_photo"
         android:src="@drawable/ic_delete" />
@@ -33,10 +33,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#94000000"
+        android:background="@color/semi_transparent_dark_shade"
         android:gravity="center"
         android:maxLength="50"
-        android:padding="4dp"
+        android:padding="@dimen/spacing_extra_small"
         android:textColor="@color/white"
         app:drawableEndCompat="@drawable/ic_edit"
         tools:text="Kitchen" />

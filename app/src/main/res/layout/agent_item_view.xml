@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:layout_margin="8dp"
-    android:minWidth="72dp"
-    android:orientation="vertical">
+    android:layout_margin="@dimen/spacing_small"
+    android:minWidth="@dimen/agent_item_view_min_width"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/itemAgentImageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/agent_photo_size"
+        android:layout_height="@dimen/agent_photo_size"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/selected_rounded_border"
-        android:padding="4dp"
+        android:contentDescription="@string/agent_photo"
+        android:padding="@dimen/spacing_extra_small"
         android:src="@drawable/person" />
 
     <TextView
         android:id="@+id/itemAgentNameTextView"
-        android:layout_width="wrap_content"
         style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/spacing_extra_small"
         android:text="@string/agent_name_placeholder" />
 
 </LinearLayout>
