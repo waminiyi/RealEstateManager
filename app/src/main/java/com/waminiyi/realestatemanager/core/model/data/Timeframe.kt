@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.core.model.data
 
 import org.threeten.bp.LocalDate
-import java.util.Date
 
 
 enum class Timeframe(val value: String) {

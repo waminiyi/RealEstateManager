@@ -1,11 +1,11 @@
 package com.waminiyi.realestatemanager.core.model.data
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.IntegerRes
-import androidx.annotation.StringRes
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Enumeration class representing types of estates.
+ */
 @Serializable
 enum class EstateType {
     @SerialName("apartment")

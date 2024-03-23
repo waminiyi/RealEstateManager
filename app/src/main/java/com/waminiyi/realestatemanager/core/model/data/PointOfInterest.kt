@@ -3,6 +3,9 @@ package com.waminiyi.realestatemanager.core.model.data
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Enumeration class representing points of interest.
+ */
 @Serializable
 enum class PointOfInterest {
     @SerialName("airport")
