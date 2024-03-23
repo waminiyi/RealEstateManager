@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.core.util.util
 
+import com.waminiyi.realestatemanager.core.Constants.HUNDRED
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode.EUR
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode.USD
 import java.text.NumberFormat
@@ -53,6 +54,8 @@ enum class CurrencyCode(val rateToDollar: Float) {
 }
 
 fun priceToText(priceInDollars: Int, currencyCode: CurrencyCode): String = when (currencyCode) {
-    CurrencyCode.USD -> priceInDollars.formatAsUSDollar()
-    CurrencyCode.EUR -> priceInDollars.toEuro().formatAsEuro()
+    USD -> priceInDollars.formatAsUSDollar()
+    EUR -> priceInDollars.toEuro().formatAsEuro()
 }
+
+fun Float.roundToTwoDigits(): Float = (this * HUNDRED).toInt() / HUNDRED.toFloat()

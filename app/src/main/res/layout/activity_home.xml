@@ -29,17 +29,33 @@
             app:title="Real Estate Manager"
             app:titleTextColor="@color/white">
 
-            <ImageButton
-                android:id="@+id/currencyButton"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/spacing_small"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/currency"
-                android:padding="@dimen/spacing_small"
-                android:src="@drawable/ic_currency"
-                app:tint="@color/white" />
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/loanSimulatorButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_extra_small"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/currency"
+                    android:padding="@dimen/spacing_small"
+                    android:src="@drawable/ic_mortage" />
+
+                <ImageButton
+                    android:id="@+id/currencyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/currency"
+                    android:padding="@dimen/spacing_small"
+                    android:src="@drawable/ic_currency"
+                    app:tint="@color/white" />
+            </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
         <RelativeLayout
@@ -64,8 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
-                    tools:text="List (1215)"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    tools:text="List (1215)" />
 
                 <View
                     android:layout_width="1dp"
@@ -78,8 +94,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
-                    tools:text="Map (1215)"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    tools:text="Map (1215)" />
             </LinearLayout>
 
             <LinearLayout

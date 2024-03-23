@@ -74,6 +74,13 @@ class EstateListFragment : Fragment(), ScreenSplitListener {
                         binding.estateListErrorTextView.text = uiState.errorMessage
                     }
 
+                    uiState.estates.isEmpty()->{
+                        binding.recyclerview.visibility = View.GONE
+                        binding.estateListCircularProgressBar.visibility = View.GONE
+                        binding.estateListErrorTextView.visibility = View.VISIBLE
+                        binding.estateListErrorTextView.text = getString(R.string.no_estate_found)
+                    }
+
                     else -> {
                         binding.recyclerview.visibility = View.VISIBLE
                         binding.estateListCircularProgressBar.visibility = View.GONE

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/spacing_large"
     tools:context=".features.loanSimulator.LoanSimulatorFragment">
 
     <ImageButton
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/spacing_small"
+        android:layout_margin="@dimen/spacing_extra_small"
         android:background="@drawable/circular_background"
         android:contentDescription="@string/back"
         android:elevation="@dimen/elevation"
@@ -20,13 +21,495 @@
         android:src="@drawable/ic_close"
         app:tint="@color/red" />
 
-
     <TextView
         style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:text="Loan simulator" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/loan_simulator_label"
+        tools:ignore="RelativeOverlap" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/spacing_small"
+                android:text="The estate"
+                app:drawableStartCompat="@drawable/ic_loan_house" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/estatePriceLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/price" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/priceTextInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" $"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/priceTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+                        tools:text="200 000" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </RelativeLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:drawablePadding="@dimen/spacing_small"
+                android:text="@string/loan_label"
+                app:drawableStartCompat="@drawable/ic_money_bag" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/loanLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/tenure" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tenureInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" years"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tenureTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+                        tools:text="20" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/initialPaymentLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/initial_payment" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/initialPaymentInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" $"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/initialPaymentTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+
+                        tools:text="20000" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/interestRateLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/interest_rate" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/interestRateInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" %"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/interestRateTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+                        tools:text="4.0" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/notaryFeesRateLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/notary_fees_rate" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/notaryFeesRateInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" %"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/notaryFeesRateTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+                        tools:text="3.5" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/warrantyCostsRateLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/warranty_costs_rate" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/warrantyCostsRateInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" %"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/warrantyCostsRateTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+                        tools:text="0.10" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:drawablePadding="@dimen/spacing_small"
+                android:text="@string/profile_label"
+                app:drawableStartCompat="@drawable/ic_loan_profile" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/monthlyIncomeLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/net_monthly_income" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/monthlyIncomeInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" $"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/monthlyIncomeTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+                        tools:text="3000" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/otherLoanPaymentLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/other_loan_payment" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/otherLoanPaymentInputLayout"
+                    style="@style/LoanTextInputLayout"
+                    app:suffixText=" $"
+                    tools:ignore="RelativeOverlap">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otherLoanPaymentTextInputEditText"
+                        style="@style/LoanTextInputEditText"
+                        tools:text="0" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:drawablePadding="@dimen/spacing_small"
+                android:text="@string/loan_summary"
+                app:drawableStartCompat="@drawable/ic_loan" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/debt_rate" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/debtRateTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="35 %" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/monthlyPaymentLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/monthly_loan_payment" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/monthlyPaymentTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="1000 $" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/monthlyWarrantyLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/monthly_warranty_payment" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/monthlyWarrantyTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="30 $" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/notaryFeesLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/total_notary_fees" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/notaryFeesTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="6000 $" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/warrantyCostsLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/total_warranty_costs" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/warrantyCostsTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="6000 $" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/totalLoanInterestLabelTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="@color/light_grayish_blue"
+                    android:text="@string/total_interest" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/totalLoanInterestTextView"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/cinnabar"
+                    tools:ignore="RelativeOverlap"
+                    tools:text="20000 $" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </RelativeLayout>

@@ -30,17 +30,33 @@
             app:title="Real Estate Manager"
             app:titleTextColor="@color/white">
 
-            <ImageButton
-                android:id="@+id/currencyButton"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/spacing_small"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/currency"
-                android:padding="@dimen/spacing_small"
-                android:src="@drawable/ic_currency"
-                app:tint="@color/white" />
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/loanSimulatorButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/currency"
+                    android:padding="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_medium"
+                    android:src="@drawable/ic_mortage" />
+
+                <ImageButton
+                    android:id="@+id/currencyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/currency"
+                    android:padding="@dimen/spacing_small"
+                    android:src="@drawable/ic_currency"
+                    app:tint="@color/white" />
+            </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -60,81 +76,81 @@
             android:layout_height="match_parent"
             android:layout_weight="3">
 
-                <RelativeLayout
-                    android:id="@+id/listViewControlsLayout"
-                    android:layout_width="match_parent"
+            <RelativeLayout
+                android:id="@+id/listViewControlsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:background="@android:color/transparent"
+                android:elevation="@dimen/elevation"
+                android:outlineProvider="bounds"
+                android:padding="@dimen/spacing_small">
+
+                <LinearLayout
+                    android:id="@+id/viewSwitchersLayout"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_small"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:background="@android:color/transparent"
-                    android:elevation="@dimen/elevation"
-                    android:outlineProvider="bounds">
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:id="@+id/viewSwitchersLayout"
+                    <TextView
+                        android:id="@+id/listViewLabelTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/spacing_small"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:padding="@dimen/spacing_small"
+                        android:textColor="@color/black"
+                        tools:text="List (1215)" />
 
-                        <TextView
-                            android:id="@+id/listViewLabelTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/spacing_small"
-                            android:textColor="@color/black"
-                            tools:text="List (1215)" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/spacing_extra_small"
+                        android:background="#969494" />
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="@dimen/spacing_extra_small"
-                            android:background="#969494" />
-
-                        <TextView
-                            android:id="@+id/mapViewLabelTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/spacing_small"
-                            android:textColor="@color/black"
-                            tools:text="Map (1215)" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/filterLabelLayout"
+                    <TextView
+                        android:id="@+id/mapViewLabelTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="start"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:padding="@dimen/spacing_small"
+                        android:textColor="@color/black"
+                        tools:text="Map (1215)" />
+                </LinearLayout>
 
-                        <ImageButton
-                            android:id="@+id/filterButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/currency"
-                            android:padding="@dimen/spacing_small"
-                            android:src="@drawable/ic_filter"
-                            app:tint="@color/black" />
+                <LinearLayout
+                    android:id="@+id/filterLabelLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="start"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/filterLabelTextView"
-                            style="@style/TextAppearance.AppCompat.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/spacing_small"
-                            android:text="@string/filter_label"
-                            android:textColor="@color/black" />
+                    <ImageButton
+                        android:id="@+id/filterButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/currency"
+                        android:padding="@dimen/spacing_small"
+                        android:src="@drawable/ic_filter"
+                        app:tint="@color/black" />
 
-                    </LinearLayout>
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/filterLabelTextView"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_small"
+                        android:text="@string/filter_label"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+            </RelativeLayout>
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/nav_host_fragment_activity_home"
@@ -176,7 +192,6 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:navGraph="@navigation/tab_right_navigation" />
         </androidx.cardview.widget.CardView>
-
 
 
     </LinearLayout>

@@ -99,10 +99,8 @@ class EstateDetailsFragment : Fragment() {
         setUpPoiRecyclerView()
         binding.editButton.setOnClickListener {
             eventListener?.onEvent(Event.OpenEditFragment(estateId))
-//            openEditEstateFragment(estateId)
         }
         binding.closeButton.setOnClickListener {
-//            eventListener?.onEvent(Event.CloseButtonClicked)
             findNavController().navigateUp()
         }
 

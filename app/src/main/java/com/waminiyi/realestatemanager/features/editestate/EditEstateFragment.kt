@@ -511,7 +511,6 @@ class EditEstateFragment : Fragment() {
             .setPositiveButton("OK") { dialog, _ ->
                 viewModel.resetSavingStatus()
                 dialog.dismiss()
-//                eventListener?.onEvent(Event.CloseButtonClicked)
 
                 findNavController().navigateUp()
             }
