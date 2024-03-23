@@ -42,4 +42,9 @@
         android:id="@+id/estateFilterFragment"
         android:name="com.waminiyi.realestatemanager.features.estatesFilter.EstateFilterFragment"
         tools:layout="@layout/fragment_estate_filter" />
+    <fragment
+        android:id="@+id/loanSimulatorFragment"
+        android:name="com.waminiyi.realestatemanager.features.loanSimulator.LoanSimulatorFragment"
+        tools:layout="@layout/fragment_loan_simulator" />
+
 </navigation>

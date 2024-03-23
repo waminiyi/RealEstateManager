@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -80,7 +79,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
         toolbar.setupWithNavController(mainNavController, appBarConfiguration)
         mainNavController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_add, R.id.navigation_estatedetails -> {
+                R.id.navigation_add, R.id.navigation_estatedetails, R.id.estateFilterFragment, R.id.loanSimulatorFragment -> {
                     toolbar.visibility = View.GONE
                     binding.listViewControlsLayout.visibility = View.GONE
                     binding.newEstateButton.visibility = View.GONE
@@ -104,6 +103,10 @@ class HomeActivity : AppCompatActivity(), EventListener {
         binding.filterButton.setOnClickListener {
             navigateToFilterFragment()
         }
+        binding.loanSimulatorButton.setOnClickListener {
+            navigateToLoanFragment()
+        }
+
         binding.newEstateButton.setOnClickListener {
             navigateToEditFragment(null)
         }
@@ -211,10 +214,6 @@ class HomeActivity : AppCompatActivity(), EventListener {
         }
     }
 
-    private fun showDialog(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-    }
-
     private fun updateCurrencyButtonIcon(currencyCode: CurrencyCode) {
         val iconResId = if (currencyCode == CurrencyCode.EUR) {
             R.drawable.ic_euro
@@ -229,6 +228,8 @@ class HomeActivity : AppCompatActivity(), EventListener {
             is Event.HideRightFragment -> {
                 if (isSplittable) {
                     updateMainView(false)
+                } else{
+                    mainNavController.navigateUp()
                 }
             }
 
@@ -303,6 +304,26 @@ class HomeActivity : AppCompatActivity(), EventListener {
             updateMainView(true)
         } else {
             mainNavController.navigate(R.id.navigation_add, bundle)
+        }
+    }
+
+    private fun navigateToLoanFragment() {
+
+        if (isSplittable) {
+            val previousDestinationId = rightNavController?.currentDestination?.id ?: -1
+
+            if (previousDestinationId == R.id.right_navigation_loan_simulator) {
+                rightNavController?.navigate(
+                    R.id.right_navigation_loan_simulator,
+                    null,
+                    NavOptions.Builder().setPopUpTo(previousDestinationId, true).build()
+                )
+            } else {
+                rightNavController?.navigate(R.id.right_navigation_loan_simulator)
+            }
+            updateMainView(true)
+        } else {
+            mainNavController.navigate(R.id.loanSimulatorFragment)
         }
     }
 
