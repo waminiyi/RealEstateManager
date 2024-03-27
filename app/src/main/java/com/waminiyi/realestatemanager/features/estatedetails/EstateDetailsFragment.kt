@@ -20,7 +20,6 @@ import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_BASE_URL
 import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_MARKER_COLOR
 import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_SCALE
 import com.waminiyi.realestatemanager.core.Constants.STATIC_MAP_ZOOM
-import com.waminiyi.realestatemanager.core.map.StaticMapApiService
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 import com.waminiyi.realestatemanager.core.model.data.Location
@@ -38,7 +37,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -53,9 +51,6 @@ class EstateDetailsFragment : Fragment() {
     private val API_KEY = BuildConfig.MAPS_API_KEY
     private var eventListener: EventListener? = null
 
-
-    @Inject
-    lateinit var staticMapApiService: StaticMapApiService
     //endregion
 
     companion object {
