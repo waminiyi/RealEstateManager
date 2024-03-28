@@ -11,11 +11,16 @@ import java.util.*
 /**
  * Class representing an agent in the real estate application.
  *
+ * This class encapsulates information about a real estate agent, including their unique identifier,
+ * first name, last name, email address, phone number, photo URL, and upload status.
+ *
  * @property agentUuid The unique identifier (UUID) for the agent. Automatically generated if not provided.
  * @property firstName The first name of the agent.
  * @property lastName The last name of the agent.
  * @property email The email address of the agent.
  * @property phoneNumber The phone number of the agent.
+ * @property photoUrl The URL of the agent's photo.
+ * @property uploadStatus The upload status of the agent's information.
  */
 @Entity(tableName = AGENTS_TABLE_NAME)
 data class AgentEntity(
