@@ -46,6 +46,7 @@ class AgentDaoTest {
         assertEquals(1, agents.size)
         assertEquals(agent1, agents[0])
 
+
         // When: Updating the existing agent's phone number
         val updatedAgent = agent1.copy(phoneNumber = "012-012")
         agentDao.upsertAgent(updatedAgent)
