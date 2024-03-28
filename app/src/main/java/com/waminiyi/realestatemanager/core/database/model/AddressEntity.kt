@@ -11,6 +11,7 @@ import com.waminiyi.realestatemanager.core.model.data.Location
  * @property streetName The name of the street where the property is located.
  * @property city The city where the property is located.
  * @property state The state or region where the property is located.
+ * @property country The country where the property is located.
  * @property postalCode The postal code of the property's location.
  * @property location The geographic coordinates (latitude and longitude) of the property.
  */
@@ -23,6 +24,12 @@ data class AddressEntity(
     val postalCode: Int?,
     @Embedded val location: Location
 ) {
+
+    /**
+     * Converts the AddressEntity object into an Address object.
+     *
+     * @return The converted Address object.
+     */
     fun asAddress() = Address(
         streetNumber = this.streetNumber,
         streetName = this.streetName,
@@ -34,6 +41,12 @@ data class AddressEntity(
     )
 }
 
+/**
+ * Converts the Address object into an AddressEntity object.
+ *
+ * @receiver The Address object to be converted.
+ * @return The converted AddressEntity object.
+ */
 fun Address.asAddressEntity() = AddressEntity(
     streetNumber = this.streetNumber,
     streetName = this.streetName,
