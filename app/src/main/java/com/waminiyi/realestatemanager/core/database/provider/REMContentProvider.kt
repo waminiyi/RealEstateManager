@@ -18,7 +18,7 @@ class REMContentProvider : ContentProvider() {
 
     companion object {
         /** The authority of this content provider.  */
-        private const val AUTHORITY =
+         const val AUTHORITY =
             "com.waminiyi.realestatemanager.core.database.provider.REMContentProvider"
 
         /**The match code for all items in the estates table.  */
@@ -86,9 +86,16 @@ class REMContentProvider : ContentProvider() {
 
     private lateinit var database: RemDatabase
 
+    // Setter method for database instance
+    fun setDatabase(database: RemDatabase) {
+        this.database = database
+    }
+
     override fun onCreate(): Boolean {
-        database =
-            Room.databaseBuilder(context!!, RemDatabase::class.java, REM_DATABASE_NAME).build()
+        // Default database initialization
+        if (!::database.isInitialized) {
+            database = Room.databaseBuilder(context!!, RemDatabase::class.java, REM_DATABASE_NAME).build()
+        }
         return true
     }
 
