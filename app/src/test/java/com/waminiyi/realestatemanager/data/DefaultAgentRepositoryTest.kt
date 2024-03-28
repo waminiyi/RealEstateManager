@@ -42,7 +42,7 @@ class DefaultAgentRepositoryTest {
     }
 
     @Test
-    fun `saveAgent should save agent successfully`() = runBlocking {
+    fun `saveAgent in repository should call upsertAgent in AgentDao successfully`() = runBlocking {
         // Given
         coEvery { agentDao.upsertAgent(any()) } returns Unit
 
@@ -69,7 +69,7 @@ class DefaultAgentRepositoryTest {
     }
 
     @Test
-    fun `getAllAgents should return list of agents`() = runBlocking {
+    fun `getAllAgents in repository should call getAllAgents in AgentDao `() = runBlocking {
         // Given
         val agentEntities = listOf(agentEntity, agentEntity.copy(agentUuid = UUID.randomUUID()))
         coEvery { agentDao.getAllAgents() } returns agentEntities
@@ -98,7 +98,7 @@ class DefaultAgentRepositoryTest {
     }
 
     @Test
-    fun `getAgent should return agent`() = runBlocking {
+    fun `getAgent  in repository should call getAgent in AgentDao`() = runBlocking {
         // Given
         coEvery { agentDao.getAgent(agentEntity.agentUuid) } returns agentEntity
 
