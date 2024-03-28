@@ -1,8 +1,6 @@
 package com.waminiyi.realestatemanager.core.data.di
 
 import android.content.Context
-import com.waminiyi.realestatemanager.core.data.remote.repository.FirestoreRepository
-import com.waminiyi.realestatemanager.core.data.remote.repository.RemoteDataRepository
 import com.waminiyi.realestatemanager.core.data.repository.AgentRepository
 import com.waminiyi.realestatemanager.core.data.repository.DefaultAgentRepository
 import com.waminiyi.realestatemanager.core.data.repository.DefaultEstateRepository
@@ -14,9 +12,7 @@ import com.waminiyi.realestatemanager.core.data.repository.MediaFileRepository
 import com.waminiyi.realestatemanager.core.data.repository.PhotoRepository
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
-import com.waminiyi.realestatemanager.core.database.dao.LocalChangeDao
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
-import com.waminiyi.realestatemanager.firebase.firestore.FirestoreDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,42 +26,28 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAgentRepository(
-        agentDao: AgentDao,
-        localChangeDao: LocalChangeDao,
-        remoteDataRepository: RemoteDataRepository
+        agentDao: AgentDao
     ): AgentRepository {
-        return DefaultAgentRepository(agentDao, localChangeDao, remoteDataRepository)
+        return DefaultAgentRepository(agentDao)
     }
 
     @Provides
     @Singleton
     fun provideEstateRepository(
         estateDao: EstateDao,
-        localChangeDao: LocalChangeDao,
-        remoteDataRepository: RemoteDataRepository,
         filterRepository: FilterRepository
     ): EstateRepository {
-        return DefaultEstateRepository(estateDao, localChangeDao, remoteDataRepository, filterRepository)
+        return DefaultEstateRepository(estateDao, filterRepository)
     }
 
     @Provides
     @Singleton
     fun providePhotoRepository(
         photoDao: PhotoDao,
-        mediaFileRepository: MediaFileRepository,
-        localChangeDao: LocalChangeDao,
-        remoteDataRepository: RemoteDataRepository
     ): PhotoRepository {
-        return DefaultPhotoRepository(photoDao, mediaFileRepository, localChangeDao, remoteDataRepository)
+        return DefaultPhotoRepository(photoDao)
     }
 
-    @Provides
-    @Singleton
-    fun provideRemoteDataRepository(
-        firestoreDao: FirestoreDao
-    ): RemoteDataRepository {
-        return FirestoreRepository(firestoreDao)
-    }
 
     @Provides
     @Singleton

@@ -2,7 +2,6 @@ package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.waminiyi.realestatemanager.core.data.extension.toEstateEntity
 import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
 
 /**

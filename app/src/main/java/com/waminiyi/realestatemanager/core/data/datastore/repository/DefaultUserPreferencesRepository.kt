@@ -1,6 +1,5 @@
 package com.waminiyi.realestatemanager.core.data.datastore.repository
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -8,11 +7,9 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.waminiyi.realestatemanager.core.data.datastore.model.CachedUser
-import com.waminiyi.realestatemanager.core.data.datastore.model.VersionsList
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -59,24 +56,6 @@ class DefaultUserPreferencesRepository @Inject constructor(
         }
     }
 
-    override suspend fun updateLocalVersionsList(update: VersionsList.() -> VersionsList) {
-        try {
-            dataStore.edit { currentPreferences ->
-                val updatedVersionsList = update(
-                    VersionsList(
-                        estateVersion = currentPreferences[ESTATE_VERSION_KEY] ?: -1,
-                        agentVersion = currentPreferences[AGENT_VERSION_KEY] ?: -1,
-                        photoVersion = currentPreferences[PHOTO_VERSION_KEY] ?: -1
-                    )
-                )
-                currentPreferences[ESTATE_VERSION_KEY] = updatedVersionsList.estateVersion
-                currentPreferences[AGENT_VERSION_KEY] = updatedVersionsList.agentVersion
-                currentPreferences[PHOTO_VERSION_KEY] = updatedVersionsList.photoVersion
-            }
-        } catch (ioException: IOException) {
-            Log.e("UserPreferences", "Failed to update user preferences", ioException)
-        }
-    }
 
     override suspend fun updateCurrentUserInfo(cachedUser: CachedUser) {
         dataStore.edit { preferences ->
@@ -93,16 +72,6 @@ class DefaultUserPreferencesRepository @Inject constructor(
     override fun getDefaultCurrency(): Flow<CurrencyCode> {
         return defaultCurrencyStream
     }
-
-    override suspend fun getLocalVersionsList() = dataStore.data
-        .map { preferences ->
-            VersionsList(
-                estateVersion = preferences[ESTATE_VERSION_KEY] ?: -1,
-                agentVersion = preferences[AGENT_VERSION_KEY] ?: -1,
-                photoVersion = preferences[PHOTO_VERSION_KEY] ?: -1
-            )
-        }.firstOrNull() ?: VersionsList()
-
 
     override fun getCurrentUserInfo(): Flow<CachedUser> {
         return cachedUserStream
