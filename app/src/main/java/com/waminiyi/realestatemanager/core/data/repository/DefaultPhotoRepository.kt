@@ -17,7 +17,6 @@ class DefaultPhotoRepository @Inject constructor(
             DataResult.Success(Unit)
         } catch (exception: IOException) {
             DataResult.Error(exception)
-            throw exception
         }
     }
 

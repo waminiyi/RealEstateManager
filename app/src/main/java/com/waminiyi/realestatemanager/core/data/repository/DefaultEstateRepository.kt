@@ -25,7 +25,6 @@ class DefaultEstateRepository @Inject constructor(
             DataResult.Success(Unit)
         } catch (exception: IOException) {
             DataResult.Error(exception)
-            throw exception
         }
     }
 
