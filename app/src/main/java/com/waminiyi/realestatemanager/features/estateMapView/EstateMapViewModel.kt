@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
 import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.features.estatesListView.EstateListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,6 +41,6 @@ class EstateMapViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(TIME_OUT),
-        initialValue = EstateListUiState(isLoading = true)
+        initialValue = EstateMapUiState(isLoading = true)
     )
 }
