@@ -42,16 +42,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class EstateMapFragment : Fragment(), OnMapReadyCallback {
 
-
     private val viewModel: EstateMapViewModel by viewModels()
-
     private var _binding: FragmentEstateMapBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     lateinit var networkMonitor: NetworkMonitor
     private var map: GoogleMap? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -33,6 +34,7 @@ class OrganizerActivity : AppCompatActivity() {
         ) { isGranted: Boolean ->
             if (isGranted) {
                 permissionGranted = true
+                navigateToHome()
             } else {
                 showNotificationDeniedDialog()
             }
@@ -40,14 +42,28 @@ class OrganizerActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !isNotificationPermissionGranted()) {
             requestPermission()
-        }else{
+        } else {
             permissionGranted = true
-
         }
 
-        binding.btnSend.setOnClickListener {
-            if (permissionGranted) navigateToHome()
-        }
+//        binding.btnSend.setOnClickListener {
+//            if (permissionGranted) navigateToHome()
+//        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val handler = Handler()
+        handler.postDelayed({
+            if (permissionGranted) {
+                navigateToHome()
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                !isNotificationPermissionGranted()
+            ) {
+                requestPermission()
+            }
+
+        }, 3000)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
