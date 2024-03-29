@@ -15,7 +15,6 @@ import com.waminiyi.realestatemanager.features.estateEntities
 import com.waminiyi.realestatemanager.features.mainPhotoEntities
 import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -36,8 +35,6 @@ class HomeActivityViewModel @Inject constructor(
     filterRepository: FilterRepository
 ) : ViewModel() {
 
-    private val currentViewTypeFlow = MutableStateFlow(ListingViewType.LIST)
-
     init {
         addSampleEstates()
     }
@@ -46,7 +43,7 @@ class HomeActivityViewModel @Inject constructor(
         estateRepository.getAllEstatesStream(),
         filterRepository.isDefaultFilter,
         userPreferencesRepository.getDefaultCurrency(),
-        currentViewTypeFlow
+        userPreferencesRepository.getCurrentViewType()
     ) { estatesResult, isDefaultFilter, currency, viewType ->
         HomeActivityUiState(
             currencyCode = currency,
@@ -76,7 +73,9 @@ class HomeActivityViewModel @Inject constructor(
     }
 
     fun updateCurrentViewType(viewType: ListingViewType) {
-        currentViewTypeFlow.value = viewType
+        viewModelScope.launch {
+            userPreferencesRepository.updateCurrentViewType(viewType)
+        }
     }
 
     private fun addSampleEstates() {
