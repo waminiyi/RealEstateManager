@@ -26,7 +26,6 @@ class EstateListViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val combinedFlow = filterRepository.isDefaultFilter.flatMapLatest { isDefaultFilter ->
-        Log.d("has filter", isDefaultFilter.toString())
         combine(
             estateRepository.getAllEstatesStream(),
             userPreferencesRepository.getDefaultCurrency(),

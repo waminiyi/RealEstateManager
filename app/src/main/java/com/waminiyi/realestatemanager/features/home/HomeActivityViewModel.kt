@@ -36,38 +36,35 @@ class HomeActivityViewModel @Inject constructor(
     filterRepository: FilterRepository
 ) : ViewModel() {
 
-
     private val screenSplittingFlow = MutableStateFlow(false)
     private val currentViewTypeFlow = MutableStateFlow(ListingViewType.LIST)
-
 
     init {
         addSampleEstates()
     }
 
-    val uiState =
-        combine(
-            currentViewTypeFlow,
-            estateRepository.getAllEstatesStream(),
-            filterRepository.isDefaultFilter,
-            userPreferencesRepository.getDefaultCurrency(),
-            screenSplittingFlow
-        ) { viewType, estatesResult, isDefaultFilter, currency, isScreenSplit ->
-            HomeActivityUiState(
-                currencyCode = currency,
-                viewType = viewType,
-                hasFilter = !isDefaultFilter,
-                estateCount = when (estatesResult) {
-                    is DataResult.Success -> estatesResult.data.size
-                    else -> 0
-                },
-                isScreenSplit = isScreenSplit
-            )
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(TIME_OUT),
-            initialValue = HomeActivityUiState(isLoading = true)
+    val uiState = combine(
+        currentViewTypeFlow,
+        estateRepository.getAllEstatesStream(),
+        filterRepository.isDefaultFilter,
+        userPreferencesRepository.getDefaultCurrency(),
+        screenSplittingFlow
+    ) { viewType, estatesResult, isDefaultFilter, currency, isScreenSplit ->
+        HomeActivityUiState(
+            currencyCode = currency,
+            viewType = viewType,
+            hasFilter = !isDefaultFilter,
+            estateCount = when (estatesResult) {
+                is DataResult.Success -> estatesResult.data.size
+                else -> 0
+            },
+            isScreenSplit = isScreenSplit
         )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(TIME_OUT),
+        initialValue = HomeActivityUiState(isLoading = true)
+    )
 
 
     fun updateEstateListColumnCount(columnCount: Int) {

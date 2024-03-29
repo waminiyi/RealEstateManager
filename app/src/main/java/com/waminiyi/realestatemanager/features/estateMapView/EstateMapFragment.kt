@@ -13,7 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,8 +35,6 @@ import com.waminiyi.realestatemanager.core.util.network.NetworkMonitor
 import com.waminiyi.realestatemanager.databinding.FragmentEstateMapBinding
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,22 +58,19 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEstateMapBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val fragmentScope = CoroutineScope(Dispatchers.Main)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupMapIfNeeded()
-        fragmentScope.launch {
-            viewLifecycleOwner.lifecycleScope.launch {
-                networkMonitor.isOnline.collect { isOnline ->
-                    if (isOnline) {
-                        viewModel.uiState.collect { uiState ->
-                            updateUi(uiState)
-                        }
-                    } else showErrorView()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    updateUi(uiState)
                 }
             }
         }
-        return root
     }
 
     override fun onDestroyView() {
@@ -83,13 +80,16 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateUi(uiState: EstateMapUiState) {
         when {
+            !uiState.isOnline -> {
+                showErrorView(getString(R.string.map_loading_default_error))
+            }
+
             uiState.isLoading -> {
                 showLoadingView()
             }
 
             uiState.isError -> {
-                showErrorView()
-                binding.mapErrorTextView.text = uiState.errorMessage
+                showErrorView(uiState.errorMessage)
             }
 
             uiState.estates.isNotEmpty() -> {
@@ -105,10 +105,11 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
         binding.mapFragmentContainer.visibility = View.GONE
     }
 
-    private fun showErrorView() {
+    private fun showErrorView(message: String) {
         binding.progressBar.visibility = View.GONE
         binding.mapErrorTextView.visibility = View.VISIBLE
         binding.mapFragmentContainer.visibility = View.GONE
+        binding.mapErrorTextView.text = message
     }
 
     private fun showMapView() {
