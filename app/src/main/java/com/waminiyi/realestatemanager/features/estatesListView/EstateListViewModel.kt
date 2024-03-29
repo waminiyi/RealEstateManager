@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.features.estateListing
+package com.waminiyi.realestatemanager.features.estatesListView
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,6 @@ import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPrefere
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
 import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.features.estatesListView.EstateListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,12 +14,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-
 private const val TIME_OUT = 5000L
 
-
 @HiltViewModel
-class EstateListingViewModel @Inject constructor(
+class EstateListViewModel @Inject constructor(
     private val estateRepository: EstateRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     filterRepository: FilterRepository

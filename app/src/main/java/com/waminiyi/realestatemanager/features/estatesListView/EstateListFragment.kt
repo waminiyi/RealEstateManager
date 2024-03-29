@@ -13,7 +13,6 @@ import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.Constants.TAB_LANDSCAPE_LAYOUT_MODE
 import com.waminiyi.realestatemanager.core.Constants.TAB_LAYOUT_MODE
 import com.waminiyi.realestatemanager.databinding.FragmentEstateListBinding
-import com.waminiyi.realestatemanager.features.estateListing.EstateListingViewModel
 import com.waminiyi.realestatemanager.events.Event
 import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.events.ScreenSplitListener
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EstateListFragment : Fragment(), ScreenSplitListener {
-    private val viewModel: EstateListingViewModel by viewModels()
+    private val viewModel: EstateListViewModel by viewModels()
     private var _binding: FragmentEstateListBinding? = null
     private val binding get() = _binding!!
     private var eventListener: EventListener? = null
