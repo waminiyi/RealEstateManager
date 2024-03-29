@@ -7,8 +7,15 @@ import kotlinx.coroutines.flow.Flow
 interface UserPreferencesRepository {
 
     suspend fun updateDefaultCurrency(defaultCurrencyCode: CurrencyCode)
+
+    suspend fun updateEstateListColumnCount(columnCount: Int)
+
+
     suspend fun updateCurrentUserInfo(cachedUser: CachedUser)
 
     fun getDefaultCurrency(): Flow<CurrencyCode>
+
+    fun getEstateListColumnCount(): Flow<Int>
+
     fun getCurrentUserInfo(): Flow<CachedUser>
 }

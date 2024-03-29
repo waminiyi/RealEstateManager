@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.waminiyi.realestatemanager.core.data.datastore.model.CachedUser
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
@@ -31,6 +32,17 @@ class DefaultUserPreferencesRepository @Inject constructor(
             } ?: CurrencyCode.USD
         }
 
+    private val estateListColumnCountStream: Flow<Int> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }.map { preferences ->
+            preferences[ESTATE_LIST_COLUMN_COUNT] ?: 1
+        }
+
     private val cachedUserStream: Flow<CachedUser> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
@@ -55,6 +67,12 @@ class DefaultUserPreferencesRepository @Inject constructor(
         }
     }
 
+    override suspend fun updateEstateListColumnCount(columnCount: Int) {
+        dataStore.edit { preferences ->
+            preferences[ESTATE_LIST_COLUMN_COUNT] = columnCount
+        }
+    }
+
 
     override suspend fun updateCurrentUserInfo(cachedUser: CachedUser) {
         dataStore.edit { preferences ->
@@ -72,6 +90,10 @@ class DefaultUserPreferencesRepository @Inject constructor(
         return defaultCurrencyStream
     }
 
+    override fun getEstateListColumnCount(): Flow<Int> {
+        return estateListColumnCountStream
+    }
+
     override fun getCurrentUserInfo(): Flow<CachedUser> {
         return cachedUserStream
     }
@@ -85,5 +107,6 @@ class DefaultUserPreferencesRepository @Inject constructor(
         val CURRENT_USER_EMAIL_KEY = stringPreferencesKey("current_user_photo_url")
         val CURRENT_USER_PHONE_KEY = stringPreferencesKey("current_user_photo_url")
         val DEFAULT_CURRENCY = stringPreferencesKey("default_currency")
+        val ESTATE_LIST_COLUMN_COUNT = intPreferencesKey("estate_list_column_count")
     }
 }
