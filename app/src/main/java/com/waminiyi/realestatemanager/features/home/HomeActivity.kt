@@ -22,7 +22,6 @@ import com.waminiyi.realestatemanager.core.Constants.TAB_LANDSCAPE_LAYOUT_MODE
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.databinding.ActivityHomeBinding
-import com.waminiyi.realestatemanager.features.estateListing.EstateListingViewModel
 import com.waminiyi.realestatemanager.features.events.Event
 import com.waminiyi.realestatemanager.features.events.EventListener
 import com.waminiyi.realestatemanager.features.events.ScreenSplitListener
@@ -51,8 +50,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
     @Inject
     lateinit var userPreferencesRepository: UserPreferencesRepository
 
-    private val viewModel: EstateListingViewModel by viewModels()
-
+    private val viewModel: HomeActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,9 +120,9 @@ class HomeActivity : AppCompatActivity(), EventListener {
                 updateFilterButton(uiState.hasFilter)
 
                 when (uiState.viewType) {
-                    ListingViewType.LIST -> showListView(uiState.estates.size)
+                    ListingViewType.LIST -> showListView(uiState.estateCount)
 
-                    ListingViewType.MAP -> showMapView(uiState.estates.size)
+                    ListingViewType.MAP -> showMapView(uiState.estateCount)
                 }
                 Log.d("filter", uiState.hasFilter.toString())
             }
@@ -228,7 +226,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
             is Event.HideRightFragment -> {
                 if (isSplittable) {
                     updateMainView(false)
-                } else{
+                } else {
                     mainNavController.navigateUp()
                 }
             }
