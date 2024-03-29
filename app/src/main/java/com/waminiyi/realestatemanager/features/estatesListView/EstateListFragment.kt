@@ -10,23 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.waminiyi.realestatemanager.R
-import com.waminiyi.realestatemanager.core.Constants.TAB_LANDSCAPE_LAYOUT_MODE
-import com.waminiyi.realestatemanager.core.Constants.TAB_LAYOUT_MODE
 import com.waminiyi.realestatemanager.databinding.FragmentEstateListBinding
 import com.waminiyi.realestatemanager.events.Event
 import com.waminiyi.realestatemanager.events.EventListener
-import com.waminiyi.realestatemanager.events.ScreenSplitListener
-import com.waminiyi.realestatemanager.features.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class EstateListFragment : Fragment(), ScreenSplitListener {
+class EstateListFragment : Fragment() {
     private val viewModel: EstateListViewModel by viewModels()
     private var _binding: FragmentEstateListBinding? = null
     private val binding get() = _binding!!
     private var eventListener: EventListener? = null
-    private var columnCount = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,17 +38,9 @@ class EstateListFragment : Fragment(), ScreenSplitListener {
         val adapter = EstateListAdapter(onEstateSelected = {
             eventListener?.onEvent(Event.EstateClicked(it))
         })
-        val mode = resources.getInteger(R.integer.layout_mode)
-        columnCount = if (mode == TAB_LAYOUT_MODE || mode == TAB_LANDSCAPE_LAYOUT_MODE) {
-            2
-        } else {
-            1
-        }
         eventListener = (requireActivity() as EventListener)
-        (requireActivity() as HomeActivity).setScreenSplitListener(this)
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(context, columnCount)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
@@ -82,6 +69,7 @@ class EstateListFragment : Fragment(), ScreenSplitListener {
                         binding.recyclerview.visibility = View.VISIBLE
                         binding.estateListCircularProgressBar.visibility = View.GONE
                         binding.estateListErrorTextView.visibility = View.GONE
+                        binding.recyclerview.layoutManager = GridLayoutManager(context, uiState.estateListColumnCount)
                         adapter.submitList(uiState.estates)
                         adapter.updateCurrencyCode(uiState.currencyCode)
                         Log.d("UI STATE", uiState.toString())
@@ -96,12 +84,4 @@ class EstateListFragment : Fragment(), ScreenSplitListener {
         _binding = null
     }
 
-    override fun onScreenSplittingChanged(isSplit: Boolean) {
-        columnCount = if (isSplit) {
-            1
-        } else {
-            2
-        }
-        binding.recyclerview.layoutManager = GridLayoutManager(context, columnCount)
-    }
 }

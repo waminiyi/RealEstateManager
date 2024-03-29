@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+
 private const val TIME_OUT = 5000L
 
 @HiltViewModel
@@ -29,7 +30,8 @@ class EstateListViewModel @Inject constructor(
         combine(
             estateRepository.getAllEstatesStream(),
             userPreferencesRepository.getDefaultCurrency(),
-        ) { estatesResult, currency ->
+            userPreferencesRepository.getEstateListColumnCount()
+        ) { estatesResult, currency, listColumnCount ->
             val uiState = when (estatesResult) {
                 is DataResult.Error -> EstateListUiState(
                     isError = true,
@@ -40,7 +42,8 @@ class EstateListViewModel @Inject constructor(
                 is DataResult.Success -> EstateListUiState(
                     estates = estatesResult.data,
                     currencyCode = currency,
-                    hasFilter = !isDefaultFilter
+                    hasFilter = !isDefaultFilter,
+                    estateListColumnCount = listColumnCount
                 )
             }
             uiState

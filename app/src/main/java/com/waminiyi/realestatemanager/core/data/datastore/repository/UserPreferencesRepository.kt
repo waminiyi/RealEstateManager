@@ -11,14 +11,7 @@ interface UserPreferencesRepository {
 
     suspend fun updateEstateListColumnCount(columnCount: Int)
 
-    suspend fun updateCurrentViewType(viewType: ListingViewType)
-    suspend fun updateCurrentUserInfo(cachedUser: CachedUser)
-
     fun getDefaultCurrency(): Flow<CurrencyCode>
 
     fun getEstateListColumnCount(): Flow<Int>
-
-    fun getCurrentUserInfo(): Flow<CachedUser>
-
-    fun getCurrentViewType(): Flow<ListingViewType>
 }

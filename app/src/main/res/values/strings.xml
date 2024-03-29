@@ -100,5 +100,6 @@
     <string name="monthly_warranty_payment">Monthly warranty payment</string>
     <string name="total_warranty_costs">Total warranty costs</string>
     <string name="total_interest">Total interest</string>
+    <string name="loan_simulator_icon">Loan simulator icon</string>
 
 </resources>

@@ -15,10 +15,11 @@ import com.waminiyi.realestatemanager.features.estateEntities
 import com.waminiyi.realestatemanager.features.mainPhotoEntities
 import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,34 +36,56 @@ class HomeActivityViewModel @Inject constructor(
     filterRepository: FilterRepository
 ) : ViewModel() {
 
+
+    private val screenSplittingFlow = MutableStateFlow(false)
+    private val currentViewTypeFlow = MutableStateFlow(ListingViewType.LIST)
+
+
     init {
         addSampleEstates()
     }
 
-    val uiState: StateFlow<HomeActivityUiState> = combine(
-        estateRepository.getAllEstatesStream(),
-        filterRepository.isDefaultFilter,
-        userPreferencesRepository.getDefaultCurrency(),
-        userPreferencesRepository.getCurrentViewType()
-    ) { estatesResult, isDefaultFilter, currency, viewType ->
-        HomeActivityUiState(
-            currencyCode = currency,
-            viewType = viewType,
-            hasFilter = !isDefaultFilter,
-            estateCount = when (estatesResult) {
-                is DataResult.Success -> estatesResult.data.size
-                else -> 0
-            }
+    val uiState =
+        combine(
+            currentViewTypeFlow,
+            estateRepository.getAllEstatesStream(),
+            filterRepository.isDefaultFilter,
+            userPreferencesRepository.getDefaultCurrency(),
+            screenSplittingFlow
+        ) { viewType, estatesResult, isDefaultFilter, currency, isScreenSplit ->
+            HomeActivityUiState(
+                currencyCode = currency,
+                viewType = viewType,
+                hasFilter = !isDefaultFilter,
+                estateCount = when (estatesResult) {
+                    is DataResult.Success -> estatesResult.data.size
+                    else -> 0
+                },
+                isScreenSplit = isScreenSplit
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(TIME_OUT),
+            initialValue = HomeActivityUiState(isLoading = true)
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(TIME_OUT),
-        initialValue = HomeActivityUiState(isLoading = true)
-    )
+
 
     fun updateEstateListColumnCount(columnCount: Int) {
         viewModelScope.launch {
             userPreferencesRepository.updateEstateListColumnCount(columnCount)
+        }
+    }
+
+    fun updateScreenSplitting(isSplit: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateEstateListColumnCount(
+                if (isSplit) {
+                    1
+                } else {
+                    2
+                }
+            )
+            screenSplittingFlow.update { isSplit }
         }
     }
 
@@ -73,9 +96,7 @@ class HomeActivityViewModel @Inject constructor(
     }
 
     fun updateCurrentViewType(viewType: ListingViewType) {
-        viewModelScope.launch {
-            userPreferencesRepository.updateCurrentViewType(viewType)
-        }
+        currentViewTypeFlow.update { viewType }
     }
 
     private fun addSampleEstates() {

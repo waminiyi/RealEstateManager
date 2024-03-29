@@ -3,13 +3,11 @@ package com.waminiyi.realestatemanager.features.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -19,12 +17,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.core.Constants.TAB_LANDSCAPE_LAYOUT_MODE
+import com.waminiyi.realestatemanager.core.Constants.TAB_LAYOUT_MODE
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.databinding.ActivityHomeBinding
 import com.waminiyi.realestatemanager.events.Event
 import com.waminiyi.realestatemanager.events.EventListener
-import com.waminiyi.realestatemanager.events.ScreenSplitListener
 import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -38,12 +36,8 @@ class HomeActivity : AppCompatActivity(), EventListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mainNavController: NavController
     private var rightNavController: NavController? = null
-
-
     private lateinit var toolbar: Toolbar
     private var currentViewType = ListingViewType.LIST
-    private var splitListener: ScreenSplitListener? = null
-    private var isSplit: Boolean = false
     private var isSplittable: Boolean = false
 
 
@@ -57,11 +51,18 @@ class HomeActivity : AppCompatActivity(), EventListener {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updateMainView(isSplit = isSplit)
         toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         setUpCurrencyButton()
+
         val mode = resources.getInteger(R.integer.layout_mode)
+        viewModel.updateEstateListColumnCount(
+            if (mode == TAB_LAYOUT_MODE || mode == TAB_LANDSCAPE_LAYOUT_MODE) {
+                2
+            } else {
+                1
+            }
+        )
         isSplittable = mode == TAB_LANDSCAPE_LAYOUT_MODE
         if (isSplittable) {
             val rightNavHostFragment =
@@ -108,16 +109,25 @@ class HomeActivity : AppCompatActivity(), EventListener {
         binding.newEstateButton.setOnClickListener {
             navigateToEditFragment(null)
         }
-        binding.listViewLabelTextView.setOnClickListener {
-            viewModel.updateCurrentViewType(ListingViewType.LIST)
+        binding.toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.listViewButton -> {
+                        viewModel.updateCurrentViewType(ListingViewType.LIST)
+                    }
+
+                    R.id.mapViewButton -> {
+                        viewModel.updateCurrentViewType(ListingViewType.MAP)
+                    }
+                }
+            }
         }
-        binding.mapViewLabelTextView.setOnClickListener {
-            viewModel.updateCurrentViewType(ListingViewType.MAP)
-        }
+
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 updateCurrencyButtonIcon(uiState.currencyCode)
                 updateFilterButton(uiState.hasFilter)
+                updateMainView(isSplit = uiState.isScreenSplit)
 
                 when (uiState.viewType) {
                     ListingViewType.LIST -> showListView(uiState.estateCount)
@@ -141,33 +151,16 @@ class HomeActivity : AppCompatActivity(), EventListener {
         binding.filterLabelTextView.setTextColor(tint)
     }
 
-    private fun TextView.showAsCurrentListingViewLabel(isCurrentView: Boolean) {
-        val regular = ResourcesCompat.getFont(context, R.font.source_sans_regular)
-        val bold = ResourcesCompat.getFont(context, R.font.source_sans_bold)
-        if (isCurrentView) {
-            with(this) {
-                setTextColor(ContextCompat.getColor(this.context, R.color.cinnabar))
-                typeface = bold
-            }
-        } else {
-            with(this) {
-                setTextColor(ContextCompat.getColor(this.context, R.color.black))
-                typeface = regular
-            }
-        }
-    }
+
 
     private fun showListView(count: Int) {
         if (currentViewType != ListingViewType.LIST) {
             currentViewType = ListingViewType.LIST
             mainNavController.navigate(R.id.navigation_estateList)
         }
-        val listCountText = getString(R.string.list_view_label, count)
-        val mapCountText = getString(R.string.map_view_label, count)
-        binding.listViewLabelTextView.text = listCountText
-        binding.mapViewLabelTextView.text = mapCountText
-        binding.listViewLabelTextView.showAsCurrentListingViewLabel(true)
-        binding.mapViewLabelTextView.showAsCurrentListingViewLabel(false)
+        binding.listViewButton.text = getString(R.string.list_view_label, count)
+        binding.mapViewButton.text = getString(R.string.map_view_label, count)
+
     }
 
     private fun showMapView(count: Int) {
@@ -175,12 +168,8 @@ class HomeActivity : AppCompatActivity(), EventListener {
             currentViewType = ListingViewType.MAP
             mainNavController.navigate(R.id.estateMapFragment)
         }
-        val listCountText = getString(R.string.list_view_label, count)
-        val mapCountText = getString(R.string.map_view_label, count)
-        binding.listViewLabelTextView.text = listCountText
-        binding.mapViewLabelTextView.text = mapCountText
-        binding.listViewLabelTextView.showAsCurrentListingViewLabel(false)
-        binding.mapViewLabelTextView.showAsCurrentListingViewLabel(true)
+        binding.listViewButton.text = getString(R.string.list_view_label, count)
+        binding.mapViewButton.text = getString(R.string.map_view_label, count)
     }
 
     private fun setUpCurrencyButton() {
@@ -200,14 +189,12 @@ class HomeActivity : AppCompatActivity(), EventListener {
                     R.id.currency_euro -> {
                         viewModel.updateCurrencyCode(CurrencyCode.EUR)
                         updateCurrencyButtonIcon(CurrencyCode.EUR)
-
                         true
                     }
 
                     else -> false
                 }
             }
-
             popupMenu.show()
         }
     }
@@ -225,7 +212,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
         when (event) {
             is Event.HideRightFragment -> {
                 if (isSplittable) {
-                    updateMainView(false)
+                    viewModel.updateScreenSplitting(false)
                 } else {
                     mainNavController.navigateUp()
                 }
@@ -245,6 +232,8 @@ class HomeActivity : AppCompatActivity(), EventListener {
         val bundle = Bundle().apply { putString(Constants.ARG_ESTATE_ID, estateUuid) }
 
         if (isSplittable) {
+            viewModel.updateScreenSplitting(true)
+
             val previousDestinationId = rightNavController?.currentDestination?.id ?: -1
 
             if (previousDestinationId == R.id.right_navigation_estate_details) {
@@ -256,8 +245,6 @@ class HomeActivity : AppCompatActivity(), EventListener {
             } else {
                 rightNavController?.navigate(R.id.right_navigation_estate_details, bundle)
             }
-            updateMainView(true)
-
         } else {
             mainNavController.navigate(R.id.navigation_estatedetails, bundle)
         }
@@ -276,8 +263,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
             } else {
                 rightNavController?.navigate(R.id.right_estate_filter_fragment)
             }
-            updateMainView(true)
-
+            viewModel.updateScreenSplitting(true)
         } else {
             mainNavController.navigate(R.id.estateFilterFragment)
         }
@@ -299,7 +285,7 @@ class HomeActivity : AppCompatActivity(), EventListener {
             } else {
                 rightNavController?.navigate(R.id.right_navigation_add, bundle)
             }
-            updateMainView(true)
+            viewModel.updateScreenSplitting(true)
         } else {
             mainNavController.navigate(R.id.navigation_add, bundle)
         }
@@ -319,23 +305,18 @@ class HomeActivity : AppCompatActivity(), EventListener {
             } else {
                 rightNavController?.navigate(R.id.right_navigation_loan_simulator)
             }
-            updateMainView(true)
+            viewModel.updateScreenSplitting(true)
         } else {
             mainNavController.navigate(R.id.loanSimulatorFragment)
         }
     }
 
-    fun setScreenSplitListener(listener: ScreenSplitListener) {
-        this.splitListener = listener
-    }
 
     private fun updateMainView(isSplit: Boolean = false) {
         if (isSplit) {
             binding.tabLandscapeModeRightContainer?.visibility = View.VISIBLE
-            splitListener?.onScreenSplittingChanged(true)
         } else {
             binding.tabLandscapeModeRightContainer?.visibility = View.GONE
-            splitListener?.onScreenSplittingChanged(false)
         }
     }
 }

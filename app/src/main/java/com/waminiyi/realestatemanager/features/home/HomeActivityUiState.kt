@@ -10,4 +10,6 @@ data class HomeActivityUiState(
     val estateCount: Int = 0,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val isScreenSplittable: Boolean = false,
+    val isScreenSplit: Boolean = false
 )
