@@ -4,7 +4,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.waminiyi.realestatemanager.core.data.datastore.model.CachedUser
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
@@ -85,14 +84,6 @@ class DefaultUserPreferencesRepository @Inject constructor(
         val CURRENT_USER_PHOTO_URL_KEY = stringPreferencesKey("current_user_photo_url")
         val CURRENT_USER_EMAIL_KEY = stringPreferencesKey("current_user_photo_url")
         val CURRENT_USER_PHONE_KEY = stringPreferencesKey("current_user_photo_url")
-        val CURRENT_USER_ROLES_KEY = stringPreferencesKey("current_user_roles")
         val DEFAULT_CURRENCY = stringPreferencesKey("default_currency")
-        val ESTATE_VERSION_KEY = longPreferencesKey("estate_version_key")
-        val AGENT_VERSION_KEY = longPreferencesKey("agent_version_key")
-        val PHOTO_VERSION_KEY = longPreferencesKey("photo_version_key")
-        val ACCESS_TOKEN_KEY = longPreferencesKey("access_token_key")
-        val FCM_TOKEN_KEY = longPreferencesKey("fcm_token_key")
-
-
     }
 }
