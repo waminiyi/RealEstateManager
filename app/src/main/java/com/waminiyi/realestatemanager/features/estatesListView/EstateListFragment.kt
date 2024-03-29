@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.waminiyi.realestatemanager.R
-import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.core.Constants.TAB_LANDSCAPE_LAYOUT_MODE
 import com.waminiyi.realestatemanager.core.Constants.TAB_LAYOUT_MODE
 import com.waminiyi.realestatemanager.databinding.FragmentEstateListBinding
@@ -25,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EstateListFragment : Fragment(), ScreenSplitListener {
-    private val viewModel: EstateListingViewModel by activityViewModels()
+    private val viewModel: EstateListingViewModel by viewModels()
     private var _binding: FragmentEstateListBinding? = null
     private val binding get() = _binding!!
     private var eventListener: EventListener? = null
@@ -47,7 +45,7 @@ class EstateListFragment : Fragment(), ScreenSplitListener {
             eventListener?.onEvent(Event.EstateClicked(it))
         })
         val mode = resources.getInteger(R.integer.layout_mode)
-        columnCount = if (mode == TAB_LAYOUT_MODE || mode ==TAB_LANDSCAPE_LAYOUT_MODE) {
+        columnCount = if (mode == TAB_LAYOUT_MODE || mode == TAB_LANDSCAPE_LAYOUT_MODE) {
             2
         } else {
             1
@@ -74,7 +72,7 @@ class EstateListFragment : Fragment(), ScreenSplitListener {
                         binding.estateListErrorTextView.text = uiState.errorMessage
                     }
 
-                    uiState.estates.isEmpty()->{
+                    uiState.estates.isEmpty() -> {
                         binding.recyclerview.visibility = View.GONE
                         binding.estateListCircularProgressBar.visibility = View.GONE
                         binding.estateListErrorTextView.visibility = View.VISIBLE

@@ -12,7 +12,7 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -31,8 +31,6 @@ import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.util.network.NetworkMonitor
 import com.waminiyi.realestatemanager.databinding.FragmentEstateMapBinding
-import com.waminiyi.realestatemanager.features.estateListing.EstateListingViewModel
-import com.waminiyi.realestatemanager.features.estatesListView.EstateListUiState
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +42,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class EstateMapFragment : Fragment(), OnMapReadyCallback {
 
-    private val listingViewModel: EstateListingViewModel by activityViewModels()
+
+    private val viewModel: EstateMapViewModel by viewModels()
+
     private var _binding: FragmentEstateMapBinding? = null
     private val binding get() = _binding!!
 
@@ -57,11 +57,8 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //TODO: The estates are not added to the map when we navigate from another fragment, maybe due to viewmodel sharing, Inject the dispatcher
-        // also
         _binding = FragmentEstateMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        Log.d("viewmodel", listingViewModel.toString())
 
         val fragmentScope = CoroutineScope(Dispatchers.Main)
         setupMapIfNeeded()
@@ -69,7 +66,7 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
             viewLifecycleOwner.lifecycleScope.launch {
                 networkMonitor.isOnline.collect { isOnline ->
                     if (isOnline) {
-                        listingViewModel.uiState.collect { uiState ->
+                        viewModel.uiState.collect { uiState ->
                             updateUi(uiState)
                         }
                     } else showErrorView()
@@ -84,7 +81,7 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
         _binding = null
     }
 
-    private fun updateUi(uiState: EstateListUiState) {
+    private fun updateUi(uiState: EstateMapUiState) {
         when {
             uiState.isLoading -> {
                 showLoadingView()
