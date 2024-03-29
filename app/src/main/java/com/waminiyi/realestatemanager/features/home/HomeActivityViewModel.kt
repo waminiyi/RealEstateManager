@@ -63,6 +63,12 @@ class HomeActivityViewModel @Inject constructor(
         initialValue = HomeActivityUiState(isLoading = true)
     )
 
+    fun updateEstateListColumnCount(columnCount: Int) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateEstateListColumnCount(columnCount)
+        }
+    }
+
     fun updateCurrencyCode(code: CurrencyCode) {
         viewModelScope.launch {
             userPreferencesRepository.updateDefaultCurrency(code)

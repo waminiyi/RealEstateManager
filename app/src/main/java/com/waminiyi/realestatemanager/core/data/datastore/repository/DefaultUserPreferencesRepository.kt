@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.waminiyi.realestatemanager.core.data.datastore.model.CachedUser
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
+import com.waminiyi.realestatemanager.features.model.ListingViewType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -40,7 +41,7 @@ class DefaultUserPreferencesRepository @Inject constructor(
                 throw exception
             }
         }.map { preferences ->
-            preferences[ESTATE_LIST_COLUMN_COUNT] ?: 1
+            preferences[ESTATE_LIST_COLUMN_COUNT_KEY] ?: 1
         }
 
     private val cachedUserStream: Flow<CachedUser> = dataStore.data
@@ -61,6 +62,20 @@ class DefaultUserPreferencesRepository @Inject constructor(
             )
         }
 
+    private val currentListingViewTypeStream: Flow<ListingViewType> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }.map { preferences ->
+            preferences[CURRENT_LISTING_VIEW_TYPE_KEY]?.let {
+                ListingViewType.valueOf(it)
+            } ?: ListingViewType.LIST
+        }
+
+
     override suspend fun updateDefaultCurrency(defaultCurrencyCode: CurrencyCode) {
         dataStore.edit { preferences ->
             preferences[DEFAULT_CURRENCY] = defaultCurrencyCode.name
@@ -69,7 +84,13 @@ class DefaultUserPreferencesRepository @Inject constructor(
 
     override suspend fun updateEstateListColumnCount(columnCount: Int) {
         dataStore.edit { preferences ->
-            preferences[ESTATE_LIST_COLUMN_COUNT] = columnCount
+            preferences[ESTATE_LIST_COLUMN_COUNT_KEY] = columnCount
+        }
+    }
+
+    override suspend fun updateCurrentViewType(viewType: ListingViewType) {
+        dataStore.edit { preferences ->
+            preferences[CURRENT_LISTING_VIEW_TYPE_KEY] = viewType.name
         }
     }
 
@@ -82,7 +103,6 @@ class DefaultUserPreferencesRepository @Inject constructor(
             preferences[CURRENT_USER_PHOTO_URL_KEY] = cachedUser.photoUrl
             preferences[CURRENT_USER_EMAIL_KEY] = cachedUser.email
             preferences[CURRENT_USER_PHONE_KEY] = cachedUser.phoneNumber
-
         }
     }
 
@@ -98,6 +118,10 @@ class DefaultUserPreferencesRepository @Inject constructor(
         return cachedUserStream
     }
 
+    override fun getCurrentViewType(): Flow<ListingViewType> {
+        return currentListingViewTypeStream
+    }
+
 
     companion object PreferencesKeys {
         val CURRENT_USER_FIRST_NAME_KEY = stringPreferencesKey("current_user_first_name")
@@ -107,6 +131,7 @@ class DefaultUserPreferencesRepository @Inject constructor(
         val CURRENT_USER_EMAIL_KEY = stringPreferencesKey("current_user_photo_url")
         val CURRENT_USER_PHONE_KEY = stringPreferencesKey("current_user_photo_url")
         val DEFAULT_CURRENCY = stringPreferencesKey("default_currency")
-        val ESTATE_LIST_COLUMN_COUNT = intPreferencesKey("estate_list_column_count")
+        val CURRENT_LISTING_VIEW_TYPE_KEY = stringPreferencesKey("current_listing_view_type")
+        val ESTATE_LIST_COLUMN_COUNT_KEY = intPreferencesKey("estate_list_column_count")
     }
 }
