@@ -22,9 +22,9 @@ import com.waminiyi.realestatemanager.core.Constants.TAB_LANDSCAPE_LAYOUT_MODE
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
 import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.databinding.ActivityHomeBinding
-import com.waminiyi.realestatemanager.features.events.Event
-import com.waminiyi.realestatemanager.features.events.EventListener
-import com.waminiyi.realestatemanager.features.events.ScreenSplitListener
+import com.waminiyi.realestatemanager.events.Event
+import com.waminiyi.realestatemanager.events.EventListener
+import com.waminiyi.realestatemanager.events.ScreenSplitListener
 import com.waminiyi.realestatemanager.features.model.ListingViewType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -43,8 +43,8 @@ import com.waminiyi.realestatemanager.features.editestate.agent.AgentAdapter
 import com.waminiyi.realestatemanager.features.editestate.estatetype.EstateTypeAdapter
 import com.waminiyi.realestatemanager.features.editestate.photo.PhotoAdapter
 import com.waminiyi.realestatemanager.features.editestate.poi.PoiAdapter
-import com.waminiyi.realestatemanager.features.events.Event
-import com.waminiyi.realestatemanager.features.events.EventListener
+import com.waminiyi.realestatemanager.events.Event
+import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.features.extensions.afterTextChanged
 import com.waminiyi.realestatemanager.features.extensions.updateValue
 import dagger.hilt.android.AndroidEntryPoint

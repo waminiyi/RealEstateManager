@@ -30,8 +30,8 @@ import com.waminiyi.realestatemanager.core.util.util.priceToText
 import com.waminiyi.realestatemanager.databinding.FragmentEstateDetailsBinding
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
 import com.waminiyi.realestatemanager.features.estatedetails.adapters.PoiAdapter
-import com.waminiyi.realestatemanager.features.events.Event
-import com.waminiyi.realestatemanager.features.events.EventListener
+import com.waminiyi.realestatemanager.events.Event
+import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
