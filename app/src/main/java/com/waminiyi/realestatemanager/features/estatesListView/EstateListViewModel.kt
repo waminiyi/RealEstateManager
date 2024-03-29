@@ -1,6 +1,5 @@
 package com.waminiyi.realestatemanager.features.estatesListView
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
