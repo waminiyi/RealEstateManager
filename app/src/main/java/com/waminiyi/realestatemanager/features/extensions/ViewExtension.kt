@@ -66,18 +66,6 @@ fun TextInputEditText.updateValue(newValue: String) {
     }
 }
 
-fun Snackbar.showNearView(view: View, message: CharSequence) {
-    val xOffset = (view.width - view.paddingLeft - view.paddingRight) / 2
-    val yOffset = view.height
-    val snackbarView = this.view
-    val layoutParams = snackbarView.layoutParams as ViewGroup.MarginLayoutParams
-    layoutParams.leftMargin = view.left + xOffset
-    layoutParams.topMargin = view.top + yOffset
-    snackbarView.layoutParams = layoutParams
-    this.setText(message)
-    this.show()
-}
-
 fun Context.showInformationDialog(information: String) {
     MaterialAlertDialogBuilder(this)
         .setMessage(information)

@@ -16,7 +16,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.waminiyi.realestatemanager.R
-import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.core.Constants.MAP_VIEW_DEFAULT_ZOOM_LEVEL
 import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus

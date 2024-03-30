@@ -39,12 +39,11 @@ import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
 import com.waminiyi.realestatemanager.core.util.util.sendNotification
 import com.waminiyi.realestatemanager.databinding.FragmentEditestateBinding
+import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.features.editestate.agent.AgentAdapter
 import com.waminiyi.realestatemanager.features.editestate.estatetype.EstateTypeAdapter
 import com.waminiyi.realestatemanager.features.editestate.photo.PhotoAdapter
 import com.waminiyi.realestatemanager.features.editestate.poi.PoiAdapter
-import com.waminiyi.realestatemanager.events.Event
-import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.features.extensions.afterTextChanged
 import com.waminiyi.realestatemanager.features.extensions.updateValue
 import dagger.hilt.android.AndroidEntryPoint
@@ -148,9 +147,11 @@ class EditEstateFragment : Fragment() {
             }
 
             uiState.isEstateSaved -> {
-                requireContext().sendNotification(title = requireContext().getString(R.string.app_name), message = getString(
-                    R.string.estate_saved_message
-                ))
+                requireContext().sendNotification(
+                    title = requireContext().getString(R.string.app_name), message = getString(
+                        R.string.estate_saved_message
+                    )
+                )
                 showEstateSavedDialog()
             }
 

@@ -28,16 +28,6 @@
             android:name=".features.home.HomeActivity"
             android:exported="false" />
 
-        <service
-            android:name=".core.sync.services.SyncNotificationsService"
-            android:exported="false"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".OrganizerActivity"
             android:exported="true">

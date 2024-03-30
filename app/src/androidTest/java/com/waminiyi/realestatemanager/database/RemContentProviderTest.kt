@@ -1,6 +1,5 @@
 package com.waminiyi.realestatemanager.database
 
-import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
 import androidx.test.platform.app.InstrumentationRegistry
@@ -19,7 +18,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.nio.ByteBuffer
 import java.util.UUID
 import javax.inject.Inject
 
@@ -92,8 +90,6 @@ class RemContentProviderTest {
 
     @Test
     fun getSingleEstateWithProvider() {
-        val estateUuid = "78d8370c-2011-4d56-ad10-22fe59522b1e"
-
         val singleEstateUri =
             Uri.parse("${baseUri}estates/${estate1.estateUuid}")
 

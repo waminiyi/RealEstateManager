@@ -5,8 +5,7 @@ import android.util.Log
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 
-data class UiEstateType(val name: String, val iconResId: Int) {
-}
+data class UiEstateType(val name: String, val iconResId: Int)
 
 fun EstateType.asUiEstateType(context: Context): UiEstateType {
 
@@ -18,7 +17,6 @@ fun EstateType.asUiEstateType(context: Context): UiEstateType {
     val name = namesArray.getOrNull(this.ordinal) ?: "Unknown"
     val iconResId = iconResIdsArray.getResourceId(this.ordinal, R.drawable.ic_home_marker)
 
-    // Recycle the TypedArray to avoid memory leaks
     iconResIdsArray.recycle()
 
 

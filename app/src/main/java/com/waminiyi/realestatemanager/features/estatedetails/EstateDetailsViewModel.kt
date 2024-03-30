@@ -7,7 +7,6 @@ import com.waminiyi.realestatemanager.core.Constants
 import com.waminiyi.realestatemanager.core.data.datastore.repository.UserPreferencesRepository
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

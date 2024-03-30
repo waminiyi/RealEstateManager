@@ -8,7 +8,6 @@ package com.waminiyi.realestatemanager.core.model.data
  * @property email The email address of the agent.
  * @property phoneNumber The phone number of the agent.
  * @property photoUrl The URL to the photo of the agent.
- * @property roles The roles assigned to the agent. By default, the agent is assigned the role 'AGENT'.
  */
 data class Agent(
     val uuid: String,
@@ -17,14 +16,4 @@ data class Agent(
     val email: String,
     val phoneNumber: String,
     val photoUrl: String,
-    val roles: Set<Role> = setOf(Role.AGENT)
 )
-
-/**
- * Enumeration class representing roles.
- * Roles can be ADMIN or AGENT.
- */
-enum class Role {
-    ADMIN,
-    AGENT
-}

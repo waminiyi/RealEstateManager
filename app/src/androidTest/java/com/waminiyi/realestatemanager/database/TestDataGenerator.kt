@@ -37,7 +37,7 @@ object TestDataGenerator {
     }
 
     private fun getRandomPoi(count: Int): List<PointOfInterest> {
-        val allTypes = PointOfInterest.values()
+        val allTypes = PointOfInterest.entries.toTypedArray()
         return (1..count).map { allTypes.random() }
     }
 

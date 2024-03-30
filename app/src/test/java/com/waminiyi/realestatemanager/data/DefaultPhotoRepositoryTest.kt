@@ -21,8 +21,8 @@ class DefaultPhotoRepositoryTest {
     private lateinit var photoDao: PhotoDao
     private lateinit var repository: DefaultPhotoRepository
     private lateinit var photoEntity: PhotoEntity
-    val photoUuid = UUID.randomUUID()
-    val estateUuid = UUID.randomUUID()
+    private val photoUuid: UUID = UUID.randomUUID()
+    private val estateUuid: UUID = UUID.randomUUID()
 
     @Before
     fun setUp() {
