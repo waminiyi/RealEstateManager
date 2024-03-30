@@ -206,13 +206,6 @@ class EstateDetailsFragment : Fragment() {
         showEstateLocationOnMap(estate.address.location)
     }
 
-    private fun openEditEstateFragment(estateUuid: String?) {
-        estateUuid?.let {
-            val bundle = Bundle().apply { putString(Constants.ARG_ESTATE_ID, it) }
-            findNavController().navigate(R.id.navigation_add, bundle)
-        }
-    }
-
     private fun updatePhotoCountText(currentPage: Int, totalPageCount: Int) {
         val countText = "${currentPage + 1} / $totalPageCount"
         binding.photoItemCountTextView.text = countText

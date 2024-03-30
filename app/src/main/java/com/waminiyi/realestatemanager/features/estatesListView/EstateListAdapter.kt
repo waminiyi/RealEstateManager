@@ -1,5 +1,6 @@
 package com.waminiyi.realestatemanager.features.estatesListView
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,6 +14,7 @@ class EstateListAdapter(
 ) :
     ListAdapter<Estate, EstateListAdapter.EstateViewHolder>(EstateComparator()) {
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateCurrencyCode(newCurrencyCode: CurrencyCode) {
         currencyCode = newCurrencyCode
         notifyDataSetChanged()

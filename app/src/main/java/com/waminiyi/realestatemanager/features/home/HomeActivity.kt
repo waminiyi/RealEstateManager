@@ -1,7 +1,6 @@
 package com.waminiyi.realestatemanager.features.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -149,7 +148,6 @@ class HomeActivity : AppCompatActivity(), EventListener {
         binding.filterLabelTextView.text = filterLabel
         binding.filterLabelTextView.setTextColor(tint)
     }
-
 
 
     private fun showListView(count: Int) {

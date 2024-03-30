@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -46,14 +47,11 @@ class OrganizerActivity : AppCompatActivity() {
             permissionGranted = true
         }
 
-//        binding.btnSend.setOnClickListener {
-//            if (permissionGranted) navigateToHome()
-//        }
     }
 
     override fun onStart() {
         super.onStart()
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             if (permissionGranted) {
                 navigateToHome()
@@ -62,7 +60,6 @@ class OrganizerActivity : AppCompatActivity() {
             ) {
                 requestPermission()
             }
-
         }, 3000)
     }
 

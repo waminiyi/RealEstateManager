@@ -1,6 +1,5 @@
 package com.waminiyi.realestatemanager.features.editestate.estatetype
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -28,11 +27,8 @@ class EstateTypeAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EstateTypeViewHolder {
-//        val view = LayoutInflater.from(parent.context)
-//            .inflate(R.layout.estate_type_item_view, parent, false)
-//        return EstateTypeViewHolder(view)
         val view = EstateTypeItemView(parent.context)
-        return EstateTypeAdapter.EstateTypeViewHolder(view)
+        return EstateTypeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: EstateTypeViewHolder, position: Int) {
@@ -44,7 +40,6 @@ class EstateTypeAdapter(
             if (selectedItem == estateType) {
                 // Already selected, do nothing
             } else {
-                //setCurrentType(estateType)
                 onTypeSelected.invoke(estateType)
             }
         }
@@ -58,12 +53,6 @@ class EstateTypeAdapter(
         fun bind(estateType: EstateType, isSelected: Boolean) {
             estateTypeItemView.setEstateType(estateType)
             estateTypeItemView.showAsSelected(isSelected)
-//            val imageView: ImageView = itemView.findViewById(R.id.itemEstateTypeImageView)
-//            val textView: TextView = itemView.findViewById(R.id.itemEstateTypeNameTextView)
-//            textView.text = estateType.asUiEstateType(itemView.context).name
-//            imageView.setImageResource(estateType.asUiEstateType(itemView.context).iconResId)
-//            textView.showAsSelected(isSelected)
-//            imageView.showAsSelected(isSelected)
         }
     }
 

@@ -7,11 +7,8 @@ import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Timeframe
-import com.waminiyi.realestatemanager.core.util.remdispatchers.Dispatcher
-import com.waminiyi.realestatemanager.core.util.remdispatchers.RemDispatchers
 import com.waminiyi.realestatemanager.core.util.util.CitiesUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -150,7 +147,7 @@ class EstateFilterViewModel @Inject constructor(
     }
 
     private suspend fun loadFilter() {
-        filterRepository.filter.take(1).collect() { filter ->
+        filterRepository.filter.take(1).collect { filter ->
             _uiState.update {
                 it.copy(filter = filter, isLoadedUiState = true)
             }
