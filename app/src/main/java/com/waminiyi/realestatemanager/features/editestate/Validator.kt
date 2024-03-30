@@ -7,23 +7,6 @@ import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.Photo
 import java.util.Date
 
-
-fun validate(uiState: EditEstateUiState): ValidationResult {
-    //TODO: move validation logic from viewmodel to here
-    return ValidationResult(
-        validatePrice(uiState.price).successful &&
-                validateArea(uiState.area).successful &&
-                validateAddress(uiState.address).successful &&
-//                validateTotalRoomsCount(uiState.roomsCount).successful &&
-                validateAgent(uiState.agent).successful &&
-//                validateFullDescription(uiState.fullDescription).successful &&
-                validatePhotos(uiState.photos).successful &&
-//                validateEntryDate(uiState.entryDate).successful &&
-                validateStatus(uiState.estateStatus).successful &&
-                validateType(uiState.type).successful
-    )
-}
-
 fun validateType(type: EstateType?): ValidationResult {
     return if (type != null) {
         ValidationResult(true)
@@ -48,15 +31,6 @@ fun validateArea(area: Int?): ValidationResult {
     }
 }
 
-//fun validateTotalRoomsCount(
-//    totalRoomsCount: Int?,
-//): ValidationResult {
-//    return when (totalRoomsCount) {
-//        null -> ValidationResult(false, "Enter the total number of rooms")
-//        else -> ValidationResult(true)
-//    }
-//}
-
 fun validateRoomsCount(
     totalRoomsCount: Int,
     bedroomsCount: Int,
@@ -65,29 +39,6 @@ fun validateRoomsCount(
     else -> ValidationResult(false, "Ensure consistency between number of rooms")
 }
 
-//fun validateBedroomsCount(roomsCount: Int?): ValidationResult {
-//    return if (roomsCount != null && roomsCount > 0) {
-//        ValidationResult(true)
-//    } else {
-//        ValidationResult(false, "Enter the total number of bedrooms")
-//    }
-//}
-
-//fun validateBathroomsCount(roomsCount: Int?): ValidationResult {
-//    return if (roomsCount != null && roomsCount > 0) {
-//        ValidationResult(true)
-//    } else {
-//        ValidationResult(false, "Enter the number of bathrooms")
-//    }
-//}
-
-//fun validateFullDescription(fullDescription: String): ValidationResult {
-//    return if (fullDescription.isNotBlank()) {
-//        ValidationResult(true)
-//    } else {
-//        ValidationResult(false, "Please provide a description for the estate")
-//    }
-//}
 
 fun validatePhotos(photos: List<Photo>): ValidationResult {
     return if (photos.isEmpty()) {
@@ -109,18 +60,6 @@ fun validateAddress(address: Address?): ValidationResult {
         ValidationResult(false, "Please select the estate's address")
     }
 }
-
-fun validateStatus(estateStatus: EstateStatus?): ValidationResult {
-    return ValidationResult(successful = estateStatus != null)
-}
-
-//fun validateEntryDate(entryDate: Date?): ValidationResult {
-//    return if (entryDate != null) {
-//        ValidationResult(true)
-//    } else {
-//        ValidationResult(false, "Please select the estate's entry date")
-//    }
-//}
 
 fun validateDates(entryDate: Date?, saleDate: Date?): ValidationResult {
     return when {

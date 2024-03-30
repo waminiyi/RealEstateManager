@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.features.events
+package com.waminiyi.realestatemanager.events
 
 sealed class Event {
     data object HideRightFragment : Event()

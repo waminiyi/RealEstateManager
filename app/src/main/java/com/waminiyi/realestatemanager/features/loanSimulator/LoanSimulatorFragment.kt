@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.util.util.roundToTwoDigits
 import com.waminiyi.realestatemanager.databinding.FragmentLoanSimulatorBinding
-import com.waminiyi.realestatemanager.features.events.Event
-import com.waminiyi.realestatemanager.features.events.EventListener
+import com.waminiyi.realestatemanager.events.Event
+import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.features.extensions.afterTextChanged
 import com.waminiyi.realestatemanager.features.extensions.showInformationDialog
 import com.waminiyi.realestatemanager.features.extensions.updateValue

@@ -41,10 +41,12 @@
                     android:id="@+id/loanSimulatorButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/currency"
-                    android:padding="@dimen/spacing_small"
                     android:layout_marginEnd="@dimen/spacing_medium"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/loan_simulator_icon"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/spacing_small"
                     android:src="@drawable/ic_mortage" />
 
                 <ImageButton
@@ -53,6 +55,8 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/currency"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
                     android:padding="@dimen/spacing_small"
                     android:src="@drawable/ic_currency"
                     app:tint="@color/white" />
@@ -86,38 +90,34 @@
                 android:outlineProvider="bounds"
                 android:padding="@dimen/spacing_small">
 
-                <LinearLayout
-                    android:id="@+id/viewSwitchersLayout"
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/spacing_small"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    app:checkedButton="@+id/listViewButton"
+                    app:singleSelection="true">
 
-                    <TextView
-                        android:id="@+id/listViewLabelTextView"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/listViewButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_small"
-                        android:textColor="@color/black"
-                        tools:text="List (1215)" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/button_text_color_selector"
+                        app:strokeColor="@color/button_stroke_selector"
+                        tools:text="List (0)" />
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/spacing_extra_small"
-                        android:background="#969494" />
-
-                    <TextView
-                        android:id="@+id/mapViewLabelTextView"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mapViewButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_small"
-                        android:textColor="@color/black"
-                        tools:text="Map (1215)" />
-                </LinearLayout>
+                        android:textAllCaps="false"
+                        android:textColor="@color/button_text_color_selector"
+                        app:strokeColor="@color/button_stroke_selector"
+                        tools:text="Map (0)" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
 
                 <LinearLayout
                     android:id="@+id/filterLabelLayout"
@@ -135,7 +135,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/currency"
+                        android:contentDescription="@string/filter_label"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
                         android:padding="@dimen/spacing_small"
                         android:src="@drawable/ic_filter"
                         app:tint="@color/black" />
@@ -182,7 +184,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/spacing_medium"
             android:layout_weight="4"
-            android:outlineProvider="bounds">
+            android:outlineProvider="bounds"
+            android:visibility="gone">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_container_right"
@@ -192,7 +195,6 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:navGraph="@navigation/tab_right_navigation" />
         </androidx.cardview.widget.CardView>
-
 
     </LinearLayout>
 

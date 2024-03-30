@@ -22,8 +22,8 @@ import com.waminiyi.realestatemanager.core.model.data.EstateType
 import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
 import com.waminiyi.realestatemanager.core.model.data.Timeframe
 import com.waminiyi.realestatemanager.databinding.FragmentEstateFilterBinding
-import com.waminiyi.realestatemanager.features.events.Event
-import com.waminiyi.realestatemanager.features.events.EventListener
+import com.waminiyi.realestatemanager.events.Event
+import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.features.extensions.afterTextChanged
 import com.waminiyi.realestatemanager.features.extensions.updateValue
 import com.waminiyi.realestatemanager.features.model.asUiEstateType

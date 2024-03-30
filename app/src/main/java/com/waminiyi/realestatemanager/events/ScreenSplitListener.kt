@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.features.events
+package com.waminiyi.realestatemanager.events
 
 interface ScreenSplitListener {
     fun onScreenSplittingChanged(isSplit: Boolean)
