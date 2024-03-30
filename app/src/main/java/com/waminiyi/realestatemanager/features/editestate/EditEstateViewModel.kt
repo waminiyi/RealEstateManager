@@ -280,7 +280,7 @@ class EditEstateViewModel @Inject constructor(
                 validateRoomsCount(it, it1)
             }
         }
-//TODO: handle empty rooms count in ui, handle address overlap on label, handle focus on edittext
+
         val hasError = listOf(
             priceResult,
             areaResult,

@@ -33,6 +33,8 @@ import com.waminiyi.realestatemanager.core.model.data.Estate
 import com.waminiyi.realestatemanager.core.model.data.EstateStatus
 import com.waminiyi.realestatemanager.core.util.network.NetworkMonitor
 import com.waminiyi.realestatemanager.databinding.FragmentEstateMapBinding
+import com.waminiyi.realestatemanager.events.Event
+import com.waminiyi.realestatemanager.events.EventListener
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -48,6 +50,7 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
 
     @Inject
     lateinit var networkMonitor: NetworkMonitor
+    private var eventListener: EventListener? = null
     private var map: GoogleMap? = null
 
     override fun onCreateView(
@@ -61,6 +64,8 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupMapIfNeeded()
+        eventListener = (requireActivity() as EventListener)
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
@@ -120,7 +125,8 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
         map?.setOnMarkerClickListener {
             if (it.tag != null) {
                 val id: String = it.tag as String
-                navigateToDetailsFragment(id)
+                eventListener?.onEvent(Event.EstateClicked(id))
+//                navigateToDetailsFragment(id)
             }
             return@setOnMarkerClickListener true
 
@@ -184,12 +190,5 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
         drawable.draw(Canvas(bitmap))
 
         return BitmapDescriptorFactory.fromBitmap(bitmap)
-    }
-
-
-    private fun navigateToDetailsFragment(estateUuid: String) {
-        //TODO: move it to parent activity?
-        val bundle = Bundle().apply { putString(Constants.ARG_ESTATE_ID, estateUuid) }
-        findNavController().navigate(R.id.navigation_estatedetails, bundle)
     }
 }

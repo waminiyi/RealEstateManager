@@ -134,7 +134,6 @@ class HomeActivity : AppCompatActivity(), EventListener {
 
                     ListingViewType.MAP -> showMapView(uiState.estateCount)
                 }
-                Log.d("filter", uiState.hasFilter.toString())
             }
         }
     }

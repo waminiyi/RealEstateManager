@@ -151,7 +151,6 @@ class EditEstateFragment : Fragment() {
                 requireContext().sendNotification(title = requireContext().getString(R.string.app_name), message = getString(
                     R.string.estate_saved_message
                 ))
-               // findNavController().navigateUp()
                 showEstateSavedDialog()
             }
 
@@ -175,7 +174,6 @@ class EditEstateFragment : Fragment() {
         binding.bathroomsCountTextInputEditText.updateValue(uiState.bathroomsCount?.toString().orEmpty())
 
         binding.priceTextInputEditText.updateValue(uiState.price?.toString().orEmpty())
-        //TODO:Change price type to long or handle error
         binding.priceTextInputLayout.error = uiState.priceError
 
         binding.descriptionTextInputEditText.updateValue(uiState.fullDescription.orEmpty())
@@ -400,7 +398,6 @@ class EditEstateFragment : Fragment() {
                 if (intent != null) {
                     val place = Autocomplete.getPlaceFromIntent(intent)
                     viewModel.setAddress(createAddressFromPlace(place))
-                    //TODO: handle the case the selected address doesn't match the good format
                 }
             }
         }
