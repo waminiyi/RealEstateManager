@@ -8,42 +8,35 @@ import com.google.android.libraries.places.api.model.Place
 import com.waminiyi.realestatemanager.core.model.data.Address
 import com.waminiyi.realestatemanager.core.model.data.Location
 import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class AddressUtilsTest {
 
-    @Mock
-    private lateinit var mockPlace: Place
+    private var mockPlace: Place = mockk()
 
-    @Mock
-    private lateinit var mockAddressComponents: AddressComponents
+    private var mockAddressComponents: AddressComponents = mockk()
 
     private val latLng = LatLng(1.0, 1.0)
 
     @Before
     fun setup() {
-        `when`(mockPlace.addressComponents).thenReturn(mockAddressComponents)
-        `when`(mockPlace.latLng).thenReturn(latLng)
+        every { mockPlace.addressComponents } returns mockAddressComponents
+        every { mockPlace.latLng } returns latLng
     }
 
     @Test
     fun `test createAddressFromPlace with all components present`() {
-        `when`(mockAddressComponents.asList()).thenReturn(
-            listOf(
-                AddressComponentMock("street_number", "123"),
-                AddressComponentMock("route", "Main St"),
-                AddressComponentMock("locality", "City"),
-                AddressComponentMock("administrative_area_level_1", "State"),
-                AddressComponentMock("country", "Country"),
-                AddressComponentMock("postal_code", "12345")
-            )
+        every { mockAddressComponents.asList() } returns listOf(
+            AddressComponentMock("street_number", "123"),
+            AddressComponentMock("route", "Main St"),
+            AddressComponentMock("locality", "City"),
+            AddressComponentMock("administrative_area_level_1", "State"),
+            AddressComponentMock("country", "Country"),
+            AddressComponentMock("postal_code", "12345")
         )
 
         val address = createAddressFromPlace(mockPlace)
@@ -64,14 +57,13 @@ class AddressUtilsTest {
 
     @Test
     fun `test createAddressFromPlace with missing components`() {
-        `when`(mockAddressComponents.asList()).thenReturn(
-            listOf(
-                AddressComponentMock("street_number", "123"),
-                AddressComponentMock("locality", "City"),
-                AddressComponentMock("administrative_area_level_1", "State"),
-                AddressComponentMock("country", "Country"),
-            )
-        )
+        every { mockAddressComponents.asList() } returns
+                listOf(
+                    AddressComponentMock("street_number", "123"),
+                    AddressComponentMock("locality", "City"),
+                    AddressComponentMock("administrative_area_level_1", "State"),
+                    AddressComponentMock("country", "Country"),
+                )
 
         val address = createAddressFromPlace(mockPlace)
 

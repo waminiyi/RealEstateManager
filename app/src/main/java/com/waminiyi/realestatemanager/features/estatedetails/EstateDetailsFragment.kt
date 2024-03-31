@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -28,14 +30,12 @@ import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
 import com.waminiyi.realestatemanager.core.util.util.getFormattedDate
 import com.waminiyi.realestatemanager.core.util.util.priceToText
 import com.waminiyi.realestatemanager.databinding.FragmentEstateDetailsBinding
-import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
-import com.waminiyi.realestatemanager.features.estatedetails.adapters.PoiAdapter
 import com.waminiyi.realestatemanager.events.Event
 import com.waminiyi.realestatemanager.events.EventListener
+import com.waminiyi.realestatemanager.features.estatedetails.adapters.PhotoAdapter
+import com.waminiyi.realestatemanager.features.estatedetails.adapters.PoiAdapter
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -76,14 +76,6 @@ class EstateDetailsFragment : Fragment() {
         val root: View = binding.root
         eventListener = (requireActivity() as EventListener)
         estateId = arguments?.getString(Constants.ARG_ESTATE_ID)
-        val fragmentScope = CoroutineScope(Dispatchers.Main)
-        fragmentScope.launch {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.uiState.collect { uiState ->
-                    updateUi(uiState)
-                }
-            }
-        }
         return root
     }
 
@@ -99,6 +91,13 @@ class EstateDetailsFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    updateUi(uiState)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

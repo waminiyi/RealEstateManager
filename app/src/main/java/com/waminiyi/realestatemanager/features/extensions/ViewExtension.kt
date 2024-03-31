@@ -3,15 +3,12 @@ package com.waminiyi.realestatemanager.features.extensions
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
 fun EditText.afterTextChanged(handleNewValue: (String) -> Unit) {
