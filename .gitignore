@@ -2,6 +2,7 @@
 .gradle
 /.idea
 /local.properties
+/secrets.properties
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -13,6 +14,5 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties
 app/src/main/assets/service-account.json
 app/google-services.json

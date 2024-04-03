@@ -51,6 +51,8 @@ android {
     secrets {
         propertiesFileName = "secrets.properties"
         defaultPropertiesFileName = "local.defaults.properties"
+        ignoreList.add("MAPS_API_KEY")
+        ignoreList.add("sdk.*")
     }
 }
 
