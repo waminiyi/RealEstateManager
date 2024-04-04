@@ -3,7 +3,7 @@ package com.waminiyi.realestatemanager.features.model
 import android.content.Context
 import android.util.Log
 import com.waminiyi.realestatemanager.R
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import com.waminiyi.realestatemanager.core.model.PointOfInterest
 
 data class UiPointOfInterest(val name: String, val iconResId: Int)
 

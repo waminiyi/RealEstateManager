@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
-import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.core.util.network.NetworkMonitor
+import com.waminiyi.realestatemanager.core.model.DataResult
+import com.waminiyi.realestatemanager.core.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted

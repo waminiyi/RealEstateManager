@@ -10,7 +10,7 @@ import com.waminiyi.realestatemanager.core.database.model.AgentEntity
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.database.model.LocalChangeEntity
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.database.util.Converters
+import com.waminiyi.realestatemanager.core.database.converters.Converters
 
 @Database(
     entities = [EstateEntity::class,

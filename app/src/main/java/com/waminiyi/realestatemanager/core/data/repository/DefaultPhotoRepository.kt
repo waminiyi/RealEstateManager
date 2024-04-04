@@ -2,8 +2,8 @@ package com.waminiyi.realestatemanager.core.data.repository
 
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
 import com.waminiyi.realestatemanager.core.database.model.asPhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.core.model.data.Photo
+import com.waminiyi.realestatemanager.core.model.DataResult
+import com.waminiyi.realestatemanager.core.model.Photo
 import java.io.IOException
 import java.util.UUID
 import javax.inject.Inject

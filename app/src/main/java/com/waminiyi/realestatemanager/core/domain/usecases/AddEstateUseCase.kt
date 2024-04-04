@@ -2,7 +2,7 @@ package com.waminiyi.realestatemanager.core.domain.usecases
 
 import com.waminiyi.realestatemanager.core.data.repository.EstateRepository
 import com.waminiyi.realestatemanager.core.data.repository.PhotoRepository
-import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.EstateWithDetails
 import javax.inject.Inject
 
 class AddEstateUseCase @Inject constructor(

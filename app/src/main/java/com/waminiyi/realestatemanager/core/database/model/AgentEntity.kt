@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.waminiyi.realestatemanager.core.Constants.AGENTS_TABLE_NAME
-import com.waminiyi.realestatemanager.core.model.data.Agent
-import com.waminiyi.realestatemanager.core.model.data.UploadStatus
+import com.waminiyi.realestatemanager.core.model.Agent
+import com.waminiyi.realestatemanager.core.model.UploadStatus
 import java.util.*
 
 /**
@@ -44,7 +44,7 @@ data class AgentEntity(
     val photoUrl: String,
 
     @ColumnInfo(name = "upload_status")
-    val uploadStatus: UploadStatus=UploadStatus.ToUpload
+    val uploadStatus: UploadStatus = UploadStatus.ToUpload
 ) {
     fun asAgent() = Agent(
         uuid = this.agentUuid.toString(),

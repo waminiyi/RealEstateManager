@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waminiyi.realestatemanager.core.model.data.Estate
-import com.waminiyi.realestatemanager.core.util.util.CurrencyCode
+import com.waminiyi.realestatemanager.core.model.Estate
+import com.waminiyi.realestatemanager.core.utils.money.CurrencyCode
+import com.waminiyi.realestatemanager.features.estatesListView.views.EstateItemView
 
 class EstateListAdapter(
     private val onEstateSelected: (String) -> Unit,

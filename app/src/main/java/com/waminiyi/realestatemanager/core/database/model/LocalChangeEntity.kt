@@ -3,7 +3,7 @@ package com.waminiyi.realestatemanager.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.waminiyi.realestatemanager.core.model.data.ClassTag
+import com.waminiyi.realestatemanager.core.model.ClassTag
 
 /**
  * Local representation of a change list for a model.

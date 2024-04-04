@@ -2,8 +2,8 @@ package com.waminiyi.realestatemanager.core.data.repository
 
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.model.asAgentEntity
-import com.waminiyi.realestatemanager.core.model.data.Agent
-import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.core.model.Agent
+import com.waminiyi.realestatemanager.core.model.DataResult
 import java.io.IOException
 import java.util.UUID
 import javax.inject.Inject

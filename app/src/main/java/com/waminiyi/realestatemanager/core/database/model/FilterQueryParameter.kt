@@ -1,8 +1,8 @@
 package com.waminiyi.realestatemanager.core.database.model
 
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import com.waminiyi.realestatemanager.core.model.EstateStatus
+import com.waminiyi.realestatemanager.core.model.EstateType
+import com.waminiyi.realestatemanager.core.model.PointOfInterest
 import java.util.Date
 
 /**

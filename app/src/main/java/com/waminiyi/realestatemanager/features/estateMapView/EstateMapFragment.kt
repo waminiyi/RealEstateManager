@@ -27,12 +27,12 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.waminiyi.realestatemanager.R
 import com.waminiyi.realestatemanager.core.Constants.MAP_VIEW_DEFAULT_ZOOM_LEVEL
-import com.waminiyi.realestatemanager.core.model.data.Estate
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.util.network.NetworkMonitor
+import com.waminiyi.realestatemanager.core.model.Estate
+import com.waminiyi.realestatemanager.core.model.EstateStatus
+import com.waminiyi.realestatemanager.core.utils.network.NetworkMonitor
 import com.waminiyi.realestatemanager.databinding.FragmentEstateMapBinding
-import com.waminiyi.realestatemanager.events.Event
-import com.waminiyi.realestatemanager.events.EventListener
+import com.waminiyi.realestatemanager.core.events.Event
+import com.waminiyi.realestatemanager.core.events.EventListener
 import com.waminiyi.realestatemanager.features.model.asUiEstateType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -2,7 +2,7 @@ package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.EstateWithDetails
 
 /**
  * Class representing an estate with its associated details.

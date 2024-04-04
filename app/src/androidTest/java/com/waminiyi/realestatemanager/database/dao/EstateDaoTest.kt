@@ -3,8 +3,8 @@ package com.waminiyi.realestatemanager.database.dao
 import com.waminiyi.realestatemanager.core.database.dao.AgentDao
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
+import com.waminiyi.realestatemanager.core.model.EstateStatus
+import com.waminiyi.realestatemanager.core.model.EstateType
 import com.waminiyi.realestatemanager.database.TestDataGenerator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

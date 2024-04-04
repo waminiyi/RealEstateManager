@@ -4,10 +4,10 @@ import com.waminiyi.realestatemanager.core.database.model.AddressEntity
 import com.waminiyi.realestatemanager.core.database.model.AgentEntity
 import com.waminiyi.realestatemanager.core.database.model.EstateEntity
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.Location
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import com.waminiyi.realestatemanager.core.model.EstateStatus
+import com.waminiyi.realestatemanager.core.model.EstateType
+import com.waminiyi.realestatemanager.core.model.Location
+import com.waminiyi.realestatemanager.core.model.PointOfInterest
 import java.util.Date
 import java.util.UUID
 

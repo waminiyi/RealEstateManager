@@ -3,9 +3,9 @@ package com.waminiyi.realestatemanager.core.data.repository
 import com.waminiyi.realestatemanager.core.database.dao.EstateDao
 import com.waminiyi.realestatemanager.core.database.model.asEstate
 import com.waminiyi.realestatemanager.core.database.model.asEstateEntity
-import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.core.model.data.Estate
-import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.DataResult
+import com.waminiyi.realestatemanager.core.model.Estate
+import com.waminiyi.realestatemanager.core.model.EstateWithDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

@@ -3,11 +3,11 @@ package com.waminiyi.realestatemanager.features.estatesFilter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.Timeframe
-import com.waminiyi.realestatemanager.core.util.util.CitiesUtils
+import com.waminiyi.realestatemanager.core.model.EstateStatus
+import com.waminiyi.realestatemanager.core.model.EstateType
+import com.waminiyi.realestatemanager.core.model.PointOfInterest
+import com.waminiyi.realestatemanager.core.model.Timeframe
+import com.waminiyi.realestatemanager.core.utils.cities.CitiesUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -7,12 +7,12 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.waminiyi.realestatemanager.core.Constants.ESTATES_TABLE_NAME
-import com.waminiyi.realestatemanager.core.model.data.Estate
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.EstateWithDetails
-import com.waminiyi.realestatemanager.core.model.data.Photo
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import com.waminiyi.realestatemanager.core.model.Estate
+import com.waminiyi.realestatemanager.core.model.EstateStatus
+import com.waminiyi.realestatemanager.core.model.EstateType
+import com.waminiyi.realestatemanager.core.model.EstateWithDetails
+import com.waminiyi.realestatemanager.core.model.Photo
+import com.waminiyi.realestatemanager.core.model.PointOfInterest
 import java.util.Date
 import java.util.UUID
 

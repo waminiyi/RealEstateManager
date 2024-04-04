@@ -1,8 +1,8 @@
 package com.waminiyi.realestatemanager.core.database.model
 
 import androidx.room.Embedded
-import com.waminiyi.realestatemanager.core.model.data.Address
-import com.waminiyi.realestatemanager.core.model.data.Location
+import com.waminiyi.realestatemanager.core.model.Address
+import com.waminiyi.realestatemanager.core.model.Location
 
 /**
  * Data class representing the address information for a real estate property.

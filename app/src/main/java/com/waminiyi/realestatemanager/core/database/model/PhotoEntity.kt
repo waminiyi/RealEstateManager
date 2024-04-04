@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.waminiyi.realestatemanager.core.Constants.PHOTOS_TABLE_NAME
-import com.waminiyi.realestatemanager.core.model.data.Photo
+import com.waminiyi.realestatemanager.core.model.Photo
 import java.util.UUID
 
 /**

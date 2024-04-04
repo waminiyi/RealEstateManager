@@ -1,6 +1,6 @@
 package com.waminiyi.realestatemanager.core.data.repository
 
-import com.waminiyi.realestatemanager.core.model.data.Filter
+import com.waminiyi.realestatemanager.core.model.Filter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject

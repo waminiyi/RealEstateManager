@@ -1,7 +1,7 @@
 package com.waminiyi.realestatemanager.features.estatesFilter
 
 import com.waminiyi.realestatemanager.core.Constants.FILTER_ROOM_COUNT_THRESHOLD
-import com.waminiyi.realestatemanager.core.model.data.Filter
+import com.waminiyi.realestatemanager.core.model.Filter
 
 data class FilterUiState(
     val filter: Filter = Filter(),

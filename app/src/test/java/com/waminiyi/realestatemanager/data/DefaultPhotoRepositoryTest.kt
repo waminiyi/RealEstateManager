@@ -3,7 +3,7 @@ package com.waminiyi.realestatemanager.data
 import com.waminiyi.realestatemanager.core.data.repository.DefaultPhotoRepository
 import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
 import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.core.model.DataResult
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
