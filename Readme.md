@@ -48,12 +48,3 @@ rate, and duration.
   <img src="screenshots/tab-with-details.png"  width="400" height="200"/>
   <img src="screenshots/tab-with-filter.png"  width="400" height="200"/>
 </p>
-
-## Tech Stack
-
-- **Jetpack Compose**: Used for building the user interface in a declarative way.
-- **[Voyager](https://voyager.adriel.cafe/)**: Handles in-app navigation with ease.
-- **[Google ML Kit](https://developers.google.com/ml-kit)**: Provides machine learning capabilities.
-    - [Image Labeling](https://developers.google.com/ml-kit/vision/image-labeling)
-    - [Barcode Scanning](https://developers.google.com/ml-kit/vision/barcode-scanning)
-    - [Text Recognition](https://developers.google.com/ml-kit/vision/text-recognition)
