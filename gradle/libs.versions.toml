@@ -84,8 +84,8 @@ volley = "1.2.1"
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidx-hilt" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converter-gson" }
-firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebase-admin" }
-google-auth-library-oauth2-http = { module = "com.google.auth:google-auth-library-oauth2-http", version.ref = "google-auth-library-oauth2-http" }
+google-auth-
+library-oauth2-http = { module = "com.google.auth:google-auth-library-oauth2-http", version.ref = "google-auth-library-oauth2-http" }
 hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "google-dagger" }
 
 google-services = "com.google.gms:google-services:4.3.0"
@@ -102,9 +102,6 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
-
-org-jacoco-ant = "org.jacoco:org.jacoco.ant:0.8.8"
-
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso" }
@@ -161,22 +158,6 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 junit-junit = { group = "junit", name = "junit", version.ref = "junit-junit" }
 
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
-
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "google-dagger" }
-
-kotlin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlin" }
-
-symbol-processing = "com.google.devtools.ksp:symbol-processing:1.8.10-1.0.9"
-
-symbol-processing-api = "com.google.devtools.ksp:symbol-processing-api:1.8.10-1.0.9"
-
-symbol-processing-cmdline = "com.google.devtools.ksp:symbol-processing-cmdline:1.8.10-1.0.9"
-
-com-android-tools-build-gradle = "com.android.tools.build:gradle:7.4.0"
-
-kotlin-annotation-processing-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-annotation-processing-gradle", version.ref = "kotlin" }
-
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle-livedata-ktx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
