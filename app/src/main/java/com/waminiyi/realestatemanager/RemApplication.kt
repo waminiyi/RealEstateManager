@@ -8,8 +8,6 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class RemApplication : Application() {
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()

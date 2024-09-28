@@ -124,7 +124,6 @@ class EstateMapFragment : Fragment(), OnMapReadyCallback {
             if (it.tag != null) {
                 val id: String = it.tag as String
                 eventListener?.onEvent(Event.EstateClicked(id))
-//                navigateToDetailsFragment(id)
             }
             return@setOnMarkerClickListener true
 

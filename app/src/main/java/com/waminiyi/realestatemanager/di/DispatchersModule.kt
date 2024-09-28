@@ -1,4 +1,4 @@
-package com.waminiyi.realestatemanager.util.remdispatchers.di
+package com.waminiyi.realestatemanager.di
 
 import com.waminiyi.realestatemanager.util.remdispatchers.Dispatcher
 import com.waminiyi.realestatemanager.util.remdispatchers.RemDispatchers.*

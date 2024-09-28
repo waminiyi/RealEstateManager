@@ -86,13 +86,11 @@ class REMContentProvider : ContentProvider() {
 
     private lateinit var database: RemDatabase
 
-    // Setter method for database instance
     fun setDatabase(database: RemDatabase) {
         this.database = database
     }
 
     override fun onCreate(): Boolean {
-        // Default database initialization
         if (!::database.isInitialized) {
             database = Room.databaseBuilder(context!!, RemDatabase::class.java, REM_DATABASE_NAME).build()
         }

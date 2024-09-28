@@ -47,7 +47,6 @@ class EstateFilterFragment : Fragment() {
         _binding = FragmentEstateFilterBinding.inflate(inflater, container, false)
         eventListener = (requireActivity() as EventListener)
         binding.closeButton.setOnClickListener {
-//            eventListener?.onEvent(Event.HideRightFragment)
             findNavController().navigateUp()
         }
         availableStatesAdapter =

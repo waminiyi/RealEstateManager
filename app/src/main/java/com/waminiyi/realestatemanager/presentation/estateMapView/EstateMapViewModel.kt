@@ -31,13 +31,13 @@ class EstateMapViewModel @Inject constructor(
             networkMonitor.isOnline
         ) { estatesResult, isOnline ->
             val uiState = when (estatesResult) {
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Error -> EstateMapUiState(
+                is Result.Error -> EstateMapUiState(
                     isError = true,
                     errorMessage = estatesResult.exception.message ?: "Error"
                 )
 
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Loading -> EstateMapUiState(isLoading = true)
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success -> EstateMapUiState(
+                is Result.Loading -> EstateMapUiState(isLoading = true)
+                is Result.Success -> EstateMapUiState(
                     estates = estatesResult.data,
                     hasFilter = !isDefaultFilter
                 )

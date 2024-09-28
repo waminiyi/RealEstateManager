@@ -31,13 +31,13 @@ class EstateListViewModel @Inject constructor(
             userPreferencesRepository.getEstateListColumnCount()
         ) { estatesResult, currency, listColumnCount ->
             val uiState = when (estatesResult) {
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Error -> EstateListUiState(
+                is Result.Error -> EstateListUiState(
                     isError = true,
                     errorMessage = estatesResult.exception.message ?: "Error"
                 )
 
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Loading -> EstateListUiState(isLoading = true)
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success -> EstateListUiState(
+                is Result.Loading -> EstateListUiState(isLoading = true)
+                is Result.Success -> EstateListUiState(
                     estates = estatesResult.data,
                     currencyCode = currency,
                     hasFilter = !isDefaultFilter,

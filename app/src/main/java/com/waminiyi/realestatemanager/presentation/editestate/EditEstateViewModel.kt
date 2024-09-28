@@ -165,7 +165,7 @@ class EditEstateViewModel @Inject constructor(
     private fun loadAgents() {
         viewModelScope.launch {
             when (val result = agentRepository.getAllAgents()) {
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success -> {
+                is Result.Success -> {
                     _uiState.update { it.copy(agentsList = result.data) }
                 }
 
@@ -213,7 +213,7 @@ class EditEstateViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             val result = estateRepository.getEstateWithDetails(estateId)
-            if (result !is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success || result.data == null) {
+            if (result !is Result.Success || result.data == null) {
                 _uiState.update { it.copy(isLoading = false) }
             } else {
                 val estate = result.data

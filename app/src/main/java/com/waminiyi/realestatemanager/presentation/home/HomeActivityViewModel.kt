@@ -55,7 +55,7 @@ class HomeActivityViewModel @Inject constructor(
             viewType = viewType,
             hasFilter = !isDefaultFilter,
             estateCount = when (estatesResult) {
-                is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success -> estatesResult.data.size
+                is Result.Success -> estatesResult.data.size
                 else -> 0
             },
             isScreenSplit = isScreenSplit

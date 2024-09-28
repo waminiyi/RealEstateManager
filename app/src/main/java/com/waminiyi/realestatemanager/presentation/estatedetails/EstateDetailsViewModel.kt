@@ -30,7 +30,7 @@ class EstateDetailsViewModel @Inject constructor(
         viewModelScope.launch {
 
             val result = estateRepository.getEstateWithDetails(estateId)
-            if (result !is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success || result.data == null) {
+            if (result !is Result.Success || result.data == null) {
                 _uiState.update { it.copy(isLoading = false, loadingError = "Estate with id $estateId not found") }
             } else {
                 _uiState.update {
