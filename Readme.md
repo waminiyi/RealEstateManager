@@ -23,16 +23,16 @@ To enable location-based services, the app requires API key to access Google Map
 
 ## Features
 
-**Property Listing:**  View a list of available properties with essential details.
-**Property Details:** Access full property information, including photos, descriptions, and nearby
+- **Property Listing:**  View a list of available properties with essential details.
+- **Property Details:** Access full property information, including photos, descriptions, and nearby
 locations on a map.
-**Property Management:** Add, edit, or mark properties as sold with ease.
-**Search & Filter:** Perform multi-criteria searches by property type, price, location, and more.
-**Map Integration:** Display properties on a dynamic map with geolocation details.
-**Notifications:** Receive notifications when new properties are added or updates are made.
-**Content Provider:** Expose property data through a Content Provider for external access.
-**Currency Conversion:** Seamlessly convert property prices between Euro and Dollar.
-**Loan Simulator:** Calculate mortgage options with customizable inputs for loan amount, interest
+- **Property Management:** Add, edit, or mark properties as sold with ease.
+- **Search & Filter:** Perform multi-criteria searches by property type, price, location, and more.
+- **Map Integration:** Display properties on a dynamic map with geolocation details.
+- **Notifications:** Receive notifications when new properties are added or updates are made.
+- **Content Provider:** Expose property data through a Content Provider for external access.
+- **Currency Conversion:** Seamlessly convert property prices between Euro and Dollar.
+- **Loan Simulator:** Calculate mortgage options with customizable inputs for loan amount, interest
 rate, and duration.
 
 ## Screenshots
