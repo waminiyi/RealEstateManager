@@ -60,9 +60,6 @@ dependencies {
     implementation libs.navigation.fragment.ktx
     implementation libs.navigation.ui.ktx
     implementation libs.legacy.support.v4
-    implementation libs.firebase.firestore.ktx
-    implementation libs.firebase.storage.ktx
-    implementation libs.firebase.messaging.ktx
     implementation libs.work.runtime.ktx
     implementation libs.hilt.common
     implementation libs.play.services.measurement.api
@@ -81,18 +78,10 @@ dependencies {
     implementation libs.kotlinx.serialization.json
     implementation libs.kotlinx.coroutines.core
     implementation libs.kotlinx.coroutines.android
-    implementation libs.firebase.auth.ktx
     implementation libs.coil
     implementation libs.places
-    implementation libs.volley
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.json)
-    implementation(libs.ktor.client.serialization)
     implementation libs.threetenbp
     implementation libs.lottie
-    implementation libs.retrofit
-    implementation libs.converter.gson
-    implementation libs.google.auth.library.oauth2.http
     kapt libs.hilt.android.compiler
     kapt(libs.androidx.hilt.compiler)
     kapt libs.room.compiler
@@ -100,7 +89,6 @@ dependencies {
     testImplementation libs.room.testing
     testImplementation libs.junit.junit
     testImplementation libs.hilt.android.testing
-    testImplementation libs.robolectric
     testImplementation libs.mockk
     kaptTest libs.hilt.android.compiler
     androidTestImplementation libs.androidx.test.ext.junit
