@@ -3,7 +3,7 @@ package com.waminiyi.realestatemanager.util
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.test.core.app.ApplicationProvider
-import com.waminiyi.realestatemanager.core.util.util.NetworkUtils
+import com.waminiyi.realestatemanager.util.util.NetworkUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals

@@ -1,6 +1,6 @@
 package com.waminiyi.realestatemanager.loan
 
-import com.waminiyi.realestatemanager.features.loanSimulator.Loan
+import com.waminiyi.realestatemanager.presentation.loanSimulator.Loan
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

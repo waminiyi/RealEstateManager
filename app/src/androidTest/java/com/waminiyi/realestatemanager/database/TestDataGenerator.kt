@@ -1,13 +1,13 @@
 package com.waminiyi.realestatemanager.database
 
-import com.waminiyi.realestatemanager.core.database.model.AddressEntity
-import com.waminiyi.realestatemanager.core.database.model.AgentEntity
-import com.waminiyi.realestatemanager.core.database.model.EstateEntity
-import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.Location
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import com.waminiyi.realestatemanager.data.database.model.AddressEntity
+import com.waminiyi.realestatemanager.data.database.model.AgentEntity
+import com.waminiyi.realestatemanager.data.database.model.EstateEntity
+import com.waminiyi.realestatemanager.data.database.model.PhotoEntity
+import com.waminiyi.realestatemanager.data.models.EstateStatus
+import com.waminiyi.realestatemanager.data.models.EstateType
+import com.waminiyi.realestatemanager.data.models.Location
+import com.waminiyi.realestatemanager.data.models.PointOfInterest
 import java.util.Date
 import java.util.UUID
 

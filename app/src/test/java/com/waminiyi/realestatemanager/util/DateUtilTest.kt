@@ -1,6 +1,6 @@
 package com.waminiyi.realestatemanager.util
 
-import com.waminiyi.realestatemanager.core.util.util.currentDate
+import com.waminiyi.realestatemanager.util.util.currentDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.LocalDate

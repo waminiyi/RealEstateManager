@@ -5,9 +5,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AddressComponent
 import com.google.android.libraries.places.api.model.AddressComponents
 import com.google.android.libraries.places.api.model.Place
-import com.waminiyi.realestatemanager.core.model.data.Address
-import com.waminiyi.realestatemanager.core.model.data.Location
-import com.waminiyi.realestatemanager.core.util.util.createAddressFromPlace
+import com.waminiyi.realestatemanager.data.models.Address
+import com.waminiyi.realestatemanager.data.models.Location
+import com.waminiyi.realestatemanager.util.util.createAddressFromPlace
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals

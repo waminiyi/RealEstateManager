@@ -1,11 +1,11 @@
 package com.waminiyi.realestatemanager.data
 
-import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.Filter
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
-import com.waminiyi.realestatemanager.core.model.data.Timeframe
+import com.waminiyi.realestatemanager.data.repository.FilterRepository
+import com.waminiyi.realestatemanager.data.models.EstateStatus
+import com.waminiyi.realestatemanager.data.models.EstateType
+import com.waminiyi.realestatemanager.data.models.Filter
+import com.waminiyi.realestatemanager.data.models.PointOfInterest
+import com.waminiyi.realestatemanager.data.models.Timeframe
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

@@ -16,5 +16,4 @@
 local.properties
 app/src/main/assets/service-account.json
 app/google-services.json
-/secrets.properties
 secrets.properties

@@ -1,18 +1,18 @@
 package com.waminiyi.realestatemanager.data
 
-import com.waminiyi.realestatemanager.core.data.repository.DefaultEstateRepository
-import com.waminiyi.realestatemanager.core.data.repository.FilterRepository
-import com.waminiyi.realestatemanager.core.database.dao.EstateDao
-import com.waminiyi.realestatemanager.core.database.model.AddressEntity
-import com.waminiyi.realestatemanager.core.database.model.EstateEntity
-import com.waminiyi.realestatemanager.core.database.model.EstateWithDetailsEntity
-import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.DataResult
-import com.waminiyi.realestatemanager.core.model.data.EstateStatus
-import com.waminiyi.realestatemanager.core.model.data.EstateType
-import com.waminiyi.realestatemanager.core.model.data.Filter
-import com.waminiyi.realestatemanager.core.model.data.Location
-import com.waminiyi.realestatemanager.core.model.data.PointOfInterest
+import com.waminiyi.realestatemanager.data.repository.DefaultEstateRepository
+import com.waminiyi.realestatemanager.data.repository.FilterRepository
+import com.waminiyi.realestatemanager.data.database.dao.EstateDao
+import com.waminiyi.realestatemanager.data.database.model.AddressEntity
+import com.waminiyi.realestatemanager.data.database.model.EstateEntity
+import com.waminiyi.realestatemanager.data.database.model.EstateWithDetailsEntity
+import com.waminiyi.realestatemanager.data.database.model.PhotoEntity
+import com.waminiyi.realestatemanager.data.models.Result
+import com.waminiyi.realestatemanager.data.models.EstateStatus
+import com.waminiyi.realestatemanager.data.models.EstateType
+import com.waminiyi.realestatemanager.data.models.Filter
+import com.waminiyi.realestatemanager.data.models.Location
+import com.waminiyi.realestatemanager.data.models.PointOfInterest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -92,10 +92,10 @@ class DefaultEstateRepositoryTest {
     fun `getAllEstatesStream should return DataResult Success with list of estates`() = runBlocking {
 
         estateRepository.getAllEstatesStream().take(1).collect {
-            assert(it is DataResult.Success)
+            assert(it is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success)
             coVerify(exactly = 1) { filterRepository.filter }
             coVerify(exactly = 1) { estateDao.getAllEstatesWithImages(any()) }
-            assertEquals(listOf(estateEntity.asEstate(photoEntity.asPhoto())), (it as DataResult.Success).data)
+            assertEquals(listOf(estateEntity.asEstate(photoEntity.asPhoto())), (it as com.waminiyi.realestatemanager.data.models.DataResult.Result.Success).data)
         }
     }
 
@@ -107,9 +107,9 @@ class DefaultEstateRepositoryTest {
 
         val result = estateRepository.getEstateWithDetails(estateEntity.estateUuid.toString())
 
-        assert(result is DataResult.Success)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success)
         coVerify(exactly = 1) { estateDao.getEstateWithDetailsById(estateEntity.estateUuid) }
-        assertEquals(estateWithDetailsEntity.asEstateWithDetails(), (result as DataResult.Success).data)
+        assertEquals(estateWithDetailsEntity.asEstateWithDetails(), (result as com.waminiyi.realestatemanager.data.models.DataResult.Result.Success).data)
 
     }
 }

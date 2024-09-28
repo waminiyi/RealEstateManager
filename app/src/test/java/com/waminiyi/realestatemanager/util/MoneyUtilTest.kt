@@ -1,9 +1,9 @@
 package com.waminiyi.realestatemanager.util
 
-import com.waminiyi.realestatemanager.core.util.util.formatAsEuro
-import com.waminiyi.realestatemanager.core.util.util.formatAsUSDollar
-import com.waminiyi.realestatemanager.core.util.util.toEuro
-import com.waminiyi.realestatemanager.core.util.util.toUSDollar
+import com.waminiyi.realestatemanager.util.util.formatAsEuro
+import com.waminiyi.realestatemanager.util.util.formatAsUSDollar
+import com.waminiyi.realestatemanager.util.util.toEuro
+import com.waminiyi.realestatemanager.util.util.toUSDollar
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

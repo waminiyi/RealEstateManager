@@ -1,9 +1,9 @@
 package com.waminiyi.realestatemanager.data
 
-import com.waminiyi.realestatemanager.core.data.repository.DefaultAgentRepository
-import com.waminiyi.realestatemanager.core.database.dao.AgentDao
-import com.waminiyi.realestatemanager.core.database.model.AgentEntity
-import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.data.repository.DefaultAgentRepository
+import com.waminiyi.realestatemanager.data.database.dao.AgentDao
+import com.waminiyi.realestatemanager.data.database.model.AgentEntity
+import com.waminiyi.realestatemanager.data.models.Result
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -50,7 +50,7 @@ class DefaultAgentRepositoryTest {
         val result = repository.saveAgent(agentEntity.asAgent())
 
         // Then
-        assert(result is DataResult.Success)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success)
         coVerify(exactly = 1) { agentDao.upsertAgent(agentEntity) }
     }
 
@@ -64,7 +64,7 @@ class DefaultAgentRepositoryTest {
         val result = repository.saveAgent(agentEntity.asAgent())
 
         // Then
-        assert(result is DataResult.Error)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Error)
         coVerify(exactly = 1) { agentDao.upsertAgent(agentEntity) }
     }
 
@@ -78,8 +78,8 @@ class DefaultAgentRepositoryTest {
         val result = repository.getAllAgents()
 
         // Then
-        assert(result is DataResult.Success)
-        assert((result as DataResult.Success).data.size == agentEntities.size)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success)
+        assert((result as com.waminiyi.realestatemanager.data.models.DataResult.Result.Success).data.size == agentEntities.size)
         coVerify(exactly = 1) { agentDao.getAllAgents() }
     }
 
@@ -93,7 +93,7 @@ class DefaultAgentRepositoryTest {
         val result = repository.getAllAgents()
 
         // Then
-        assert(result is DataResult.Error)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Error)
         coVerify(exactly = 1) { agentDao.getAllAgents() }
     }
 
@@ -106,7 +106,7 @@ class DefaultAgentRepositoryTest {
         val result = repository.getAgent(agentEntity.agentUuid.toString())
 
         // Then
-        assertEquals(DataResult.Success(agentEntity.asAgent()), result)
+        assertEquals(Result.Success(agentEntity.asAgent()), result)
         coVerify(exactly = 1) { agentDao.getAgent(agentEntity.agentUuid) }
     }
 }

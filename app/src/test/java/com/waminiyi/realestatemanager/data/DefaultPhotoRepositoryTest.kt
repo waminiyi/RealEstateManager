@@ -1,9 +1,9 @@
 package com.waminiyi.realestatemanager.data
 
-import com.waminiyi.realestatemanager.core.data.repository.DefaultPhotoRepository
-import com.waminiyi.realestatemanager.core.database.dao.PhotoDao
-import com.waminiyi.realestatemanager.core.database.model.PhotoEntity
-import com.waminiyi.realestatemanager.core.model.data.DataResult
+import com.waminiyi.realestatemanager.data.repository.DefaultPhotoRepository
+import com.waminiyi.realestatemanager.data.database.dao.PhotoDao
+import com.waminiyi.realestatemanager.data.database.model.PhotoEntity
+import com.waminiyi.realestatemanager.data.models.Result
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -52,7 +52,7 @@ class DefaultPhotoRepositoryTest {
         val result = repository.savePhoto(photoEntity.asPhoto())
 
         // Then
-        assert(result is DataResult.Success)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success)
         coVerify(exactly = 1) { photoDao.upsertPhoto(photoEntity) }
     }
 
@@ -66,7 +66,7 @@ class DefaultPhotoRepositoryTest {
         val result = repository.savePhoto(photoEntity.asPhoto())
 
         // Then
-        assert(result is DataResult.Error)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Error)
         coVerify(exactly = 1) { photoDao.upsertPhoto(photoEntity) }
     }
 
@@ -80,8 +80,8 @@ class DefaultPhotoRepositoryTest {
         val result = repository.getAllEstatePhotos(estateUuid.toString())
 
         // Then
-        assert(result is DataResult.Success)
-        assert((result as DataResult.Success).data.size == photoEntities.size)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Success)
+        assert((result as com.waminiyi.realestatemanager.data.models.DataResult.Result.Success).data.size == photoEntities.size)
         coVerify(exactly = 1) { photoDao.getPhotosByEstate(estateUuid) }
     }
 
@@ -95,7 +95,7 @@ class DefaultPhotoRepositoryTest {
         val result = repository.getAllEstatePhotos(estateUuid.toString())
 
         // Then
-        assert(result is DataResult.Error)
+        assert(result is com.waminiyi.realestatemanager.data.models.DataResult.Result.Error)
         coVerify(exactly = 1) { photoDao.getPhotosByEstate(estateUuid) }
     }
 
@@ -108,7 +108,7 @@ class DefaultPhotoRepositoryTest {
         val result = repository.getPhoto(estateUuid.toString())
 
         // Then
-        assertEquals(DataResult.Success(photoEntity.asPhoto()), result)
+        assertEquals(Result.Success(photoEntity.asPhoto()), result)
         coVerify(exactly = 1) { photoDao.getPhotoById(estateUuid) }
     }
 }

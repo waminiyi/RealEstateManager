@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_estateList"
-        android:name="com.waminiyi.realestatemanager.features.estatesListView.EstateListFragment"
+        android:name="com.waminiyi.realestatemanager.presentation.estatesListView.EstateListFragment"
         tools:layout="@layout/fragment_estate_list">
 
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_add"
-        android:name="com.waminiyi.realestatemanager.features.editestate.EditEstateFragment"
+        android:name="com.waminiyi.realestatemanager.presentation.editestate.EditEstateFragment"
         tools:layout="@layout/fragment_editestate">
         <argument
             android:name="estate_id"
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/navigation_estatedetails"
-        android:name="com.waminiyi.realestatemanager.features.estatedetails.EstateDetailsFragment"
+        android:name="com.waminiyi.realestatemanager.presentation.estatedetails.EstateDetailsFragment"
         tools:layout="@layout/fragment_estate_details">
         <argument
             android:name="estate_id"
@@ -36,15 +36,15 @@
 
     <fragment
         android:id="@+id/estateMapFragment"
-        android:name="com.waminiyi.realestatemanager.features.estateMapView.EstateMapFragment"
+        android:name="com.waminiyi.realestatemanager.presentation.estateMapView.EstateMapFragment"
         tools:layout="@layout/fragment_estate_map" />
     <fragment
         android:id="@+id/estateFilterFragment"
-        android:name="com.waminiyi.realestatemanager.features.estatesFilter.EstateFilterFragment"
+        android:name="com.waminiyi.realestatemanager.presentation.estatesFilter.EstateFilterFragment"
         tools:layout="@layout/fragment_estate_filter" />
     <fragment
         android:id="@+id/loanSimulatorFragment"
-        android:name="com.waminiyi.realestatemanager.features.loanSimulator.LoanSimulatorFragment"
+        android:name="com.waminiyi.realestatemanager.presentation.loanSimulator.LoanSimulatorFragment"
         tools:layout="@layout/fragment_loan_simulator" />
 
 </navigation>
