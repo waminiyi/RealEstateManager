@@ -38,13 +38,12 @@ rate, and duration.
 ## Screenshots
 
 <p> 
-  <img src="screenshots/video.webm" width="200" height="400" alt="video"/>
   <img src="screenshots/estate-list.png"  width="200" height="400"/>
   <img src="screenshots/map-view.png" width="200" height="400"/>
   <img src="screenshots/addestate.png"  width="200" height="400"/>
   <img src="screenshots/filter.png"  width="200" height="400"/>
   <img src="screenshots/loan-simulator.png"  width="200" height="400"/>
-  <img src="screenshots/tab-list-view.png"  width="400" height="200"/>
-  <img src="screenshots/tab-with-details.png"  width="400" height="200"/>
-  <img src="screenshots/tab-with-filter.png"  width="400" height="200"/>
+  <img src="screenshots/tab-list-view.png"  width="400" height="400"/>
+  <img src="screenshots/tab-with-details.png"  width="400" height="400"/>
+  <img src="screenshots/tab-with-filter.png"  width="400" height="400"/>
 </p>
